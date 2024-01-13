@@ -11,7 +11,7 @@ import {
   X
 } from 'phosphor-react'
 import { ReactElement } from 'react'
-import Divider from '../Divider'
+import Divider from '../ui/Divider'
 import SwitchUI from '../ui/Switch'
 import ScrollArea from '../ScrollArea'
 import * as Dialog from '@radix-ui/react-dialog'
@@ -63,14 +63,14 @@ function Contact(): ReactElement {
             </div>
           </div>
 
-          <Divider />
+          <Divider rootStyle='my-2' />
 
           <div className='p-8 py-2 space-y-3'>
             <h3>About</h3>
             <p className='font-semibold'>Hi there, welcome to my life!</p>
           </div>
 
-          <Divider />
+          <Divider rootStyle='my-2' />
 
           <div className='p-6 py-2 space-y-3'>
             <div className='flex justify-between items-center'>
@@ -96,10 +96,7 @@ function Contact(): ReactElement {
             </div>
           </div>
 
-          <span
-            style={{ height: '1px' }}
-            className='mx-auto block w-5/6 bg-divider my-[16px]'
-          ></span>
+          <Divider rootStyle='my-2' />
 
           <div className='px-8 py-2 flex justify-between items-center'>
             <Star />
@@ -112,7 +109,7 @@ function Contact(): ReactElement {
             />
           </div>
 
-          <Divider />
+          <Divider rootStyle='my-2' />
 
           <div className='px-8 py-2 flex justify-between items-center'>
             <Bell />
@@ -120,10 +117,7 @@ function Contact(): ReactElement {
             <SwitchUI checked={true} onCheckedChange={() => {}} />
           </div>
 
-          <span
-            style={{ height: '1px' }}
-            className='mx-auto block w-5/6 bg-divider my-[16px]'
-          ></span>
+          <Divider rootStyle='my-2' />
 
           <div className='p-8 py-2 flex flex-col gap-4 items-start'>
             <p>1 group in common</p>
@@ -141,7 +135,7 @@ function Contact(): ReactElement {
             </div>
           </div>
 
-          <Divider />
+          <Divider rootStyle='my-2' />
 
           <div className='p-8 py-2 pb-5 flex gap-10 justify-center items-start'>
             <BlockDialog />

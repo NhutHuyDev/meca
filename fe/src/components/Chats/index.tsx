@@ -3,6 +3,7 @@ import { ArchiveBox, CircleDashed, MagnifyingGlass } from 'phosphor-react'
 import Chat from './Chat'
 import { Chat_List } from '@/data'
 import ScrollArea from '../ScrollArea'
+import Divider from '../ui/Divider'
 
 function index(): ReactElement {
   return (
@@ -33,13 +34,10 @@ function index(): ReactElement {
             <ArchiveBox size={24} className='text-common-black' />
             <span>Archive</span>
           </button>
-
-          <span
-            style={{ height: '1px' }}
-            className='block w-full bg-divider'
-          ></span>
         </div>
       </div>
+
+      <Divider rootStyle='my-2' />
 
       <ScrollArea maxHeight='calc(100vh - 200px)' bgColor='bg-grey-200'>
         <div className='p-2 h-full space-y-5'>

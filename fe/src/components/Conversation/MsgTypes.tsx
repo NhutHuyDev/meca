@@ -187,9 +187,9 @@ function FileMsg({ message, incoming }: PropTypes): ReactElement {
 function Timeline({ text }: PropTypes): ReactElement {
   return (
     <div className='w-full h-fit flex justify-center items-center gap-3'>
-      <span style={{ height: '1px' }} className='w-5/12 bg-divider '></span>
+      <span style={{ height: '0.5px' }} className='w-5/12 bg-divider '></span>
       <span className='text-sm text-grey-600'>{text}</span>
-      <span style={{ height: '1px' }} className='w-5/12 bg-divider '></span>
+      <span style={{ height: '0.5px' }} className='w-5/12 bg-divider '></span>
     </div>
   )
 }

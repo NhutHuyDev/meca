@@ -32,8 +32,20 @@ export default function Router() {
       element: <MainLayout />,
       children: [
         {
-          path: 'login',
-          element: <LoginPage />
+          path: 'sign-in',
+          element: <SignInPage />
+        },
+        {
+          path: 'sign-up',
+          element: <SignUpPage />
+        },
+        {
+          path: 'reset-password',
+          element: <ResetPasswordPage />
+        },
+        {
+          path: 'new-password',
+          element: <NewPasswordPage />
         }
       ]
     },
@@ -53,7 +65,14 @@ export default function Router() {
   ])
 }
 
-const LoginPage = Loadable(lazy(() => import('../pages/auth/Login')))
+const SignInPage = Loadable(lazy(() => import('../pages/auth/SignIn')))
+const SignUpPage = Loadable(lazy(() => import('../pages/auth/SignUp')))
+const ResetPasswordPage = Loadable(
+  lazy(() => import('../pages/auth/ResetPassword'))
+)
+const NewPasswordPage = Loadable(
+  lazy(() => import('../pages/auth/NewPassword'))
+)
 const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')))
 const Settings = Loadable(lazy(() => import('../pages/Settings/Settings')))
 const Page404 = Loadable(lazy(() => import('../pages/Page404')))
