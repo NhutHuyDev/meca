@@ -2,8 +2,8 @@ import { ReactElement } from 'react'
 import { ArchiveBox, CircleDashed, MagnifyingGlass } from 'phosphor-react'
 import Chat from './Chat'
 import { Chat_List } from '@/data'
-import ScrollArea from '../ScrollArea'
-import Divider from '../ui/Divider'
+import ScrollArea from '@/components/ScrollArea'
+import Divider from '@/components/ui/Divider'
 
 function index(): ReactElement {
   return (
@@ -39,7 +39,7 @@ function index(): ReactElement {
 
       <Divider rootStyle='my-2' />
 
-      <ScrollArea maxHeight='calc(100vh - 200px)' bgColor='bg-grey-200'>
+      <ScrollArea maxHeight='calc(100vh - 200px)'>
         <div className='p-2 h-full space-y-5'>
           <div className='space-y-3'>
             <h3 className='text-grey-600 text-sm'>Pinned</h3>

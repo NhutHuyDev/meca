@@ -1,5 +1,5 @@
 import { ReactElement } from 'react'
-import Chats from '@/components/Chats'
+import Chats from '@/components/Chats/Individual'
 import Conversation from '@/components/Conversation'
 import Contact from '@/components/Contact'
 import SharedMessage from '@/components/Contact/SharedMessage'

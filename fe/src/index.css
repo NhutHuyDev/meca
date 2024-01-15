@@ -16,7 +16,7 @@ em-emoji-picker  {
 
 .scroll-box {
   width: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .scroll-box::-webkit-scrollbar {
@@ -29,24 +29,17 @@ em-emoji-picker  {
   border-radius: 4px;
 }
 
+/* thumb sẽ hiện lên  */
 .scroll-box::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, .2);
 }
 
-.cover-bar {
-  position: absolute;
-  pointer-events: none;
-  height: 100%;
-  top: 0;
-  right: 0;
-  width: .4em;
-  transition: all 5s;
-  opacity: 1;
+/* thumb sẽ ẩn đi  */
+.scroll-box.hidden-thumb::-webkit-scrollbar-thumb {
+  background: transparent;
 }
 
-.cover-bar.hidden {
-  opacity: 0;
-}
+
 
 
 

@@ -3,31 +3,29 @@ import { ReactNode, useEffect, useState } from 'react'
 type PropsType = {
   children: ReactNode
   maxHeight: string
-  bgColor: string
 }
 
-function ScrollArea({ children, maxHeight, bgColor }: PropsType) {
-  const [coverBar, setCoverBar] = useState('cover-bar')
+function ScrollArea({ children, maxHeight }: PropsType) {
+  const [hideThumb, setHideThumb] = useState(true)
 
   useEffect(() => {
-    if (coverBar === 'cover-bar hidden') {
-      const timeoutId = setTimeout(() => setCoverBar('cover-bar'), 3000)
+    if (!hideThumb) {
+      const timeoutId = setTimeout(() => setHideThumb(true), 3000)
 
       return () => clearTimeout(timeoutId)
     }
-  }, [coverBar])
+  }, [hideThumb])
 
   return (
     <div className={`scroll-bar-wrap`}>
       <div
-        className='scroll-box'
+        className={hideThumb ? 'scroll-box hidden-thumb' : 'scroll-box'}
         style={{ height: maxHeight }}
-        onScroll={() => setCoverBar('cover-bar hidden')}
-        onMouseMove={() => setCoverBar('cover-bar hidden')}
+        onScroll={() => setHideThumb(false)}
+        onMouseMove={() => setHideThumb(false)}
       >
         {children}
       </div>
-      <div className={coverBar + ' ' + bgColor}></div>
     </div>
   )
 }

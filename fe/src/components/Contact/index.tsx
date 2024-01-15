@@ -33,7 +33,7 @@ function Contact(): ReactElement {
       </div>
 
       <div className='flex-grow'>
-        <ScrollArea maxHeight={'calc(100vh - 72px)'} bgColor='bg-common-white'>
+        <ScrollArea maxHeight={'calc(100vh - 72px)'}>
           <div className='p-6 flex flex-col justify-center items-center'>
             <div className='cursor-pointer flex items-center gap-6 w-fit'>
               <div

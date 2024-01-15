@@ -13,7 +13,7 @@ import ScrollArea from '../ScrollArea'
 function Messages(): ReactElement {
   return (
     <div className='flex-grow'>
-      <ScrollArea maxHeight={'calc(100vh - 136px)'} bgColor='bg-common-white'>
+      <ScrollArea maxHeight={'calc(100vh - 136px)'}>
         <div className='p-4 flex flex-col gap-3'>
           {Chat_History.map((chat, index) => {
             switch (chat.type) {
