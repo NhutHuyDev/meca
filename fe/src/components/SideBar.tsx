@@ -5,26 +5,13 @@ import { Gear } from 'phosphor-react'
 import defaultAvatar from '@/assets/default-avatar.svg'
 import SwitchUI from '@/components/ui/Switch'
 import { PopoverUI, side } from './ui/Popover'
-
-function ProfileOptions(): ReactElement {
-  return (
-    <div className='m-2 p-3 shadow-xl bg-grey-100 rounded-xl w-fix'>
-      {Profile_Menu.map((menu, index) => (
-        <button
-          key={index}
-          className='w-full p-2 hover:bg-grey-300 outline-none rounded-lg flex items-center space-x-2'
-        >
-          <p className='text-start whitespace-nowrap'>{menu.title}</p>
-          {menu.icon}
-        </button>
-      ))}
-    </div>
-  )
-}
+import { useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 function SideBar(): ReactElement {
-  const [selectedNav, setSeletedNav] = useState(0)
   const [switchOn, setSwitchOn] = useState(true)
+  const navigate = useNavigate()
+  const location = useLocation()
 
   return (
     <nav className='flex flex-col justify-between w-28 h-[100vh] p-6 bg-background-paper shadow'>
@@ -38,12 +25,15 @@ function SideBar(): ReactElement {
             <button
               className={`
             ${
-              selectedNav === nav_Button.index &&
+              location.pathname === nav_Button.path &&
               'bg-primary-main text-common-white'
             }
             text-2xl w-fit p-3 rounded-lg`}
               key={nav_Button.index}
-              onClick={() => setSeletedNav(nav_Button.index)}
+              onClick={() => {
+                // setSeletedNav(nav_Button.index)
+                navigate(nav_Button.path)
+              }}
             >
               {nav_Button.icon}
             </button>
@@ -54,9 +44,15 @@ function SideBar(): ReactElement {
 
         <button
           className={`
-            ${selectedNav === 3 && 'bg-primary-main text-common-white'}
+            ${
+              location.pathname === '/settings' &&
+              'bg-primary-main text-common-white'
+            }
             text-2xl w-fit p-3 rounded-lg`}
-          onClick={() => setSeletedNav(3)}
+          onClick={() => {
+            // setSeletedNav(3)
+            navigate('/settings')
+          }}
         >
           <Gear />
         </button>
@@ -83,3 +79,24 @@ function SideBar(): ReactElement {
 }
 
 export default SideBar
+
+function ProfileOptions(): ReactElement {
+  const navigate = useNavigate()
+
+  return (
+    <div className='m-2 p-3 shadow-xl bg-grey-100 rounded-xl w-fix'>
+      {Profile_Menu.map((menu, index) => (
+        <button
+          key={index}
+          className='w-full p-2 hover:bg-grey-300 outline-none rounded-lg flex items-center space-x-2'
+          onClick={() => {
+            navigate(menu.path)
+          }}
+        >
+          <p className='text-start whitespace-nowrap'>{menu.title}</p>
+          {menu.icon}
+        </button>
+      ))}
+    </div>
+  )
+}

@@ -91,7 +91,7 @@ function Settings() {
         </div>
 
         <div className='flex-grow'>
-          <ScrollArea maxHeight={'calc(100vh - 170px)'} bgColor='bg-grey-200'>
+          <ScrollArea maxHeight={'calc(100vh - 170px)'}>
             <div className='px-3'>
               {Setting_List.map((setting) => (
                 <div

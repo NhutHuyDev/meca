@@ -3,9 +3,9 @@ import { ReactElement } from 'react'
 
 type PropsType = {
   id?: string
-  img: string
-  name: string
-  online: boolean
+  img?: string
+  name?: string
+  online?: boolean
 }
 
 function CallSelection({ img, name, online }: PropsType): ReactElement {

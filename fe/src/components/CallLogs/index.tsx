@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react'
+import { ChangeEvent, ReactElement, useState } from 'react'
 import { CircleDashed, MagnifyingGlass, Plus, X } from 'phosphor-react'
 import CallLog from './CallLog'
 import { Chat_List } from '@/data'
@@ -6,6 +6,7 @@ import ScrollArea from '@/components/ScrollArea'
 import Divider from '@/components/ui/Divider'
 import * as Dialog from '@radix-ui/react-dialog'
 import CallSelection from './CallSelection'
+import { filterUserContacts } from '@/utils'
 
 function CallLogs(): ReactElement {
   return (
@@ -61,6 +62,7 @@ export default CallLogs
 
 function CreateCall(): ReactElement {
   const [open, setOpen] = useState(false)
+  const [searchContact, setSearchContact] = useState('')
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
@@ -97,11 +99,15 @@ function CreateCall(): ReactElement {
           <div className='w-[300px]'>
             <input
               placeholder='Search your contact ...'
+              value={searchContact}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                setSearchContact(e.target.value)
+              }}
               className='p-3 rounded-2xl border-2 border-grey-500 w-full outline-none my-3'
             />
             <ScrollArea maxHeight='250px'>
-              <div className='px-2 h-full space-y-1'>
-                {Chat_List.map((user) => (
+              <div className='ps-2 h-full space-y-1'>
+                {filterUserContacts(searchContact, Chat_List).map((user) => (
                   <CallSelection
                     key={user.id}
                     name={user.name}

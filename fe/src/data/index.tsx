@@ -22,15 +22,18 @@ import { faker } from '@faker-js/faker'
 const Nav_Buttons = [
   {
     index: 0,
-    icon: <ChatCircleDots />
+    icon: <ChatCircleDots />,
+    path: '/app'
   },
   {
     index: 1,
-    icon: <Users />
+    icon: <Users />,
+    path: '/group'
   },
   {
     index: 2,
-    icon: <Phone />
+    icon: <Phone />,
+    path: '/call'
   }
 ]
 
@@ -243,15 +246,18 @@ const Message_options = [
 const Profile_Menu = [
   {
     title: 'Profile',
-    icon: <User />
+    icon: <User />,
+    path: '/profile'
   },
   {
     title: 'Settings',
-    icon: <Gear />
+    icon: <Gear />,
+    path: '/settings'
   },
   {
-    title: 'Profile',
-    icon: <SignOut />
+    title: 'Logout',
+    icon: <SignOut />,
+    path: '/app'
   }
 ]
 
