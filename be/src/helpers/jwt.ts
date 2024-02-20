@@ -1,6 +1,10 @@
 import jwt from 'jsonwebtoken'
 
-export function signJwt(object: Object, signingKey: string, options?: jwt.SignOptions | undefined) {
+export function signJwt(
+  object: object,
+  signingKey: string,
+  options?: jwt.SignOptions | undefined
+) {
   return jwt.sign(object, signingKey, {
     ...(options && options),
     algorithm: 'RS256'

@@ -1,4 +1,11 @@
-import { prop, pre, modelOptions, getModelForClass, Severity, DocumentType } from '@typegoose/typegoose'
+import {
+  prop,
+  pre,
+  modelOptions,
+  getModelForClass,
+  Severity,
+  DocumentType
+} from '@typegoose/typegoose'
 import argon2 from 'argon2'
 import log from '../utils/logger'
 import { nanoid } from 'nanoid'
@@ -29,14 +36,20 @@ export class User {
   @prop({ required: true })
   lastName: string
 
+  @prop()
+  avatar: string
+
   @prop({ required: true })
   password: string
 
+  @prop()
+  passwordResetCode: string
+
+  @prop({ required: true })
+  passwordResetExpires: Date
+
   @prop({ required: true, default: () => nanoid() })
   verificationCode: string
-
-  @prop()
-  passwordResetCode: string | null
 
   @prop({ default: false })
   verified: boolean
@@ -51,7 +64,13 @@ export class User {
   }
 }
 
-export const privateFields = ['password', '__v', 'verificationCode', 'passwordResetCode', 'verified']
+export const privateFields = [
+  'password',
+  '__v',
+  'verificationCode',
+  'passwordResetCode',
+  'verified'
+]
 
 const UserModel = getModelForClass(User, {
   schemaOptions: {

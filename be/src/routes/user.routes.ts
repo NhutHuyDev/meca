@@ -1,13 +1,22 @@
 import express from 'express'
 import validateResource from '../middlewares/validateResourse'
-import { createUserSchema, verifyUserSchema, forgotPasswordSchema, resetPasswordSchema } from '../schema/user.schema'
+import {
+  createUserSchema,
+  verifyUserSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema
+} from '../schema/user.schema'
 import UserController from '../controllers/user.controller'
 import asyncHandler from '../helpers/asyncHandler'
 import requireUser from '../middlewares/requireUser'
 
 const router = express.Router()
 
-router.post('/', validateResource(createUserSchema), asyncHandler(UserController.createUserHandler))
+router.post(
+  '/',
+  validateResource(createUserSchema),
+  asyncHandler(UserController.createUserHandler)
+)
 router.post(
   '/verify/:id/:verificationCode',
   validateResource(verifyUserSchema),

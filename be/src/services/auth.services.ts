@@ -32,7 +32,10 @@ class AccessService {
     }
   }
 
-  static refreshAccessToken = async function (refreshToken: string, clientId: string) {
+  static refreshAccessToken = async function (
+    refreshToken: string,
+    clientId: string
+  ) {
     /**
      * @description step 1. Get key pair by clientId
      */

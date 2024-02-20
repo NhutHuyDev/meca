@@ -21,10 +21,14 @@ class KeyStoreRepo {
       user: new Types.ObjectId(userId)
     })
 
-    const { publicKey, privateKey } = keyPair ? keyPair.toJSON() : { publicKey: '', privateKey: '' }
+    const { publicKey, privateKey } = keyPair
+      ? keyPair.toJSON()
+      : { publicKey: '', privateKey: '' }
 
     const publicKeyDecoding = Buffer.from(publicKey, 'base64').toString('ascii')
-    const privateKeyDecoding = Buffer.from(privateKey, 'base64').toString('ascii')
+    const privateKeyDecoding = Buffer.from(privateKey, 'base64').toString(
+      'ascii'
+    )
 
     return {
       publicKeyDecoding,

@@ -1,4 +1,7 @@
-import { STATUS_CODE, DEFAULT_STATUS_MESSAGE } from '../utils/httpStatusRespones'
+import {
+  STATUS_CODE,
+  DEFAULT_STATUS_MESSAGE
+} from '../utils/httpStatusRespones'
 
 class ErrorResponse extends Error {
   code: number
@@ -14,7 +17,11 @@ class ErrorResponse extends Error {
  * @description Bad request error
  */
 export class BadRequestError extends ErrorResponse {
-  constructor(message = DEFAULT_STATUS_MESSAGE.BAD_REQUEST, statusCode = STATUS_CODE.BAD_REQUEST, status = 'error') {
+  constructor(
+    message = DEFAULT_STATUS_MESSAGE.BAD_REQUEST,
+    statusCode = STATUS_CODE.BAD_REQUEST,
+    status = 'error'
+  ) {
     super(message, statusCode, status)
   }
 }
@@ -23,7 +30,11 @@ export class BadRequestError extends ErrorResponse {
  * @description Conflict error
  */
 export class ConflictError extends ErrorResponse {
-  constructor(message = DEFAULT_STATUS_MESSAGE.CONFLICT, statusCode = STATUS_CODE.CONFLICT, status = 'error') {
+  constructor(
+    message = DEFAULT_STATUS_MESSAGE.CONFLICT,
+    statusCode = STATUS_CODE.CONFLICT,
+    status = 'error'
+  ) {
     super(message, statusCode, status)
   }
 }
@@ -32,7 +43,11 @@ export class ConflictError extends ErrorResponse {
  * @description Unauthorized error
  */
 export class UnauthorizedError extends ErrorResponse {
-  constructor(message = DEFAULT_STATUS_MESSAGE.UNAUTHORIZED, statusCode = STATUS_CODE.UNAUTHORIZED, status = 'error') {
+  constructor(
+    message = DEFAULT_STATUS_MESSAGE.UNAUTHORIZED,
+    statusCode = STATUS_CODE.UNAUTHORIZED,
+    status = 'error'
+  ) {
     super(message, statusCode, status)
   }
 }
@@ -41,7 +56,11 @@ export class UnauthorizedError extends ErrorResponse {
  * @description Forbidden error
  */
 export class ForbiddenError extends ErrorResponse {
-  constructor(message = DEFAULT_STATUS_MESSAGE.FORBIDDEN, statusCode = STATUS_CODE.FORBIDDEN, status = 'error') {
+  constructor(
+    message = DEFAULT_STATUS_MESSAGE.FORBIDDEN,
+    statusCode = STATUS_CODE.FORBIDDEN,
+    status = 'error'
+  ) {
     super(message, statusCode, status)
   }
 }
@@ -64,7 +83,11 @@ export class InternalServerError extends ErrorResponse {
  */
 
 export class NotFoundError extends ErrorResponse {
-  constructor(message = DEFAULT_STATUS_MESSAGE.NOT_FOUND, statusCode = STATUS_CODE.NOT_FOUND, status = 'error') {
+  constructor(
+    message = DEFAULT_STATUS_MESSAGE.NOT_FOUND,
+    statusCode = STATUS_CODE.NOT_FOUND,
+    status = 'error'
+  ) {
     super(message, statusCode, status)
   }
 }

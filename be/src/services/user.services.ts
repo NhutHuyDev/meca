@@ -86,12 +86,19 @@ class UserService {
     return `access your email - ${email} to get reset password code`
   }
 
-  static resetPassword = async function (id: string, newPassword: string, passwordResetCode: string) {
+  static resetPassword = async function (
+    id: string,
+    newPassword: string,
+    passwordResetCode: string
+  ) {
     const user = await UserRepo.findUserById(id)
 
     if (!user) throw new BadRequestError("user doesn't exist")
 
-    if (!user.passwordResetCode || user.passwordResetCode !== passwordResetCode) {
+    if (
+      !user.passwordResetCode ||
+      user.passwordResetCode !== passwordResetCode
+    ) {
       return 'could not reset user password'
     }
 
