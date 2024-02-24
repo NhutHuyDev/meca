@@ -5,7 +5,7 @@ export class Session {
   @prop({ ref: () => User })
   user: Ref<User>
 
-  @prop({})
+  @prop({ required: true })
   refreshToken: string
 
   @prop({ default: true })

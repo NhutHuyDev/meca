@@ -7,7 +7,7 @@ const DEFAULT_CONFIG = {
       MONGO: {
         HOST: '127.0.0.1',
         PORT: 27017,
-        NAME: 'AuthMongoDev'
+        NAME: 'mecaDev'
       }
     },
     SMTP: {
@@ -27,7 +27,7 @@ const DEFAULT_CONFIG = {
       MONGO: {
         HOST: '127.0.0.1',
         PORT: 27017,
-        NAME: 'AuthMongoPro'
+        NAME: 'mecaPro'
       }
     },
     SMTP: {

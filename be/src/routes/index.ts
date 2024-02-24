@@ -7,18 +7,18 @@ import deserializeUser from '../middlewares/deserializeUser'
 
 const router = express.Router()
 
-router.get('/v1/api/healthcheck', (_, res) => res.sendStatus(200))
+router.get('/v1/api/health-check', (_, res) => res.sendStatus(200))
 
 /**
  * @description deserializeUser
  */
-router.use(deserializeUser)
+// router.use(deserializeUser)
 
 /**
  * @description feature routes
  */
 router.use('/v1/api/users', userRoutes)
-router.use('/v1/api/sessions', authRoutes)
+// router.use('/v1/api/sessions', authRoutes)
 
 /**
  * @description 404 handling

@@ -28,9 +28,11 @@ export const createUserSchema = object({
 })
 
 export const verifyUserSchema = object({
-  params: object({
-    id: string(),
-    verificationCode: string()
+  body: object({
+    email: string({
+      required_error: 'Email is required'
+    }).email('Not a valid email'),
+    otp: string().regex(/^\d+$/, 'otp is not valid').min(6, 'otp is not valid')
   })
 })
 
@@ -60,10 +62,20 @@ export const resetPasswordSchema = object({
   })
 })
 
+export const requestVerifyOtpSchema = object({
+  body: object({
+    email: string({
+      required_error: 'Email is required'
+    }).email('Not a valid email')
+  })
+})
+
 export type TCreateUserSchema = TypeOf<typeof createUserSchema>['body']
 
-export type TVerifyUserSchema = TypeOf<typeof verifyUserSchema>['params']
+export type TVerifyUserSchema = TypeOf<typeof verifyUserSchema>['body']
 
 export type TForgotPasswordSchema = TypeOf<typeof forgotPasswordSchema>['body']
 
 export type TResetPasswordSchema = TypeOf<typeof resetPasswordSchema>
+
+export type TRequestVerifyOtpSchema = TypeOf<typeof requestVerifyOtpSchema>['body']
