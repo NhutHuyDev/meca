@@ -1,37 +1,31 @@
-import RegisterOtpModel from '../registerOtp'
-import otpGentertor from 'otp-generator'
+import RegisterOtpModel from '../registerOtp.model'
 
 class RegisterOtpRepo {
-  static generateNewOtp = async function (email: string) {
-    const expiredTime = Date.now() + 10 * 60 * 1000 // after 10 minutes
-    const otpLength = 6
-
-    const otp = otpGentertor.generate(otpLength, {
-      upperCaseAlphabets: false,
-      lowerCaseAlphabets: false,
-      specialChars: false
+  static createRegisterOtp = async function (email: string) {
+    return RegisterOtpModel.create({
+      email: email
     })
+  }
 
-    await RegisterOtpModel.create({
+  static checkOptIsVerified = async function (email: string) {
+    return RegisterOtpModel.findOne({
       email: email,
-      otpCode: otp,
-      expiredAt: expiredTime
+      verified: true,
+      expiredAt: { $ne: null, $gt: Date.now() }
     })
+  }
 
-    return otp
+  static findOneByEmail = async function (email: string) {
+    return RegisterOtpModel.findOne({
+      email: email
+    })
   }
 
   static findValidOtpByEmail = async function (email: string) {
     return RegisterOtpModel.findOne({
       email: email,
-      available: true,
-      expiredAt: { $gt: Date.now() }
-    })
-  }
-
-  static disableOtpById = async function (id: string) {
-    await RegisterOtpModel.findByIdAndUpdate(id, {
-      available: false
+      currentOtp: { $ne: null },
+      expiredAt: { $ne: null, $gt: Date.now() }
     })
   }
 }

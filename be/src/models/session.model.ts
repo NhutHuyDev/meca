@@ -5,11 +5,11 @@ export class Session {
   @prop({ ref: () => User })
   user: Ref<User>
 
-  @prop({ required: true })
+  @prop()
   refreshToken: string
 
   @prop({ default: true })
-  valid: boolean
+  available: boolean
 }
 
 const SessionModel = getModelForClass(Session, {

@@ -3,8 +3,7 @@ import { AnyZodObject, ZodError } from 'zod'
 import { BadRequestError } from '../core/error.responses'
 
 const validateResource =
-  (schema: AnyZodObject) =>
-  (req: Request, res: Response, next: NextFunction) => {
+  (schema: AnyZodObject) => (req: Request, res: Response, next: NextFunction) => {
     try {
       schema.parse({
         body: req.body,

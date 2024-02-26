@@ -17,21 +17,21 @@ class UserController {
     new CreatedResponse(await UserService.requestVerifyOtp(req.body.email)).send(res)
   }
 
-  // static verifyUserHandler = async function (
-  //   req: Request<object, object, TVerifyUserSchema>,
-  //   res: Response
-  // ) {
-  //   const email = req.body.email
-  //   const otp = req.body.otp
-  //   new OkResponse(await UserService.verifyUser(email, otp)).send(res)
-  // }
+  static verifyUserHandler = async function (
+    req: Request<object, object, TVerifyUserSchema>,
+    res: Response
+  ) {
+    const email = req.body.email
+    const otp = req.body.otp
+    new OkResponse(await UserService.verifyUser(email, otp)).send(res)
+  }
 
-  // static createUserHandler = async function (
-  //   req: Request<object, object, TCreateUserSchema>,
-  //   res: Response
-  // ) {
-  //   new CreatedResponse(await UserService.createUser(req.body)).send(res)
-  // }
+  static createUserHandler = async function (
+    req: Request<object, object, TCreateUserSchema>,
+    res: Response
+  ) {
+    new CreatedResponse(await UserService.createUser(req.body)).send(res)
+  }
 
   // static forgotPasswordHandler = async function (
   //   req: Request<object, object, TForgotPasswordSchema>,

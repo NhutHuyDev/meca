@@ -3,105 +3,112 @@ import { omit } from 'lodash'
 import UserRepo from '../models/repositories/user.repo'
 import RegisterOtpRepo from '../models/repositories/registerOtp.repo'
 import UserModel, { User, privateFields } from '../models/user.model'
+import CredentialModel, { Credential } from '../models/credential.model'
 import sendEmail from '../utils/mailer'
-import log from '../utils/logger'
-import { nanoid } from 'nanoid'
 import KeyStoreRepo from '../models/repositories/keyStore.repo'
 
 class UserService {
   static requestVerifyOtp = async function (email: string) {
     /**
-     * @description 1. kiểm tra email đã được user nào sử dụng chưa
+     * @description 1. kiểm tra email đang được user nào sử dụng chưa
      */
     const user = await UserRepo.findUserByEmail(email || '')
 
-    if (user && !user.deleted)
+    if (user && user.verified && !user.deleted)
       throw new ConflictError('email is already in use. Please use another email!')
 
     /**
-     * @description 2. đảm bảo với 1 email - chỉ có một otp hợp lệ
+     * @description 2. kiểm tra đã tồn tại yêu cầu xác thức trước đó chưa
+     *                2.1. chưa - tạo và lưu otp mới cho email
+     *                2.2. rồi - update otp mới cho email
      */
-    const existedOtp = await RegisterOtpRepo.findValidOtpByEmail(email)
 
-    if (existedOtp) {
-      await RegisterOtpRepo.disableOtpById(String(existedOtp._id))
+    let newOtp = null
+
+    const existedRequest = await RegisterOtpRepo.findOneByEmail(email)
+    if (!existedRequest) {
+      const registerOtp = await RegisterOtpRepo.createRegisterOtp(email)
+      newOtp = registerOtp.generateOtp()
+      registerOtp.save()
+    } else {
+      newOtp = existedRequest.generateOtp()
+      existedRequest.save()
     }
-
-    /**
-     * @description 3. sinh otp mới và gửi mail
-     */
-
-    const otp = await RegisterOtpRepo.generateNewOtp(email)
 
     await sendEmail({
       to: email,
       from: 'test@example.com',
       subject: 'Your verify OTP for this email from MECA.',
-      text: `OTP code: ${otp}.`
+      text: `OTP code: ${newOtp}.`
     })
 
-    return `send OTP to email - ${email} successfully`
+    return {
+      email: email,
+      message: `send OTP to email - ${email} successfully`
+    }
   }
 
   static verifyUser = async function (email: string, candidateOtp: string) {
     /**
-     * @description check if email exists
+     * @description 1. kiểm tra có tồn tại yêu cầu xác thực cho email hiện tại hay không
      */
     const otp = await RegisterOtpRepo.findValidOtpByEmail(email)
     if (!otp) throw new BadRequestError("email or otp isn't valid")
 
-    if (otp.verified) {
-      const user = await UserRepo.findUserByEmail(email || '')
-
-      if (user && user.verified && user.deleted)
-        throw new BadRequestError('email is already in use. Please use another email!')
-    }
-
     /**
-     * @description check to see if the otp code matches
+     * @description 2. kiểm tra otp có hợp lệ hay không
      */
     if (await otp.validateOtp(candidateOtp)) {
+      otp.currentOtp = null
       otp.verified = true
-      await otp.save()
-      return `verify email - ${email} successfully`
-    }
 
-    return 'could not verify user'
+      await otp.save()
+
+      return {
+        email: email,
+        message: `verify email - ${email} successfully`
+      }
+    } else {
+      throw new BadRequestError("otp isn't valid")
+    }
   }
 
-  // static createUser = async function (input: Partial<User>) {
-  //   /**
-  //    * @description check uniqueness of email
-  //    */
-  //   const user = await UserRepo.findUserByEmail(input.email || '')
-  //   if (user) throw new ConflictError('email is already in use')
-  //   const newUser = await UserModel.create(input)
-  //   await KeyStoreRepo.createKeyPair(String(newUser._id))
-  //   await sendEmail({
-  //     to: newUser.email,
-  //     from: 'test@example.com',
-  //     subject: 'Verify your email',
-  //     text: `verification code: ${newUser.verificationCode}. Id: ${newUser._id}`
-  //   })
-  //   return omit(newUser.toJSON(), privateFields)
-  // }
-  // static verifyUser = async function (email: string, otp: string) {
-  //   /**
-  //    * @description check if user id exists
-  //    */
-  //   const user = await UserRepo.findUserById(id)
-  //   if (!user) throw new BadRequestError("user doesn't exist")
-  //   if (user.verified) return 'user already verified'
-  //   /**
-  //    * @description check to see if the verificationCode matches
-  //    */
-  //   if (user.verificationCode === verificationCode) {
-  //     user.verified = true
-  //     await user.save()
-  //     return 'user successfully verified'
-  //   }
-  //   return 'could not verify user'
-  // }
+  static createUser = async function (input: Partial<User> & Partial<Credential>) {
+    /**
+     * @description 1. kiểm tra email đã được xác thực chưa
+     */
+    const verifiedUser = await RegisterOtpRepo.checkOptIsVerified(input.email || '')
+
+    if (!verifiedUser) throw new BadRequestError("email isn't verified")
+
+    /**
+     * @description 2. tạo thông tin cho user
+     */
+    const newUser = await UserModel.create({
+      email: input.email,
+      firstName: input.firstName,
+      lastName: input.lastName
+    })
+
+    /**
+     * @description 3. tạo cập khóa public key và private key cho user
+     */
+
+    await KeyStoreRepo.createKeyPair(String(newUser._id))
+
+    /**
+     * @description 4. tạo thông tin đăng nhập cho user
+     */
+
+    await CredentialModel.create({
+      user: newUser._id,
+      credLogin: input.email,
+      credPassword: input.credPassword
+    })
+
+    return omit(newUser.toJSON(), privateFields)
+  }
+
   // static sendResetPasswordCode = async function (email: string) {
   //   const user = await UserRepo.findUserByEmail(email)
   //   if (!user) {

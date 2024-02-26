@@ -18,7 +18,7 @@ router.get('/v1/api/health-check', (_, res) => res.sendStatus(200))
  * @description feature routes
  */
 router.use('/v1/api/users', userRoutes)
-// router.use('/v1/api/sessions', authRoutes)
+router.use('/v1/api/auth', authRoutes)
 
 /**
  * @description 404 handling

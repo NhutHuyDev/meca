@@ -26,9 +26,7 @@ class KeyStoreRepo {
       : { publicKey: '', privateKey: '' }
 
     const publicKeyDecoding = Buffer.from(publicKey, 'base64').toString('ascii')
-    const privateKeyDecoding = Buffer.from(privateKey, 'base64').toString(
-      'ascii'
-    )
+    const privateKeyDecoding = Buffer.from(privateKey, 'base64').toString('ascii')
 
     return {
       publicKeyDecoding,

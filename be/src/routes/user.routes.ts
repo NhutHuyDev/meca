@@ -19,17 +19,17 @@ router.post(
   asyncHandler(UserController.requestVerifyOtpHandler)
 )
 
-// router.post(
-//   '/verify',
-//   validateResource(verifyUserSchema),
-//   asyncHandler(UserController.verifyUserHandler)
-// )
+router.post(
+  '/verify',
+  validateResource(verifyUserSchema),
+  asyncHandler(UserController.verifyUserHandler)
+)
 
-// router.post(
-//   '/',
-//   validateResource(createUserSchema),
-//   asyncHandler(UserController.createUserHandler)
-// )
+router.post(
+  '/',
+  validateResource(createUserSchema),
+  asyncHandler(UserController.createUserHandler)
+)
 
 // router.post(
 //   '/forgotpassword',

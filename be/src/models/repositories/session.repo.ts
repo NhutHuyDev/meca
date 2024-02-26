@@ -14,10 +14,7 @@ class SessionRepo {
     return SessionModel.findById(id)
   }
 
-  static signRefreshToken = async function (
-    userId: string,
-    signingKey: string
-  ) {
+  static signRefreshToken = async function (userId: string, signingKey: string) {
     const session = await SessionRepo.createSession(userId)
 
     const refreshToken = signJwt(
@@ -37,10 +34,7 @@ class SessionRepo {
     return refreshToken
   }
 
-  static signAccessToken = async function (
-    user: DocumentType<User>,
-    signingKey: string
-  ) {
+  static signAccessToken = async function (user: DocumentType<User>, signingKey: string) {
     const payload = omit(user.toJSON(), privateFields)
 
     const accessToken = signJwt(payload, signingKey, {
