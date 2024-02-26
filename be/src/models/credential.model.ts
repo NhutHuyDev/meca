@@ -4,16 +4,12 @@ import argon2 from 'argon2'
 import { nanoid } from 'nanoid'
 
 @pre<Credential>('save', async function () {
-  if (!this.isModified('credPassword')) {
-    return
-  } else {
+  if (this.isModified('credPassword')) {
     const hashPassword = await argon2.hash(this.credPassword)
     this.credPassword = hashPassword
   }
 
-  if (!this.isModified('passwordResetCode') || !this.passwordResetCode) {
-    return
-  } else {
+  if (this.isModified('passwordResetCode') && this.passwordResetCode) {
     const hashResetCode = await argon2.hash(this.passwordResetCode)
     this.passwordResetCode = hashResetCode
   }
@@ -48,7 +44,7 @@ export class Credential {
     const expiredTime = Date.now() + 10 * 60 * 1000 // after 10 minutes
     const newResetCode = nanoid()
 
-    this.passwordResetCode = nanoid()
+    this.passwordResetCode = newResetCode
     this.passwordResetExpires = new Date(expiredTime)
 
     return newResetCode

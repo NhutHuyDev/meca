@@ -25,7 +25,7 @@ class RegisterOtpRepo {
     return RegisterOtpModel.findOne({
       email: email,
       currentOtp: { $ne: null },
-      expiredAt: { $ne: null, $gt: Date.now() }
+      expiredAt: { $ne: null, $gt: new Date() }
     })
   }
 }

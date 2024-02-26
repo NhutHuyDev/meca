@@ -17,7 +17,7 @@ class CredentialRepo {
   static findValidRequestResetPassword = async function (userId: string) {
     return CredentialModel.findOne({
       user: new Types.ObjectId(userId),
-      passwordResetExpires: { $gt: Date.now() }
+      passwordResetExpires: { $ne: null, $gt: new Date() }
     })
   }
 }

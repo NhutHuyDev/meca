@@ -12,7 +12,7 @@ router.get('/v1/api/health-check', (_, res) => res.sendStatus(200))
 /**
  * @description deserializeUser
  */
-// router.use(deserializeUser)
+router.use(deserializeUser)
 
 /**
  * @description feature routes

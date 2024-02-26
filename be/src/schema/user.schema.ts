@@ -36,32 +36,6 @@ export const verifyUserSchema = object({
   })
 })
 
-export const forgotPasswordSchema = object({
-  body: object({
-    email: string({
-      required_error: 'Email is required'
-    }).email('Not a valid email')
-  })
-})
-
-export const resetPasswordSchema = object({
-  params: object({
-    id: string(),
-    passwordResetCode: string()
-  }),
-  body: object({
-    password: string({
-      required_error: 'Password is required'
-    }).min(6, 'Password is too short - should be min 6 chars'),
-    passwordConfirmation: string({
-      required_error: 'Password confirmation is required'
-    })
-  }).refine((data) => data.password === data.passwordConfirmation, {
-    message: 'Passwords do not match',
-    path: ['passwordConfirmation']
-  })
-})
-
 export const requestVerifyOtpSchema = object({
   body: object({
     email: string({
@@ -73,9 +47,5 @@ export const requestVerifyOtpSchema = object({
 export type TCreateUserSchema = TypeOf<typeof createUserSchema>['body']
 
 export type TVerifyUserSchema = TypeOf<typeof verifyUserSchema>['body']
-
-export type TForgotPasswordSchema = TypeOf<typeof forgotPasswordSchema>['body']
-
-export type TResetPasswordSchema = TypeOf<typeof resetPasswordSchema>
 
 export type TRequestVerifyOtpSchema = TypeOf<typeof requestVerifyOtpSchema>['body']

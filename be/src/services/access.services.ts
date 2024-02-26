@@ -87,6 +87,8 @@ class AccessService {
 
     if (!currentSession) throw new UnauthorizedError('session isn`t found')
 
+    if (!currentSession.available) throw new BadRequestError(`session has already unavailable`)
+
     /**
      * @description 4. kiểm tra lần nữa current session có thuộc về clientId không
      */
@@ -126,8 +128,9 @@ class AccessService {
      */
     const currentSession = await SessionRepo.findSessionById(decoded.session)
 
-    if (!currentSession || !currentSession.available)
-      throw new UnauthorizedError(`session isn't available`)
+    if (!currentSession) throw new UnauthorizedError('session isn`t found')
+
+    if (!currentSession.available) throw new UnauthorizedError(`session isn't available`)
 
     /**
      * @description 4. kiểm tra refresh token gửi đến có nằm trong db hay không
