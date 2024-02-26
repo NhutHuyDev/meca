@@ -137,7 +137,7 @@ class AccessService {
      */
 
     if (currentSession.refreshToken !== refreshToken)
-      throw new UnauthorizedError(`refresh access isn't found`)
+      throw new UnauthorizedError(`refresh token isn't found`)
 
     /**
      * @description 5. kiểm tra lần nữa current session có thuộc về clientId không
@@ -147,7 +147,7 @@ class AccessService {
       throw new UnauthorizedError(`clientId isn't valid`)
 
     /**
-     * @description 6. tạo access token mới và gửi đi
+     * @description 6. tạo access token mới, thực hiện refresh token rotation và gửi chúng đi
      */
     const user = await UserRepo.findUserById(String(currentSession.user))
 
@@ -155,7 +155,12 @@ class AccessService {
 
     const accessToken = await SessionRepo.signAccessToken(user, signingKey)
 
-    return { accessToken }
+    const newRefreshToken = await SessionRepo.updateRefreshToken(
+      String(currentSession._id),
+      signingKey
+    )
+
+    return { accessToken, refreshToken: newRefreshToken }
   }
 }
 

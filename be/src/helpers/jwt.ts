@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken'
+import jwt, { Jwt } from 'jsonwebtoken'
 
 export function signJwt(
   object: object,
@@ -18,4 +18,8 @@ export function verifyJwt<T>(token: string, verifyingKey: string): T | null {
   } catch (error) {
     return null
   }
+}
+
+export function decodeJwt(token: string): any {
+  return jwt.decode(token, { complete: true })
 }

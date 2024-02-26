@@ -8,8 +8,8 @@ const mongoConnector = async ({ connectionStr }: { connectionStr: string }) => {
   }
 
   if (process.env.NODE_ENV !== 'pro') {
-    mongoose.set('debug', false)
-    mongoose.set('debug', { color: true })
+    // mongoose.set('debug', false)
+    // mongoose.set('debug', { color: true })
   }
 
   try {
