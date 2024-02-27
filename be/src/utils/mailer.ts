@@ -30,8 +30,6 @@ async function sendEmail(payload: SendMailOptions) {
       log.error(err, 'sending email error')
       throw new InternalServerError('sending email error')
     }
-
-    log.info(`Preview URL: ${nodemailer.getTestMessageUrl(info)}`)
   })
 }
 

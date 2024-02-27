@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-type appState = {
+type TAppState = {
   sidebar: {
     open: boolean
     type: string
   }
 }
 
-const initialState: appState = {
+const initialState: TAppState = {
   sidebar: {
     open: false,
     type: 'CONTACT'

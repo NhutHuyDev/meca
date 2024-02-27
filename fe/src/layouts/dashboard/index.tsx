@@ -1,11 +1,12 @@
 import { ReactElement } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 import SideBar from '@/components/SideBar'
-
-const isAuthenticated = true
+import { useAppSelector } from '@/hooks/redux'
 
 const DashboardLayout = (): ReactElement => {
-  if (!isAuthenticated) {
+  const { isLoggedIn } = useAppSelector((state) => state.auth)
+
+  if (!isLoggedIn) {
     return <Navigate to='/auth/sign-in' />
   }
 

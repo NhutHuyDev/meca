@@ -27,6 +27,22 @@ export const createUserSchema = object({
   })
 })
 
+export const updateUserSchema = object({
+  body: object({
+    email: string({
+      required_error: 'Email is required'
+    }).email('Not a valid email'),
+
+    firstName: string().min(3, 'first must be longer than 2 characters').optional(),
+
+    lastName: string().min(3, 'last name must be longer than 2 characters').optional(),
+
+    about: string().optional(),
+
+    avatar: string().optional()
+  })
+})
+
 export const verifyUserSchema = object({
   body: object({
     email: string({
@@ -45,6 +61,8 @@ export const requestVerifyOtpSchema = object({
 })
 
 export type TCreateUserSchema = TypeOf<typeof createUserSchema>['body']
+
+export type TUpdateUserSchema = TypeOf<typeof updateUserSchema>['body']
 
 export type TVerifyUserSchema = TypeOf<typeof verifyUserSchema>['body']
 

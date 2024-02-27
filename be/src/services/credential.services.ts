@@ -27,15 +27,18 @@ class CredentialService {
     /**
      * @description 3. gửi mail
      */
-
-    await sendEmail({
-      to: user.email,
-      from: 'test@example.com',
-      subject: 'Reset your password',
-      text: `Password reset code: ${passwordResetCode}. Id ${user._id}`
-    })
-    log.debug(`Password reset email sent to ${email}`)
-    return `access your email - ${email} to get reset password code`
+    try {
+      await sendEmail({
+        to: user.email,
+        from: 'test@example.com',
+        subject: 'Reset your password',
+        text: `Password reset code: ${passwordResetCode}. Id ${user._id}`
+      })
+      log.debug(`Password reset email sent to ${email}`)
+      return `access your email - ${email} to get reset password code`
+    } catch {
+      throw new InternalServerError()
+    }
   }
 
   static resetPassword = async function (

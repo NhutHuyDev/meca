@@ -1,4 +1,4 @@
-import { BadRequestError, ConflictError } from '../core/error.responses'
+import { BadRequestError, ConflictError, InternalServerError } from '../core/error.responses'
 import { omit } from 'lodash'
 import UserRepo from '../models/repositories/user.repo'
 import RegisterOtpRepo from '../models/repositories/registerOtp.repo'
@@ -6,6 +6,8 @@ import UserModel, { User, privateFields } from '../models/user.model'
 import CredentialModel, { Credential } from '../models/credential.model'
 import sendEmail from '../utils/mailer'
 import KeyStoreRepo from '../models/repositories/keyStore.repo'
+import flattenCleanObj from '../utils/flattenCleanObj'
+import log from '../utils/logger'
 
 class UserService {
   static requestVerifyOtp = async function (email: string) {
@@ -35,16 +37,22 @@ class UserService {
       existedRequest.save()
     }
 
-    await sendEmail({
-      to: email,
-      from: 'test@example.com',
-      subject: 'Your verify OTP for this email from MECA.',
-      text: `OTP code: ${newOtp}.`
-    })
+    try {
+      await sendEmail({
+        to: email,
+        from: 'test@example.com',
+        subject: 'Your verify OTP for this email from MECA.',
+        text: `OTP code: ${newOtp}.`
+      })
 
-    return {
-      email: email,
-      message: `send OTP to email - ${email} successfully`
+      log.info(`otp code to verify email sent to ${email}`)
+
+      return {
+        email: email,
+        message: `send OTP to email - ${email} successfully`
+      }
+    } catch {
+      throw new InternalServerError()
     }
   }
 
@@ -99,14 +107,38 @@ class UserService {
     /**
      * @description 4. tạo thông tin đăng nhập cho user
      */
+    try {
+      await CredentialModel.create({
+        user: newUser._id,
+        credLogin: input.email,
+        credPassword: input.credPassword
+      })
 
-    await CredentialModel.create({
-      user: newUser._id,
-      credLogin: input.email,
-      credPassword: input.credPassword
-    })
+      return omit(newUser.toJSON(), privateFields)
+    } catch {
+      throw new InternalServerError()
+    }
+  }
 
-    return omit(newUser.toJSON(), privateFields)
+  static updateInformation = async function (input: Partial<User>) {
+    const updateInformation = omit(input, privateFields, '_id')
+
+    const cleanUpdateInformation = flattenCleanObj(updateInformation)
+
+    const updatedUser = await UserModel.findOneAndUpdate(
+      {
+        email: updateInformation.email || '',
+        deleted: false
+      },
+      cleanUpdateInformation,
+      { new: true }
+    )
+
+    if (updatedUser) {
+      return omit(updatedUser.toJSON(), privateFields)
+    } else {
+      throw new BadRequestError('user is not found')
+    }
   }
 }
 

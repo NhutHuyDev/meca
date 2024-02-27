@@ -1,8 +1,17 @@
-import { Ref, getModelForClass, prop, pre, DocumentType } from '@typegoose/typegoose'
+import {
+  Ref,
+  getModelForClass,
+  prop,
+  pre,
+  DocumentType,
+  modelOptions,
+  Severity
+} from '@typegoose/typegoose'
 import { User } from './user.model'
 import argon2 from 'argon2'
 import { nanoid } from 'nanoid'
 
+@modelOptions({ options: { allowMixed: Severity.ALLOW } })
 @pre<Credential>('save', async function () {
   if (this.isModified('credPassword')) {
     const hashPassword = await argon2.hash(this.credPassword)

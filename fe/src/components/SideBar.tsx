@@ -1,12 +1,14 @@
 import { ReactElement, useState } from 'react'
-import logo from '@/assets/logo.png'
+import logo2 from '@/assets/icon-2.png'
 import { Nav_Buttons, Profile_Menu } from '@/data'
-import { Gear } from 'phosphor-react'
+import { Gear, SignOut } from 'phosphor-react'
 import defaultAvatar from '@/assets/default-avatar.svg'
 import SwitchUI from '@/components/ui/Switch'
 import { PopoverUI, side } from './ui/Popover'
 import { useNavigate } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
+import { useAppDispatch } from '@/hooks/redux'
+import { thunkSignOut } from '@/redux/slice/auth'
 
 function SideBar(): ReactElement {
   const [switchOn, setSwitchOn] = useState(true)
@@ -17,7 +19,7 @@ function SideBar(): ReactElement {
     <nav className='flex flex-col justify-between w-28 h-[100vh] p-6 bg-background-paper shadow'>
       <div className='flex flex-col justify-center items-center space-y-5'>
         <div className='h-16 w-16 rounded-lg overflow-hidden'>
-          <img src={logo} alt='logo meca' className='h-full w-full' />
+          <img src={logo2} alt='logo meca' className='h-full w-full' />
         </div>
 
         {Nav_Buttons.map((nav_Button) => {
@@ -31,7 +33,6 @@ function SideBar(): ReactElement {
             text-2xl w-fit p-3 rounded-lg`}
               key={nav_Button.index}
               onClick={() => {
-                // setSeletedNav(nav_Button.index)
                 navigate(nav_Button.path)
               }}
             >
@@ -50,7 +51,6 @@ function SideBar(): ReactElement {
             }
             text-2xl w-fit p-3 rounded-lg`}
           onClick={() => {
-            // setSeletedNav(3)
             navigate('/settings')
           }}
         >
@@ -81,6 +81,7 @@ function SideBar(): ReactElement {
 export default SideBar
 
 function ProfileOptions(): ReactElement {
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   return (
@@ -97,6 +98,17 @@ function ProfileOptions(): ReactElement {
           {menu.icon}
         </button>
       ))}
+
+      <button
+        className='w-full p-2 hover:bg-grey-300 outline-none rounded-lg flex items-center space-x-2'
+        onClick={() => {
+          console.log('hello')
+          dispatch(thunkSignOut())
+        }}
+      >
+        <p className='text-start whitespace-nowrap'>Logout</p>
+        <SignOut />
+      </button>
     </div>
   )
 }

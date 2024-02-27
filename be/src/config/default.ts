@@ -11,9 +11,9 @@ const DEFAULT_CONFIG = {
       }
     },
     SMTP: {
-      USER: 'aebdaumtczexbb3j@ethereal.email',
-      PASS: 'u9eJkvfSwUMKwgbqGK',
-      HOST: 'smtp.ethereal.email',
+      USER: 'nguyennhuthuy.dev@gmail.com',
+      PASS: 'vxga pxbe bpqh moai',
+      HOST: 'smtp.gmail.com',
       PORT: 587,
       SECURE: false
     }

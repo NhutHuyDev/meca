@@ -61,7 +61,8 @@ class AccessService {
 
     return {
       accessToken,
-      refreshToken
+      refreshToken,
+      clientId: userCredential.user
     }
   }
 

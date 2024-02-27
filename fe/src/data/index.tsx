@@ -12,7 +12,6 @@ import {
   Note,
   PencilCircle,
   Phone,
-  SignOut,
   Sticker,
   User,
   Users
@@ -253,11 +252,6 @@ const Profile_Menu = [
     title: 'Settings',
     icon: <Gear />,
     path: '/settings'
-  },
-  {
-    title: 'Logout',
-    icon: <SignOut />,
-    path: '/app'
   }
 ]
 

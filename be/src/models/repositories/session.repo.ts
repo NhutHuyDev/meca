@@ -4,13 +4,8 @@ import { decodeJwt, signJwt } from '../../helpers/jwt'
 import SessionModel from '../session.model'
 import { User, privateFields } from '../user.model'
 import config from '../../config'
-import log from '../../utils/logger'
 
 class SessionRepo {
-  // static createSession = async function (userId: string) {
-  //   return SessionModel.create({ user: userId })
-  // }
-
   static findSessionById = async function (id: string) {
     return SessionModel.findById(id)
   }

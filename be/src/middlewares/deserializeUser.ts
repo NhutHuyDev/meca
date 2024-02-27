@@ -8,6 +8,9 @@ const deserializeUser = async (req: Request, res: Response, next: NextFunction) 
 
   const clientId = req.headers[customHttpHeaders.CLIENT_ID] as string
 
+  console.log(accessToken)
+  console.log(clientId)
+
   if (!accessToken || !clientId) {
     return next()
   }

@@ -2,7 +2,8 @@ import { Request, Response } from 'express'
 import {
   TRequestVerifyOtpSchema,
   TCreateUserSchema,
-  TVerifyUserSchema
+  TVerifyUserSchema,
+  TUpdateUserSchema
 } from '../schema/user.schema'
 import UserService from '../services/user.services'
 import { CreatedResponse, OkResponse } from '../core/success.responses'
@@ -29,6 +30,13 @@ class UserController {
     res: Response
   ) {
     new CreatedResponse(await UserService.createUser(req.body)).send(res)
+  }
+
+  static updateInformationHandler = async function (
+    req: Request<object, object, TUpdateUserSchema>,
+    res: Response
+  ) {
+    new OkResponse(await UserService.updateInformation(req.body)).send(res)
   }
 
   static getCurrentUserHandler = async function (_: Request, res: Response) {

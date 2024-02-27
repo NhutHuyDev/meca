@@ -28,7 +28,7 @@ function SignUp() {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className='space-y-4 text-end'>
+      <form onSubmit={handleSubmit(onSubmit)} className='space-y-3 text-end'>
         <div className='grid grid-cols-2 gap-3'>
           <div>
             <input

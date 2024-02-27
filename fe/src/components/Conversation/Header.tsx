@@ -1,11 +1,12 @@
 import { faker } from '@faker-js/faker'
 import { CaretDown, MagnifyingGlass, Phone, VideoCamera } from 'phosphor-react'
 import { ReactElement } from 'react'
-import { useDispatch } from 'react-redux'
+// import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '@/hooks/redux'
 import { toggleSidebar } from '@/redux/slice/app'
 
 function Header(): ReactElement {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   return (
     <div className='bg-grey-200 h-fit w-full px-6 py-4 flex justify-between items-center z-[99] shadow-inner'>

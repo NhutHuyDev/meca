@@ -1,8 +1,15 @@
-import log from '../utils/logger'
-import { getModelForClass, prop, pre, DocumentType } from '@typegoose/typegoose'
+import {
+  getModelForClass,
+  prop,
+  pre,
+  DocumentType,
+  Severity,
+  modelOptions
+} from '@typegoose/typegoose'
 import argon2 from 'argon2'
 import otpGentertor from 'otp-generator'
 
+@modelOptions({ options: { allowMixed: Severity.ALLOW } })
 @pre<RegisterOtp>('save', async function () {
   if (!this.isModified('currentOtp') || !this.currentOtp) {
     return

@@ -1,7 +1,7 @@
 import { prop, getModelForClass } from '@typegoose/typegoose'
 
 export class User {
-  @prop({ lowercase: true, required: true, unique: true })
+  @prop({ lowercase: true, required: true })
   email: string
 
   @prop({ required: true })
@@ -12,6 +12,9 @@ export class User {
 
   @prop()
   avatar: string
+
+  @prop()
+  about: string
 
   @prop({ default: true })
   verified: boolean
