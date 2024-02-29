@@ -5,30 +5,25 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { Eye, EyeSlash } from 'phosphor-react'
 import { useAppDispatch } from '@/hooks/redux'
-import { thunkSignIn } from '@/redux/slice/auth'
+import { TSignInResquest, thunkSignIn } from '@/redux/slice/auth'
+import useRequest from '@/hooks/useRequest'
 
 function SignIn() {
   const dispatch = useAppDispatch()
+
+  const { request, isLoading } = useRequest<TSignInResquest>()
+
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting, errors },
-    reset
+    formState: { errors }
   } = useForm<TSignInSchema>({
     resolver: zodResolver(signInSchema)
   })
 
   const onSubmit = async (data: TSignInSchema) => {
-    // TODO: submit to server
-    // ...
-    // await new Promise((resolve) => setTimeout(resolve, 4000))
-
-    console.log(data)
-
     dispatch(thunkSignIn(data))
-
-    reset()
   }
 
   return (
@@ -69,12 +64,19 @@ function SignIn() {
         >
           Forgot Password?
         </Link>
+
+        {request?.signIn?.error ? (
+          <p className='text-left text-error-main'>{`${request.signIn.errorMessage}`}</p>
+        ) : (
+          <></>
+        )}
+
         <button
-          disabled={isSubmitting}
+          disabled={isLoading}
           type='submit'
           className='bg-common-black text-common-white p-4 rounded-lg w-full disabled:opacity-75'
         >
-          Login
+          Sign In
         </button>
       </form>
     </>

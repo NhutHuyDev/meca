@@ -6,7 +6,7 @@ function MainLayout() {
   const { isLoggedIn } = useAppSelector((state) => state.auth)
 
   if (isLoggedIn) {
-    return <Navigate to='/app' />
+    return <Navigate to='/app' replace={true} />
   }
 
   return (

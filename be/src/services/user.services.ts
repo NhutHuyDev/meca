@@ -8,6 +8,8 @@ import sendEmail from '../utils/mailer'
 import KeyStoreRepo from '../models/repositories/keyStore.repo'
 import flattenCleanObj from '../utils/flattenCleanObj'
 import log from '../utils/logger'
+import path from 'path'
+import fs from 'fs'
 
 class UserService {
   static requestVerifyOtp = async function (email: string) {
@@ -37,21 +39,38 @@ class UserService {
       existedRequest.save()
     }
 
+    const parentDir = path.resolve(__dirname, '..')
+
     try {
+      const emailTemplate = fs.readFileSync(
+        path.join(parentDir, 'templates/verifyUser.template.html'),
+        'utf-8'
+      )
+
+      const html = emailTemplate.replace('{{otp}}', newOtp)
+
+      /**
+       * @description 4. gửi mail
+       */
       await sendEmail({
         to: email,
         from: 'test@example.com',
-        subject: 'Your verify OTP for this email from MECA.',
-        text: `OTP code: ${newOtp}.`
+        subject: 'Verify your account from MECA',
+        html: html,
+        attachments: [
+          {
+            filename: 'icon-2.png',
+            path: path.join(parentDir, 'templates/img.template/icon-2.png'),
+            cid: 'imageUrl'
+          }
+        ]
       })
-
-      log.info(`otp code to verify email sent to ${email}`)
-
+      log.info(`Password reset email sent to ${email}`)
       return {
-        email: email,
-        message: `send OTP to email - ${email} successfully`
+        email,
+        message: `access your email - ${email} to get reset password code`
       }
-    } catch {
+    } catch (error) {
       throw new InternalServerError()
     }
   }
@@ -114,7 +133,10 @@ class UserService {
         credPassword: input.credPassword
       })
 
-      return omit(newUser.toJSON(), privateFields)
+      return {
+        email: input.email,
+        messsage: 'create user successfull'
+      }
     } catch {
       throw new InternalServerError()
     }

@@ -30,4 +30,4 @@ const slice = createSlice({
 
 export const { toggleSidebar, updateSidebarType } = slice.actions
 
-export default slice
+export default slice.reducer

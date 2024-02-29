@@ -8,13 +8,13 @@ function SignIn() {
     <div className='space-y-3 w-5/6 mx-auto'>
       <div className='space-y-1'>
         <h3 className='text-xl'>
-          Login to{' '}
+          Sign In to{' '}
           <span className='font-semibold text-secondary-main'>MECA</span>
         </h3>
         <p className='text-grey-700'>
           New user?{' '}
           <Link
-            to={'/auth/sign-up'}
+            to={'/auth/request-verify-otp'}
             className='text-secondary-dark hover:underline'
           >
             Create an account

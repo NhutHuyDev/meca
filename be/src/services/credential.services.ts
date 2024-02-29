@@ -3,6 +3,8 @@ import UserRepo from '../models/repositories/user.repo'
 import sendEmail from '../utils/mailer'
 import log from '../utils/logger'
 import CredentialRepo from '../models/repositories/credential.repo'
+import fs from 'fs'
+import path from 'path'
 
 class CredentialService {
   static sendResetPasswordCode = async function (email: string) {
@@ -24,19 +26,44 @@ class CredentialService {
     const passwordResetCode = userCredential.generatePasswordResetCode()
     await userCredential.save()
 
+    const resetPasswordUrl = `http://localhost:3000/auth/new-password/${user._id}/${passwordResetCode}`
+
     /**
-     * @description 3. gửi mail
+     * @description 3. tạo template để gửi mail
      */
+    const parentDir = path.resolve(__dirname, '..')
+
     try {
+      const emailTemplate = fs.readFileSync(
+        path.join(parentDir, 'templates/resetPassword.template.html'),
+        'utf-8'
+      )
+
+      const html = emailTemplate.replace('{{passwordResetUrl}}', resetPasswordUrl)
+
+      /**
+       * @description 4. gửi mail
+       */
       await sendEmail({
         to: user.email,
         from: 'test@example.com',
         subject: 'Reset your password',
-        text: `Password reset code: ${passwordResetCode}. Id ${user._id}`
+        text: `Password reset code: ${passwordResetCode}. Id ${user._id}`,
+        html: html,
+        attachments: [
+          {
+            filename: 'icon-2.png',
+            path: path.join(parentDir, 'templates/img.template/icon-2.png'),
+            cid: 'imageUrl'
+          }
+        ]
       })
-      log.debug(`Password reset email sent to ${email}`)
-      return `access your email - ${email} to get reset password code`
-    } catch {
+      log.info(`Verify OTP sent to ${email}`)
+      return {
+        email: email,
+        message: `access your email - ${email} to get reset password code`
+      }
+    } catch (error) {
       throw new InternalServerError()
     }
   }

@@ -10,6 +10,7 @@ import { Navigate, useRoutes } from 'react-router-dom'
 // layouts
 import DashboardLayout from '../layouts/dashboard'
 import MainLayout from '../layouts/main'
+import SecondaryLayout from '../layouts/secondary'
 
 // config
 import { DEFAULT_PATH } from '../config'
@@ -32,8 +33,20 @@ export default function Router() {
       element: <MainLayout />,
       children: [
         {
+          path: '',
+          element: <Navigate to='sign-in' replace={true} />
+        },
+        {
           path: 'sign-in',
           element: <SignInPage />
+        },
+        {
+          path: 'request-verify-otp',
+          element: <RequestVerifyOtpPage />
+        },
+        {
+          path: 'verify-email',
+          element: <VerifyEmailPage />
         },
         {
           path: 'sign-up',
@@ -44,8 +57,22 @@ export default function Router() {
           element: <ResetPasswordPage />
         },
         {
-          path: 'new-password',
+          path: 'new-password/:userId/:passwordResetCode',
           element: <NewPasswordPage />
+        }
+      ]
+    },
+    {
+      path: 'confirmation',
+      element: <SecondaryLayout />,
+      children: [
+        {
+          path: '',
+          element: <Navigate to='/app' replace={true} />
+        },
+        {
+          path: 'auth/sent-mail/',
+          element: <ConfirmSentMailPage />
         }
       ]
     },
@@ -69,11 +96,20 @@ export default function Router() {
 
 const SignInPage = Loadable(lazy(() => import('../pages/auth/SignIn')))
 const SignUpPage = Loadable(lazy(() => import('../pages/auth/SignUp')))
+const RequestVerifyOtpPage = Loadable(
+  lazy(() => import('../pages/auth/RequestVerifyOtp'))
+)
+const VerifyEmailPage = Loadable(
+  lazy(() => import('../pages/auth/VerifyEmail'))
+)
 const ResetPasswordPage = Loadable(
   lazy(() => import('../pages/auth/ResetPassword'))
 )
 const NewPasswordPage = Loadable(
   lazy(() => import('../pages/auth/NewPassword'))
+)
+const ConfirmSentMailPage = Loadable(
+  lazy(() => import('../pages/confirmation/ConfirmSentMail'))
 )
 const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')))
 const GroupPage = Loadable(lazy(() => import('../pages/dashboard/Group')))

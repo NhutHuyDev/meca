@@ -1,17 +1,20 @@
 import { combineReducers } from '@reduxjs/toolkit'
 import storage from 'redux-persist/lib/storage'
-import appSlice from './slice/app'
-import authSlice from './slice/auth'
+import appReducer from './slice/app'
+import authReducer from './slice/auth'
+import requestReducer from './slice/request'
 
 const rootPersistConfig = {
   key: 'root',
   storage: storage,
-  keyPrefix: 'redux-'
+  keyPrefix: 'redux-',
+  blacklist: ['request']
 }
 
 const rootReducer = combineReducers({
-  app: appSlice.reducer,
-  auth: authSlice.reducer
+  app: appReducer,
+  auth: authReducer,
+  request: requestReducer
 })
 
 export { rootPersistConfig, rootReducer }

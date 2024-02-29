@@ -2,27 +2,48 @@ import {
   TResetPasswordSchema,
   resetPasswordSchema
 } from '@/lib/formSchema/resetPassword'
-import { useForm, type FieldValues } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useAppDispatch } from '@/hooks/redux'
+import {
+  TForgotPasswordResquest,
+  thunkForgotPassword
+} from '@/redux/slice/auth'
+import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import useRequest from '@/hooks/useRequest'
 
 function ResetPassword() {
+  const dispatch = useAppDispatch()
+
+  const navigator = useNavigate()
+
+  const { request, isLoading } = useRequest<TForgotPasswordResquest>()
+
+  useEffect(() => {
+    if (request?.forgotPassword?.success) {
+      const sentEmail = request?.forgotPassword?.responseData?.email
+
+      navigator(
+        `/confirmation/auth/sent-mail?email=${sentEmail}&status=sucess`,
+        { replace: true }
+      )
+    }
+  }, [navigator, request])
+
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting, errors },
-    reset
+    formState: { errors }
   } = useForm<TResetPasswordSchema>({
     resolver: zodResolver(resetPasswordSchema)
   })
 
-  const onSubmit = async (data: FieldValues) => {
+  const onSubmit = async (data: TResetPasswordSchema) => {
     // TODO: submit to server
     // ...
-    await new Promise((resolve) => setTimeout(resolve, 4000))
 
-    console.log(data)
-
-    reset()
+    dispatch(thunkForgotPassword(data))
   }
 
   return (
@@ -37,8 +58,12 @@ function ResetPassword() {
           <p className='text-left text-error-main'>{`${errors.email.message}`}</p>
         )}
 
+        {request?.forgotPassword?.error && (
+          <p className='text-left text-error-main'>{`${request.forgotPassword.errorMessage}`}</p>
+        )}
+
         <button
-          disabled={isSubmitting}
+          disabled={isLoading}
           type='submit'
           className='bg-common-black text-common-white p-4 rounded-lg w-full disabled:opacity-75'
         >

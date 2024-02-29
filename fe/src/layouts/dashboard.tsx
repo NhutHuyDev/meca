@@ -7,7 +7,7 @@ const DashboardLayout = (): ReactElement => {
   const { isLoggedIn } = useAppSelector((state) => state.auth)
 
   if (!isLoggedIn) {
-    return <Navigate to='/auth/sign-in' />
+    return <Navigate to='/auth/sign-in' replace={true} />
   }
 
   return (

@@ -10,7 +10,7 @@ function AuthSocial() {
         <GithubLogo />
       </button>
       <button>
-        <TwitterLogo color='#19CCEA'/>
+        <TwitterLogo color='#19CCEA' />
       </button>
     </div>
   )

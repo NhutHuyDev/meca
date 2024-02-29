@@ -61,7 +61,7 @@ function SignUp() {
         )}
         <div className='flex justify-center items-center text-xl p-3 rounded border-2 border-grey-500 focus-within:border-common-black'>
           <input
-            {...register('password')}
+            {...register('credPassword')}
             placeholder='Password'
             className='w-full text-base outline-none'
             type={showPassword ? 'text' : 'password'}
@@ -77,13 +77,13 @@ function SignUp() {
           )}
         </div>
 
-        {errors.password && (
-          <p className='text-left text-error-main'>{`${errors.password.message}`}</p>
+        {errors.credPassword && (
+          <p className='text-left text-error-main'>{`${errors.credPassword.message}`}</p>
         )}
 
         <div className='flex justify-center items-center text-xl p-3 rounded border-2 border-grey-500 focus-within:border-common-black'>
           <input
-            {...register('confirmPassword')}
+            {...register('passwordConfirmation')}
             placeholder='Confirm password'
             className='w-full text-base outline-none'
             type={showConfirmPassword ? 'text' : 'password'}
@@ -99,8 +99,8 @@ function SignUp() {
           )}
         </div>
 
-        {errors.confirmPassword && (
-          <p className='text-left text-error-main'>{`${errors.confirmPassword.message}`}</p>
+        {errors.passwordConfirmation && (
+          <p className='text-left text-error-main'>{`${errors.passwordConfirmation.message}`}</p>
         )}
 
         <button
@@ -108,7 +108,7 @@ function SignUp() {
           type='submit'
           className='bg-common-black text-common-white p-4 rounded-lg w-full disabled:opacity-75'
         >
-          Login
+          Create Account
         </button>
       </form>
     </>
