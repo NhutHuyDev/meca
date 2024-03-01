@@ -123,8 +123,6 @@ export function thunkSignOut() {
 
     const { auth } = getState()
 
-    dispatch(startRequest())
-
     await axios
       .post(
         '/auth/sign-out',
@@ -157,6 +155,8 @@ export type TForgotPasswordResquest = {
 }
 export function thunkForgotPassword(formValue: TResetPasswordSchema) {
   return async (dispatch: AppDispatch) => {
+    dispatch(clearRequestHistory())
+
     const apiUrl = '/auth/forgot-password'
 
     dispatch(startRequest())
@@ -200,9 +200,11 @@ export function thunkResetPassword(formValue: TNewPasswordSchema) {
   const userId = formValue.params?.userId
   const passwordResetCode = formValue.params?.passwordResetCode
 
-  const apiUrl = '/auth/forgot-password'
+  const apiUrl = '/auth/reset-password'
 
   return async (dispatch: AppDispatch) => {
+    dispatch(clearRequestHistory())
+
     dispatch(startRequest())
 
     await axios
@@ -237,7 +239,7 @@ export function thunkResetPassword(formValue: TNewPasswordSchema) {
  */
 
 export type TRequestVerifyOtpResquest = {
-  resetPassword: TRequest<{
+  requestVerifyOtp: TRequest<{
     email: string
     message: string
   }>
@@ -246,6 +248,8 @@ export function thunkRequestVerifyOtp(formValue: TRequestVerifyOtpSchema) {
   const apiUrl = '/users/request-verify-otp'
 
   return async (dispatch: AppDispatch) => {
+    dispatch(clearRequestHistory())
+
     dispatch(startRequest())
 
     await axios
@@ -280,7 +284,7 @@ export function thunkRequestVerifyOtp(formValue: TRequestVerifyOtpSchema) {
  */
 
 export type TVerifyEmailResquest = {
-  resetPassword: TRequest<{
+  verifyEmail: TRequest<{
     email: string
     message: string
   }>
@@ -323,7 +327,7 @@ export function thunkVerifyEmail(formValue: TVerifyEmailSchema) {
  */
 
 export type TSignUpRequest = {
-  resetPassword: TRequest<{
+  signUp: TRequest<{
     email: string
     message: string
   }>
@@ -332,6 +336,8 @@ export function thunkSignUp(formValue: TSignUpSchema) {
   const apiUrl = '/users/'
 
   return async (dispatch: AppDispatch) => {
+    dispatch(clearRequestHistory())
+
     dispatch(startRequest())
 
     await axios

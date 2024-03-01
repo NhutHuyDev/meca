@@ -16,6 +16,9 @@ export class User {
   @prop()
   about: string
 
+  @prop()
+  socketId: string
+
   @prop({ default: true })
   verified: boolean
 

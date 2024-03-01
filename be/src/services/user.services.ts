@@ -10,6 +10,7 @@ import flattenCleanObj from '../utils/flattenCleanObj'
 import log from '../utils/logger'
 import path from 'path'
 import fs from 'fs'
+import FriendShipRepo from '../models/repositories/friendShip.repo'
 
 class UserService {
   static requestVerifyOtp = async function (email: string) {
@@ -124,7 +125,13 @@ class UserService {
     await KeyStoreRepo.createKeyPair(String(newUser._id))
 
     /**
-     * @description 4. tạo thông tin đăng nhập cho user
+     * @description 4. khởi tạo danh sách bạn bè
+     */
+
+    await FriendShipRepo.createFriendShip(String(newUser._id))
+
+    /**
+     * @description 5. tạo thông tin đăng nhập cho user
      */
     try {
       await CredentialModel.create({
@@ -161,6 +168,12 @@ class UserService {
     } else {
       throw new BadRequestError('user is not found')
     }
+  }
+
+  static getOtherUser = async function (currentId: string) {
+    const others = await UserRepo.findOthers(currentId)
+
+    return others
   }
 }
 

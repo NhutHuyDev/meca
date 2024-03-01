@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express'
 import userRoutes from './user.routes'
 import authRoutes from './auth.routes'
+import friendshipRoutes from './friendship.routes'
 import { NotFoundError } from '../core/error.responses'
 import log from '../utils/logger'
 import deserializeUser from '../middlewares/deserializeUser'
@@ -19,6 +20,7 @@ router.use(deserializeUser)
  */
 router.use('/v1/api/users', userRoutes)
 router.use('/v1/api/auth', authRoutes)
+router.use('/v1/api/friends', friendshipRoutes)
 
 /**
  * @description 404 handling

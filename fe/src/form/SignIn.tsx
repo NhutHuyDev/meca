@@ -1,12 +1,13 @@
+import { Eye, EyeSlash } from 'phosphor-react'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { TSignInSchema, signInSchema } from '@/lib/formSchema/signIn'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
-import { Eye, EyeSlash } from 'phosphor-react'
 import { useAppDispatch } from '@/hooks/redux'
 import { TSignInResquest, thunkSignIn } from '@/redux/slice/auth'
 import useRequest from '@/hooks/useRequest'
+import { clearRequestHistory } from '@/redux/slice/request'
 
 function SignIn() {
   const dispatch = useAppDispatch()
@@ -14,6 +15,7 @@ function SignIn() {
   const { request, isLoading } = useRequest<TSignInResquest>()
 
   const [showPassword, setShowPassword] = useState<boolean>(false)
+
   const {
     register,
     handleSubmit,
@@ -24,6 +26,8 @@ function SignIn() {
 
   const onSubmit = async (data: TSignInSchema) => {
     dispatch(thunkSignIn(data))
+
+    dispatch(clearRequestHistory())
   }
 
   return (

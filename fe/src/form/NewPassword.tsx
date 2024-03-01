@@ -10,23 +10,21 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch } from '@/hooks/redux'
 import { TResetPasswordResquest, thunkResetPassword } from '@/redux/slice/auth'
 import useRequest from '@/hooks/useRequest'
+import { clearRequestHistory } from '@/redux/slice/request'
 
 function NewPassword() {
   const dispatch = useAppDispatch()
 
-  const { request, isLoading } = useRequest<TResetPasswordResquest>()
-
   const navigator = useNavigate()
 
-  useEffect(() => {
-    if (request?.resetPassword?.success) {
-      navigator(`/auth/sign-in`, { replace: true })
-    }
-  }, [navigator, request])
+  const { request, isLoading } = useRequest<TResetPasswordResquest>()
 
   const { userId, passwordResetCode } = useParams()
+
   const [showPassword, setShowPassword] = useState<boolean>(false)
+
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
+
   const {
     register,
     handleSubmit,
@@ -36,8 +34,6 @@ function NewPassword() {
   })
 
   const onSubmit = async (data: TNewPasswordSchema) => {
-    // TODO: submit to server
-    // ...
     const updatedData: TNewPasswordSchema = {
       params: {
         userId,
@@ -48,6 +44,17 @@ function NewPassword() {
 
     dispatch(thunkResetPassword(updatedData))
   }
+
+  /**
+   * @description navigation
+   */
+  useEffect(() => {
+    if (request?.resetPassword?.success) {
+      navigator('/auth/sign-in', { replace: true })
+
+      dispatch(clearRequestHistory())
+    }
+  }, [dispatch, navigator, request])
 
   return (
     <>
@@ -105,7 +112,7 @@ function NewPassword() {
           type='submit'
           className='bg-common-black text-common-white p-4 rounded-lg w-full disabled:opacity-75'
         >
-          Reset Password
+          Update New Password
         </button>
       </form>
     </>

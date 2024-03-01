@@ -42,6 +42,12 @@ class UserController {
   static getCurrentUserHandler = async function (_: Request, res: Response) {
     new OkResponse(res.locals.user).send(res)
   }
+
+  static getOtherUserHandler = async function (_: Request, res: Response) {
+    const user = res.locals.user
+
+    new OkResponse(await UserService.getOtherUser(user._id)).send(res)
+  }
 }
 
 export default UserController

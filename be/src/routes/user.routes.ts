@@ -9,7 +9,6 @@ import {
 import UserController from '../controllers/user.controller'
 import asyncHandler from '../helpers/asyncHandler'
 import requireUser from '../middlewares/requireUser'
-import { update } from 'lodash'
 
 const router = express.Router()
 
@@ -38,6 +37,8 @@ router.patch(
   validateResource(updateUserSchema),
   asyncHandler(UserController.updateInformationHandler)
 )
+
+router.get('/get-others', asyncHandler(UserController.getOtherUserHandler))
 
 router.get('/me', asyncHandler(UserController.getCurrentUserHandler))
 

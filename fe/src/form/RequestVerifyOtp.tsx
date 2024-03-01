@@ -4,32 +4,22 @@ import {
 } from '@/lib/formSchema/requestVerifyOtp'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-// import { useAppDispatch } from '@//hooks/redux'
-// import {
-//   TForgotPasswordResquest,
-//   thunkForgotPassword
-// } from '@/redux/slice/auth'
-// import { useNavigate } from 'react-router-dom'
-// import { useEffect } from 'react'
-// import useRequest from '@/hooks/useRequest'
+import { useAppDispatch } from '@//hooks/redux'
+import {
+  TRequestVerifyOtpResquest,
+  thunkRequestVerifyOtp
+} from '@/redux/slice/auth'
+import { useNavigate } from 'react-router-dom'
+import useRequest from '@/hooks/useRequest'
+import { useEffect } from 'react'
+import { clearRequestHistory } from '@/redux/slice/request'
 
 function RequestVerifyOtp() {
-  // const dispatch = useAppDispatch()
+  const navigator = useNavigate()
 
-  // const navigator = useNavigate()
+  const dispatch = useAppDispatch()
 
-  // const { request, isLoading } = useRequest<TForgotPasswordResquest>()
-
-  // useEffect(() => {
-  //   if (request?.forgotPassword?.success) {
-  //     const sentEmail = request?.forgotPassword?.responseData?.email
-
-  //     navigator(
-  //       `/confirmation/auth/sent-mail?email=${sentEmail}&status=sucess`,
-  //       { replace: true }
-  //     )
-  //   }
-  // }, [navigator, request])
+  const { request, isLoading } = useRequest<TRequestVerifyOtpResquest>()
 
   const {
     register,
@@ -40,13 +30,25 @@ function RequestVerifyOtp() {
   })
 
   const onSubmit = async (data: TRequestVerifyOtpSchema) => {
-    // TODO: submit to server
-    // ...
-
-    console.log(data)
-
-    // dispatch(thunkForgotPassword(data))
+    dispatch(thunkRequestVerifyOtp(data))
   }
+
+  /**
+   * @description navigation
+   */
+
+  useEffect(() => {
+    if (request?.requestVerifyOtp?.success) {
+      const sentEmail = request?.requestVerifyOtp?.responseData?.email
+
+      navigator(`/auth/verify-email/?email=${sentEmail}`, {
+        state: { request: request },
+        replace: true
+      })
+
+      dispatch(clearRequestHistory())
+    }
+  }, [request, navigator, dispatch])
 
   return (
     <>
@@ -60,12 +62,12 @@ function RequestVerifyOtp() {
           <p className='text-left text-error-main'>{`${errors.email.message}`}</p>
         )}
 
-        {/* {request?.forgotPassword?.error && (
-          <p className='text-left text-error-main'>{`${request.forgotPassword.errorMessage}`}</p>
-        )} */}
+        {request?.requestVerifyOtp?.error && (
+          <p className='text-left text-error-main'>{`${request.requestVerifyOtp.errorMessage}`}</p>
+        )}
 
         <button
-          // disabled={isLoading}
+          disabled={isLoading}
           type='submit'
           className='bg-common-black text-common-white p-4 rounded-lg w-full disabled:opacity-75'
         >

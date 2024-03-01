@@ -12,6 +12,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import useRequest from '@/hooks/useRequest'
+import { clearRequestHistory } from '@/redux/slice/request'
 
 function ResetPassword() {
   const dispatch = useAppDispatch()
@@ -26,10 +27,15 @@ function ResetPassword() {
 
       navigator(
         `/confirmation/auth/sent-mail?email=${sentEmail}&status=sucess`,
-        { replace: true }
+        {
+          state: { request: request },
+          replace: true
+        }
       )
+
+      dispatch(clearRequestHistory())
     }
-  }, [navigator, request])
+  }, [navigator, request, dispatch])
 
   const {
     register,
@@ -40,11 +46,12 @@ function ResetPassword() {
   })
 
   const onSubmit = async (data: TResetPasswordSchema) => {
-    // TODO: submit to server
-    // ...
-
     dispatch(thunkForgotPassword(data))
   }
+
+  /**
+   * @description navigation
+   */
 
   return (
     <>
