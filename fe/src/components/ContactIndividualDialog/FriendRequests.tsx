@@ -7,7 +7,11 @@ import {
 import ScrollArea from '../ScrollArea'
 import { diffBetweenDateAndNow } from '@/utils/diffBetweenDates'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { emitAcceptFriendRequestEvent } from '@/realtime/friend.event'
+import {
+  emitAcceptFriendRequestEvent,
+  emitRecipientCancelFriendRequest,
+  emitSenderCancelFriendRequest
+} from '@/realtime/friend.event'
 
 function FriendRequests(): ReactElement {
   const dispatch = useAppDispatch()
@@ -104,6 +108,8 @@ function SentFriendRequest({
   recipient,
   createdAt
 }: FriendRequestPropsType) {
+  const dispatch = useAppDispatch()
+
   const recipientAvatar = recipient?.avatar
     ? `url(${recipient?.avatar})`
     : `url(${defaultAvatar})`
@@ -127,7 +133,16 @@ function SentFriendRequest({
             </h3>
             <span>{diffBetweenDateAndNow(createdAt)}</span>
           </div>
-          <button className='rounded-full p-2 text-sm italic text-error-dark hover:bg-error-lighter'>
+          <button
+            onClick={() => {
+              dispatch(
+                emitSenderCancelFriendRequest({
+                  friendRequestId: _id
+                })
+              )
+            }}
+            className='rounded-full p-2 text-sm italic text-error-dark hover:bg-error-lighter'
+          >
             Cancel
           </button>
         </div>
@@ -179,7 +194,16 @@ function RequestFriend({ _id, sender, createdAt }: FriendRequestPropsType) {
               accept
             </button>
 
-            <button className='rounded-full p-2 text-sm italic text-error-main hover:bg-error-lighter'>
+            <button
+              onClick={() => {
+                dispatch(
+                  emitRecipientCancelFriendRequest({
+                    friendRequestId: _id
+                  })
+                )
+              }}
+              className='rounded-full p-2 text-sm italic text-error-main hover:bg-error-lighter'
+            >
               delete
             </button>
           </div>

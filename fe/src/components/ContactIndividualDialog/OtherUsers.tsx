@@ -5,7 +5,8 @@ import { ContactUser, thunkFetchOthers } from '@/redux/slice/individualContact'
 import ScrollArea from '../ScrollArea'
 import {
   emitAcceptFriendRequestEvent,
-  emitAddNewFriendEvent
+  emitAddNewFriendEvent,
+  emitRecipientCancelFriendRequest
 } from '@/realtime/friend.event'
 import { PopoverUI, side } from '../ui/Popover'
 
@@ -132,7 +133,6 @@ function FriendRequestOption({
     <div className='m-2 p-2 shadow-xl bg-grey-100 rounded-xl w-fix'>
       <button
         onClick={() => {
-          console.log('helow world')
           dispatch(
             emitAcceptFriendRequestEvent({
               friendRequestId: friendRequestId
@@ -145,7 +145,16 @@ function FriendRequestOption({
           Accept
         </p>
       </button>
-      <button className='w-full p-1 hover:bg-error-lighter outline-none rounded-lg flex items-center space-x-2'>
+      <button
+        onClick={() => {
+          dispatch(
+            emitRecipientCancelFriendRequest({
+              friendRequestId: friendRequestId
+            })
+          )
+        }}
+        className='w-full p-1 hover:bg-error-lighter outline-none rounded-lg flex items-center space-x-2'
+      >
         <p className='text-start text-sm text-error-main whitespace-nowrap'>
           Delete
         </p>

@@ -7,6 +7,12 @@ export class FriendshipRequest {
 
   @prop({ ref: () => User })
   recipient: Ref<User>
+
+  @prop({ default: false })
+  deletedBySender: boolean
+
+  @prop({ default: false })
+  deletedByRecipient: boolean
 }
 
 const FriendshipRequestModel = getModelForClass(FriendshipRequest, {

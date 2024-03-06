@@ -2,6 +2,18 @@ import { Types } from 'mongoose'
 import FriendshipRequestModel from '../friendshipRequest.model'
 
 class FriendshipRequestRepo {
+  static deleteBySender = async function (id: string) {
+    return FriendshipRequestModel.findByIdAndUpdate(id, {
+      deletedBySender: true
+    })
+  }
+
+  static deleteByRecipient = async function (id: string) {
+    return FriendshipRequestModel.findByIdAndUpdate(id, {
+      deletedByRecipient: true
+    })
+  }
+
   static findById = async function (id: string) {
     return FriendshipRequestModel.findById(id)
   }
@@ -30,9 +42,15 @@ class FriendshipRequestRepo {
     const friends = await FriendshipRequestModel.aggregate([
       {
         $match: {
-          $or: [
-            { sender: new Types.ObjectId(userId) },
-            { recipient: new Types.ObjectId(userId) }
+          $and: [
+            {
+              $or: [
+                { sender: new Types.ObjectId(userId) },
+                { recipient: new Types.ObjectId(userId) }
+              ]
+            },
+            { deletedBySender: false },
+            { deletedByRecipient: false }
           ]
         }
       },

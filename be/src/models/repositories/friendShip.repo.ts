@@ -8,6 +8,17 @@ class FriendshipRepo {
     })
   }
 
+  static deleteFriend = async function (userId: string, friendId: string) {
+    return FriendShipModel.findOneAndUpdate(
+      {
+        user: new Types.ObjectId(userId)
+      },
+      {
+        $pull: { friends: new Types.ObjectId(friendId) }
+      }
+    )
+  }
+
   static addFriend = async function (userId: string, friendId: string) {
     return FriendShipModel.findOneAndUpdate(
       {

@@ -75,7 +75,9 @@ class UserRepo {
                 $expr: {
                   $and: [
                     { $eq: ['$sender', '$$currentUser'] },
-                    { $eq: ['$recipient', '$$otherUser'] }
+                    { $eq: ['$recipient', '$$otherUser'] },
+                    { $eq: ['$deletedBySender', false] },
+                    { $eq: ['$deletedByRecipient', false] }
                   ]
                 }
               }
@@ -94,7 +96,9 @@ class UserRepo {
                 $expr: {
                   $and: [
                     { $eq: ['$sender', '$$otherUser'] },
-                    { $eq: ['$recipient', '$$currentUser'] }
+                    { $eq: ['$recipient', '$$currentUser'] },
+                    { $eq: ['$deletedBySender', false] },
+                    { $eq: ['$deletedByRecipient', false] }
                   ]
                 }
               }

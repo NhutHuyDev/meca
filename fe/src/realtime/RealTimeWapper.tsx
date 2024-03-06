@@ -5,7 +5,10 @@ import { ReactElement, useEffect } from 'react'
 import {
   listenAcceptedFriendRequestResponse,
   listenFrientRequestSent,
-  listenNewFriendRequest
+  listenNewFriendRequest,
+  listenRecipientCancelFriendRequestResponse,
+  listenSenderCancelFriendRequestResponse,
+  listenUnFriendRequestResponse
 } from './friend.event'
 
 function RealTimeWapper({ children }: { children: ReactElement }) {
@@ -16,9 +19,16 @@ function RealTimeWapper({ children }: { children: ReactElement }) {
   useEffect(() => {
     if (!socket && clientId && isLoggedIn) {
       connectSocket(clientId)
+
       dispatch(listenFrientRequestSent())
       dispatch(listenNewFriendRequest())
+
       dispatch(listenAcceptedFriendRequestResponse())
+
+      dispatch(listenSenderCancelFriendRequestResponse())
+      dispatch(listenRecipientCancelFriendRequestResponse())
+
+      dispatch(listenUnFriendRequestResponse())
     }
 
     window.addEventListener('beforeunload', () => {

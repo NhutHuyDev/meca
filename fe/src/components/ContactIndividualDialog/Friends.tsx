@@ -4,6 +4,8 @@ import { useEffect } from 'react'
 import ScrollArea from '../ScrollArea'
 import { ReactElement } from 'react'
 import defaultAvatar from '@/assets/default-avatar.svg'
+import { emitUnFriendRequest } from '@/realtime/friend.event'
+import { PopoverUI, side } from '../ui/Popover'
 
 function Friends() {
   const dispatch = useAppDispatch()
@@ -62,11 +64,50 @@ function Friend({
         style={{ backgroundImage: avatarUri }}
       ></div>
       <div className='w-full'>
-        <div className='w-full flex justify-between px-3'>
+        <div className='w-full flex justify-between items-center px-3'>
           <h3 className='text-sm font-bold'>{firstName + ' ' + lastName}</h3>
-          <p className='text-sm italic text-grey-500'>friend</p>
+          <PopoverUI
+            side={side.right}
+            Trigger={
+              <button className='flex p-2 rounded-full hover:bg-grey-300 items-center text-sm italic text-grey-500'>
+                friend
+              </button>
+            }
+            Content={<FriendOption friendId={_id} />}
+          />
         </div>
       </div>
+    </div>
+  )
+}
+
+function FriendOption({ friendId }: { friendId: string }): ReactElement {
+  const dispatch = useAppDispatch()
+
+  const { clientId } = useAppSelector((state) => state.auth)
+
+  return (
+    <div className='m-2 p-2 shadow-xl bg-grey-100 rounded-xl w-fix'>
+      <button className='w-full p-1 hover:bg-secondary-lighter outline-none rounded-lg flex items-center space-x-2'>
+        <p className='text-start text-sm text-primary-main whitespace-nowrap'>
+          View Profile
+        </p>
+      </button>
+      <button
+        onClick={() => {
+          dispatch(
+            emitUnFriendRequest({
+              friendId: friendId,
+              userId: clientId
+            })
+          )
+        }}
+        className='w-full p-1 hover:bg-error-lighter outline-none rounded-lg flex items-center space-x-2'
+      >
+        <p className='text-start text-sm text-error-main whitespace-nowrap'>
+          UnFriend
+        </p>
+      </button>
     </div>
   )
 }
