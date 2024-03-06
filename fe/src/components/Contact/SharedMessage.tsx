@@ -25,7 +25,7 @@ function SharedMessage(): ReactElement {
       </div>
 
       <div className='flex-grow'>
-        <ScrollArea maxHeight={'calc(100vh - 72px)'} bgColor='bg-common-white'>
+        <ScrollArea maxHeight={'calc(100vh - 72px)'}>
           <div>
             <Tabs.Root defaultValue='tab1'>
               <Tabs.List className='w-3/4 mx-auto flex justify-center space-x-8'>

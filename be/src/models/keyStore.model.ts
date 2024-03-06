@@ -6,10 +6,10 @@ export class KeyStore {
   user: Ref<User>
 
   @prop({ required: true })
-  privateKey: string
+  publicKey: string
 
   @prop({ required: true })
-  publicKey: string
+  privateKey: string
 }
 
 const KeyStoreModel = getModelForClass(KeyStore, {

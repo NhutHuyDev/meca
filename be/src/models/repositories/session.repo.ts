@@ -2,7 +2,7 @@ import { DocumentType } from '@typegoose/typegoose'
 import { omit } from 'lodash'
 import { decodeJwt, signJwt } from '../../helpers/jwt'
 import SessionModel from '../session.model'
-import { User, privateFields } from '../user.model'
+import { User } from '../user.model'
 import config from '../../config'
 
 class SessionRepo {
@@ -31,7 +31,7 @@ class SessionRepo {
   }
 
   static signAccessToken = async function (user: DocumentType<User>, signingKey: string) {
-    const payload = omit(user.toJSON(), privateFields)
+    const payload = omit(user.toJSON(), ['__v', 'verified', 'deleted'])
 
     const accessToken = signJwt(payload, signingKey, {
       expiresIn: config.app.access_token_expiration

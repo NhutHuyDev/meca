@@ -22,7 +22,7 @@ function StarredMessage() {
       </div>
 
       <div className='flex-grow'>
-        <ScrollArea maxHeight={'calc(100vh - 72px)'} bgColor='bg-common-white'>
+        <ScrollArea maxHeight={'calc(100vh - 72px)'}>
           <div className='m-4'>
             {Chat_History.map((chat, index) => {
               return (

@@ -67,7 +67,7 @@ function Contact(): ReactElement {
 
           <div className='p-8 py-2 space-y-3'>
             <h3>About</h3>
-            <p className='font-semibold'>Hi there, welcome to my life!</p>
+            <p className='font-semibold'>Hi there, welcome to my profile</p>
           </div>
 
           <Divider rootStyle='my-2' />

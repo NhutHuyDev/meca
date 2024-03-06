@@ -16,6 +16,7 @@ import {
   TRequest
 } from './request'
 import { TSignUpSchema } from '@/lib/formSchema/signUp'
+import { socket } from '@/socket'
 
 export type TAuthState = {
   isLoggedIn: boolean
@@ -136,9 +137,11 @@ export function thunkSignOut() {
         }
       )
       .then(() => {
+        socket && socket.emit('end', { userId: auth.clientId })
         dispatch(slice.actions.signOut())
       })
       .catch(() => {
+        socket && socket.emit('end', { userId: auth.clientId })
         dispatch(slice.actions.signOut())
       })
   }
@@ -155,8 +158,6 @@ export type TForgotPasswordResquest = {
 }
 export function thunkForgotPassword(formValue: TResetPasswordSchema) {
   return async (dispatch: AppDispatch) => {
-    dispatch(clearRequestHistory())
-
     const apiUrl = '/auth/forgot-password'
 
     dispatch(startRequest())
@@ -248,8 +249,6 @@ export function thunkRequestVerifyOtp(formValue: TRequestVerifyOtpSchema) {
   const apiUrl = '/users/request-verify-otp'
 
   return async (dispatch: AppDispatch) => {
-    dispatch(clearRequestHistory())
-
     dispatch(startRequest())
 
     await axios
@@ -336,8 +335,6 @@ export function thunkSignUp(formValue: TSignUpSchema) {
   const apiUrl = '/users/'
 
   return async (dispatch: AppDispatch) => {
-    dispatch(clearRequestHistory())
-
     dispatch(startRequest())
 
     await axios

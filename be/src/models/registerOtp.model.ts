@@ -22,7 +22,7 @@ import otpGentertor from 'otp-generator'
   return
 })
 export class RegisterOtp {
-  @prop({ required: true })
+  @prop({ unique: true, required: true })
   email: string
 
   @prop()
@@ -62,7 +62,7 @@ export class RegisterOtp {
 
 const RegisterOtpModel = getModelForClass(RegisterOtp, {
   schemaOptions: {
-    collection: 'RegisterOtp',
+    collection: 'RegisterOtps',
     timestamps: true
   }
 })

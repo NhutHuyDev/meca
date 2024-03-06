@@ -7,7 +7,6 @@ import { useState } from 'react'
 import { useAppDispatch } from '@/hooks/redux'
 import { TSignInResquest, thunkSignIn } from '@/redux/slice/auth'
 import useRequest from '@/hooks/useRequest'
-import { clearRequestHistory } from '@/redux/slice/request'
 
 function SignIn() {
   const dispatch = useAppDispatch()
@@ -26,8 +25,6 @@ function SignIn() {
 
   const onSubmit = async (data: TSignInSchema) => {
     dispatch(thunkSignIn(data))
-
-    dispatch(clearRequestHistory())
   }
 
   return (

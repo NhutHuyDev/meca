@@ -1,6 +1,9 @@
+import { useAppDispatch } from '@/hooks/redux'
+import { setChatOneToOneId } from '@/redux/slice/chatOneToOne'
 import { ReactElement } from 'react'
 
 type PropsType = {
+  id: string
   img: string
   name: string
   msg: string
@@ -10,6 +13,7 @@ type PropsType = {
 }
 
 function Chat({
+  id,
   img,
   name,
   msg,
@@ -17,12 +21,23 @@ function Chat({
   unread,
   online
 }: PropsType): ReactElement {
+  const dispatch = useAppDispatch()
+
   const bgUrl = `url(${img})`
+
+  const handleChatOnClick = () => {
+    dispatch(
+      setChatOneToOneId({
+        chatOneToOneId: id
+      })
+    )
+  }
 
   return (
     <div
       className='h-fit p-3 rounded-2xl bg-common-white 
-    flex justify-center items-center gap-3'
+    flex justify-center items-center gap-3 cursor-pointer'
+      onClick={handleChatOnClick}
     >
       <div
         className={`flex-shrink-0 h-9 w-9 rounded-full 

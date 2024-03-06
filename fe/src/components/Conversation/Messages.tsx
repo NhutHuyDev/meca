@@ -14,7 +14,7 @@ function Messages(): ReactElement {
   return (
     <div className='flex-grow'>
       <ScrollArea maxHeight={'calc(100vh - 136px)'}>
-        <div className='p-4 flex flex-col gap-3'>
+        <div className='p-4 flex flex-col gap-3 items-center'>
           {Chat_History.map((chat, index) => {
             switch (chat.type) {
               case 'divider':

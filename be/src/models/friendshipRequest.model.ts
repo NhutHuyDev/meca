@@ -9,11 +9,11 @@ export class FriendshipRequest {
   recipient: Ref<User>
 }
 
-const FriendShipModel = getModelForClass(FriendshipRequest, {
-  schemaOptions: { 
-    collection: 'FriendshipRequest',
+const FriendshipRequestModel = getModelForClass(FriendshipRequest, {
+  schemaOptions: {
+    collection: 'FriendshipRequests',
     timestamps: true
   }
 })
 
-export default FriendShipModel
+export default FriendshipRequestModel

@@ -6,12 +6,15 @@ import { store } from './redux/store.ts'
 
 import App from './App.tsx'
 import './index.css'
+import RealTimeWapper from './realtime/RealTimeWapper.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ReduxProvider store={store}>
       <BrowserRouter>
-        <App />
+        <RealTimeWapper>
+          <App />
+        </RealTimeWapper>
       </BrowserRouter>
     </ReduxProvider>
   </React.StrictMode>

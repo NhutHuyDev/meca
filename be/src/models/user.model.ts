@@ -13,7 +13,7 @@ export class User {
   @prop()
   avatar: string
 
-  @prop()
+  @prop({ default: '' })
   about: string
 
   @prop()
@@ -23,10 +23,11 @@ export class User {
   verified: boolean
 
   @prop({ default: false })
+  online: boolean
+
+  @prop({ default: false })
   deleted: boolean
 }
-
-export const privateFields = ['__v', 'verified', 'deleted']
 
 const UserModel = getModelForClass(User, {
   schemaOptions: {

@@ -1,9 +1,7 @@
-import checkValidObjectId from './src/utils/checkValidObjectId'
+import SocketIO from './src/realtime/socketIO'
 import app from './src/app'
 import config from './src/config'
 import log from './src/utils/logger'
-import { Server } from 'socket.io'
-import UserRepo from './src/models/repositories/user.repo'
 
 const PORT = config.app.port
 
@@ -11,31 +9,15 @@ const server = app.listen(PORT, () => {
   log.info(`MECA server started with ${PORT}`)
 })
 
-const io = new Server(server, {
+const socketIO = new SocketIO(server, {
   cors: {
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST']
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
   }
 })
 
-io.on('connection', async (socket) => {
-  const userId = socket.handshake.query['userId'] as string
-
-  const socketId = socket.id
-
-  log.info('::user connected - ', socketId)
-
-  if (checkValidObjectId(userId)) {
-    await UserRepo.setSocketId(userId, socketId)
-  }
-
-  socket.on('friend-request', async (data) => {
-    const to = await UserRepo.findUserById(data.to)
-
-    const socketId = to?.socketId as string
-
-    io.to(socketId).emit('new-friend-request', () => {})
-  })
+socketIO.connect(() => {
+  log.info('...')
 })
 
 process.on('SIGINT', () => {

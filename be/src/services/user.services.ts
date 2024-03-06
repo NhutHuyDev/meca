@@ -2,7 +2,7 @@ import { BadRequestError, ConflictError, InternalServerError } from '../core/err
 import { omit } from 'lodash'
 import UserRepo from '../models/repositories/user.repo'
 import RegisterOtpRepo from '../models/repositories/registerOtp.repo'
-import UserModel, { User, privateFields } from '../models/user.model'
+import UserModel, { User } from '../models/user.model'
 import CredentialModel, { Credential } from '../models/credential.model'
 import sendEmail from '../utils/mailer'
 import KeyStoreRepo from '../models/repositories/keyStore.repo'
@@ -10,7 +10,7 @@ import flattenCleanObj from '../utils/flattenCleanObj'
 import log from '../utils/logger'
 import path from 'path'
 import fs from 'fs'
-import FriendShipRepo from '../models/repositories/friendShip.repo'
+import FriendShipRepo from '../models/repositories/friendship.repo'
 
 class UserService {
   static requestVerifyOtp = async function (email: string) {
@@ -128,7 +128,7 @@ class UserService {
      * @description 4. khởi tạo danh sách bạn bè
      */
 
-    await FriendShipRepo.createFriendShip(String(newUser._id))
+    await FriendShipRepo.create(String(newUser._id))
 
     /**
      * @description 5. tạo thông tin đăng nhập cho user
@@ -150,7 +150,8 @@ class UserService {
   }
 
   static updateInformation = async function (input: Partial<User>) {
-    const updateInformation = omit(input, privateFields, '_id')
+    const preventUpdate = ['_id', '__v', 'deleted', 'verified']
+    const updateInformation = omit(input, preventUpdate)
 
     const cleanUpdateInformation = flattenCleanObj(updateInformation)
 
@@ -164,14 +165,14 @@ class UserService {
     )
 
     if (updatedUser) {
-      return omit(updatedUser.toJSON(), privateFields)
+      return omit(updatedUser.toJSON(), ['__v', 'deleted', 'verified'])
     } else {
       throw new BadRequestError('user is not found')
     }
   }
 
   static getOtherUser = async function (currentId: string) {
-    const others = await UserRepo.findOthers(currentId)
+    const others = await UserRepo.findOthersV2(currentId)
 
     return others
   }

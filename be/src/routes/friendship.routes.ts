@@ -9,5 +9,10 @@ const router = express.Router()
 router.use(asyncHandler(requireUser))
 
 router.get('/', validateResLocal, asyncHandler(FriendshipController.getFriendsHandler))
+router.get(
+  '/request',
+  validateResLocal,
+  asyncHandler(FriendshipController.getFriendRequestsHandler)
+)
 
 export default router
