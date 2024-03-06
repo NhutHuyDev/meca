@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 import {
-  TRequest,
   clearRequestHistory,
   returnErrorResponse,
   returnSuccessResponse,
@@ -12,11 +11,11 @@ import customHttpHeaders from '@/utils/customHttpHeaders'
 
 export type ContactUser = {
   _id: string
-  email: string
+  email?: string
   firstName: string
   lastName: string
-  verified: boolean
-  deleted: boolean
+  verified?: boolean
+  deleted?: boolean
   avatar?: string
   about?: string
   socketId?: string
@@ -72,11 +71,6 @@ type TIndividualContactRequest =
 /**
  * @description fetch-friends
  */
-export type TFetchFriendsResquest = {
-  fetchFriends: TRequest<{
-    friends: ContactUser[]
-  }>
-}
 export function thunkFetchFriends() {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(clearRequestHistory())

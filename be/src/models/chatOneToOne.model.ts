@@ -7,6 +7,9 @@ export class ChatOneToOne {
 
   @prop({ ref: () => User })
   secondUser: Ref<User>
+
+  @prop({ default: 0 })
+  unRead: number
 }
 
 const ChatOneToOneModel = getModelForClass(ChatOneToOne, {

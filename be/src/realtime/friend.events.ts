@@ -4,6 +4,7 @@ import FriendshipRequestRepo from '..//models/repositories/friendshipRequest'
 import UserRepo from '../models/repositories/user.repo'
 import checkValidObjectId from '..//utils/checkValidObjectId'
 import { Socket, Server } from 'socket.io'
+import ChatOneToOneRepo from '../models/repositories/chatOneToOne.repo'
 
 export enum FriendEvents {
   FrientRequest = 'friend_request',
@@ -80,6 +81,8 @@ function handleFriendEvent(socket: Socket, io: Server): void {
           await FriendshipRepo.addFriend(String(recipient._id), String(sender._id))
 
           await friendRequest.deleteOne()
+
+          await ChatOneToOneRepo.create(String(sender._id), String(recipient._id))
 
           io.to(sender.socketId).emit(FriendEvents.AcceptedFriendRequestResponse, {
             message: 'your friend request was accepted'

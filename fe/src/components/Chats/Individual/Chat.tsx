@@ -1,29 +1,33 @@
 import { useAppDispatch } from '@/hooks/redux'
-import { setChatOneToOneId } from '@/redux/slice/chatOneToOne'
+import { OneToOneMessage, setChatOneToOneId } from '@/redux/slice/chatOneToOne'
 import { ReactElement } from 'react'
+import defaultAvatar from '@/assets/default-avatar.svg'
+import { diffBetweenDateAndNow } from '@/utils/diffBetweenDates'
 
 type PropsType = {
   id: string
-  img: string
-  name: string
-  msg: string
-  time: string
+  avatar?: string
+  firstName: string
+  lastName: string
+  lastMessage: OneToOneMessage
   unread: number
-  online: boolean
+  time?: string
+  online?: boolean
 }
 
 function Chat({
   id,
-  img,
-  name,
-  msg,
+  avatar,
+  firstName,
+  lastName,
+  lastMessage,
   time,
   unread,
   online
 }: PropsType): ReactElement {
   const dispatch = useAppDispatch()
 
-  const bgUrl = `url(${img})`
+  const bgUrl = avatar ? `url(${avatar})` : `url(${defaultAvatar})`
 
   const handleChatOnClick = () => {
     dispatch(
@@ -53,11 +57,15 @@ function Chat({
       ></div>
       <div className='w-full'>
         <div className='w-full flex justify-between'>
-          <h3 className='text-sm font-bold'>{name}</h3>
-          <span className='text-xs text-grey-700'>{time}</span>
+          <h3 className='text-sm font-bold'>{firstName + ' ' + lastName}</h3>
+          <span className='text-xs text-grey-700'>
+            {time && diffBetweenDateAndNow(time)}
+          </span>
         </div>
         <div className='text-xs flex justify-between items-center'>
-          <p className='max-w-[180px] truncate text-ellipsis'>{msg}</p>
+          <p className='max-w-[180px] truncate text-ellipsis'>
+            {lastMessage.text}
+          </p>
           {unread > 0 && (
             <span
               className='flex-shrink-0 text-[8px] text-center

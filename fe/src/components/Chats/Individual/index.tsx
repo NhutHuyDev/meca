@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 import {
   ArchiveBox,
   CircleDashed,
@@ -6,13 +6,25 @@ import {
   Users
 } from 'phosphor-react'
 import Chat from './Chat'
-import { Chat_List } from '@/data'
 import ScrollArea from '@/components/ScrollArea'
 import Divider from '@/components/ui/Divider'
 import ContactIndividualDialog from '@/components/ContactIndividualDialog'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import {
+  ChatOneToOne,
+  thunkFetchChatOneToOnes
+} from '@/redux/slice/chatOneToOne'
 
 function ChatIndividual(): ReactElement {
+  const dispatch = useAppDispatch()
+
   const [openFriends, setOpenFriends] = useState(false)
+
+  useEffect(() => {
+    dispatch(thunkFetchChatOneToOnes())
+  }, [dispatch])
+
+  const { chatOneToOnes } = useAppSelector((state) => state.chatOneToOne)
 
   return (
     <>
@@ -59,7 +71,7 @@ function ChatIndividual(): ReactElement {
 
         <ScrollArea maxHeight='calc(100vh - 200px)'>
           <div className='p-2 h-full space-y-5'>
-            <div className='space-y-3'>
+            {/* <div className='space-y-3'>
               <h3 className='text-grey-600 text-sm'>Pinned</h3>
               {Chat_List.filter((chat) => chat.pinned === true).map((chat) => (
                 <Chat
@@ -73,21 +85,24 @@ function ChatIndividual(): ReactElement {
                   unread={chat.unread}
                 />
               ))}
-            </div>
+            </div> */}
             <div className='space-y-3'>
               <h3 className='text-grey-600 text-sm'>All Chats</h3>
-              {Chat_List.filter((chat) => chat.pinned === false).map((chat) => (
-                <Chat
-                  key={chat.id}
-                  id={String(chat.id)}
-                  img={chat.img}
-                  msg={chat.msg}
-                  name={chat.name}
-                  online={chat.online}
-                  time={chat.time}
-                  unread={chat.unread}
-                />
-              ))}
+              {chatOneToOnes
+                .filter((chat: ChatOneToOne) => !chat.pinned)
+                .map((chat: ChatOneToOne) => (
+                  <Chat
+                    key={chat._id}
+                    id={String(chat._id)}
+                    avatar={chat.from.avatar}
+                    lastMessage={chat.lastMessage}
+                    firstName={chat.from.firstName}
+                    lastName={chat.from.lastName}
+                    online={chat.from.online}
+                    time={chat.lastMessage.createdAt}
+                    unread={chat.unread}
+                  />
+                ))}
             </div>
           </div>
         </ScrollArea>
