@@ -10,6 +10,7 @@ import {
   listenSenderCancelFriendRequestResponse,
   listenUnFriendRequestResponse
 } from './friend.event'
+import { listenNewMessage } from './chat.event/on.event'
 
 function RealTimeWapper({ children }: { children: ReactElement }) {
   const dispatch = useAppDispatch()
@@ -17,7 +18,9 @@ function RealTimeWapper({ children }: { children: ReactElement }) {
   const { open } = useAppSelector((state) => state.loadingOverlay)
 
   useEffect(() => {
-    if (!socket && clientId && isLoggedIn) {
+    console.log('::socket: ', socket)
+
+    if ((!socket || (socket && !socket.connected)) && clientId && isLoggedIn) {
       connectSocket(clientId)
 
       dispatch(listenFrientRequestSent())
@@ -29,6 +32,8 @@ function RealTimeWapper({ children }: { children: ReactElement }) {
       dispatch(listenRecipientCancelFriendRequestResponse())
 
       dispatch(listenUnFriendRequestResponse())
+
+      dispatch(listenNewMessage())
     }
 
     window.addEventListener('beforeunload', () => {

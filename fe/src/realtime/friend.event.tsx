@@ -1,3 +1,4 @@
+import { thunkFetchChatOneToOnes } from '@/redux/slice/chatOneToOne'
 import {
   thunkFetchFriendRequests,
   thunkFetchFriends,
@@ -93,6 +94,7 @@ export function listenAcceptedFriendRequestResponse() {
         dispatch(thunkFetchFriends())
         dispatch(thunkFetchFriendRequests())
         dispatch(thunkFetchOthers())
+        dispatch(thunkFetchChatOneToOnes())
       }
     )
   }

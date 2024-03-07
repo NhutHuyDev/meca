@@ -1,4 +1,4 @@
-import { useAppDispatch } from '@/hooks/redux'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { OneToOneMessage, setChatOneToOneId } from '@/redux/slice/chatOneToOne'
 import { ReactElement } from 'react'
 import defaultAvatar from '@/assets/default-avatar.svg'
@@ -27,6 +27,8 @@ function Chat({
 }: PropsType): ReactElement {
   const dispatch = useAppDispatch()
 
+  const { chatOneToOneId } = useAppSelector((state) => state.chatOneToOne)
+
   const bgUrl = avatar ? `url(${avatar})` : `url(${defaultAvatar})`
 
   const handleChatOnClick = () => {
@@ -39,8 +41,10 @@ function Chat({
 
   return (
     <div
-      className='h-fit p-3 rounded-2xl bg-common-white 
-    flex justify-center items-center gap-3 cursor-pointer'
+      className={`h-fit p-3 rounded-2xl ${
+        chatOneToOneId === id ? 'bg-secondary-light' : 'bg-common-white'
+      } 
+    flex justify-center items-center gap-3 cursor-pointer`}
       onClick={handleChatOnClick}
     >
       <div
@@ -58,14 +62,23 @@ function Chat({
       <div className='w-full'>
         <div className='w-full flex justify-between'>
           <h3 className='text-sm font-bold'>{firstName + ' ' + lastName}</h3>
-          <span className='text-xs text-grey-700'>
-            {time && diffBetweenDateAndNow(time)}
-          </span>
+          {time && (
+            <span className='text-xs text-grey-700'>
+              {diffBetweenDateAndNow(time)}
+            </span>
+          )}
         </div>
         <div className='text-xs flex justify-between items-center'>
-          <p className='max-w-[180px] truncate text-ellipsis'>
-            {lastMessage.text}
-          </p>
+          {lastMessage ? (
+            <p className='max-w-[180px] truncate text-ellipsis'>
+              {lastMessage.text}
+            </p>
+          ) : (
+            <p className='max-w-[180px] truncate text-ellipsis'>
+              start chatting with {firstName}
+            </p>
+          )}
+
           {unread > 0 && (
             <span
               className='flex-shrink-0 text-[8px] text-center

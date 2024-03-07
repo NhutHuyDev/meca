@@ -1,80 +1,88 @@
-import { Chat_History } from '@/data'
 import { ReactElement } from 'react'
 import {
   FileMsg,
   ImgMsg,
   LinkMsg,
-  ReplyMsg,
-  TextMsg,
-  Timeline
+  // ReplyMsg,
+  TextMsg
+  // Timeline
 } from './MsgTypes'
 import ScrollArea from '../ScrollArea'
+import { OneToOneMessage } from '@/redux/slice/chatOneToOne'
+import { useAppSelector } from '@/hooks/redux'
 
-function Messages(): ReactElement {
+export enum MessageType {
+  Text = 'Text',
+  Media = 'Media',
+  Document = 'Document',
+  Link = 'Link'
+}
+
+function Messages({ messages }: { messages: OneToOneMessage[] }): ReactElement {
+  const { clientId } = useAppSelector((state) => state.auth)
+
   return (
     <div className='flex-grow'>
       <ScrollArea maxHeight={'calc(100vh - 136px)'}>
         <div className='p-4 flex flex-col gap-3 items-center'>
-          {Chat_History.map((chat, index) => {
-            switch (chat.type) {
-              case 'divider':
-                return <Timeline key={index} text={chat.text} />
+          {messages.length > 1 ? (
+            messages.map((chat: OneToOneMessage) => {
+              switch (chat.type) {
+                case MessageType.Media:
+                  return (
+                    <ImgMsg
+                      key={chat._id}
+                      message={chat.text}
+                      img={chat.imgUri}
+                      // incoming={chat.}
+                    />
+                  )
 
-              case 'msg':
-                switch (chat.subtype) {
-                  case 'img':
-                    return (
-                      <ImgMsg
-                        key={index}
-                        message={chat.message}
-                        img={chat.img}
-                        incoming={chat.incoming}
-                      />
-                    )
+                // case 'reply':
+                //   return (
+                //     <ReplyMsg
+                //       key={index}
+                //       message={chat.message}
+                //       reply={chat.reply}
+                //       incoming={chat.incoming}
+                //     />
+                //   )
 
-                  case 'reply':
-                    return (
-                      <ReplyMsg
-                        key={index}
-                        message={chat.message}
-                        reply={chat.reply}
-                        incoming={chat.incoming}
-                      />
-                    )
+                case MessageType.Link:
+                  return (
+                    <LinkMsg
+                      key={chat._id}
+                      message={chat.text}
+                      preview={chat.link}
+                      // incoming={chat.incoming}
+                    />
+                  )
 
-                  case 'link':
-                    return (
-                      <LinkMsg
-                        key={index}
-                        message={chat.message}
-                        preview={chat.preview}
-                        incoming={chat.incoming}
-                      />
-                    )
+                case MessageType.Document:
+                  return (
+                    <FileMsg
+                      key={chat._id}
+                      message={chat.text}
+                      // incoming={chat.incoming}
+                    />
+                  )
 
-                  case 'doc':
-                    return (
-                      <FileMsg
-                        key={index}
-                        message={chat.message}
-                        incoming={chat.incoming}
-                      />
-                    )
-
-                  default:
-                    return (
-                      <TextMsg
-                        key={index}
-                        message={chat.message}
-                        incoming={chat.incoming}
-                      />
-                    )
-                }
-
-              default:
-                break
-            }
-          })}
+                default:
+                  return (
+                    <TextMsg
+                      key={chat._id}
+                      message={chat.text}
+                      incoming={chat.sender !== clientId}
+                      createdAt={chat.createdAt}
+                    />
+                  )
+              }
+            })
+          ) : (
+            <p className='text-grey-500 italic mt-auto'>
+              Enjoy your converstation
+            </p>
+          )}
         </div>
       </ScrollArea>
     </div>

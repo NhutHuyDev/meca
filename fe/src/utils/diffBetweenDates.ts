@@ -13,18 +13,18 @@ export function diffBetweenDateAndNow(start: string) {
   const years = endDate.diff(startDate, 'year')
 
   if (seconds < 60) {
-    return `${seconds} seconds`
+    return `${seconds} sec`
   } else if (minutes < 60) {
-    return `${minutes} minutes`
+    return `${minutes} min`
   } else if (hours < 24) {
-    return `${hours} hours`
+    return `${hours} h`
   } else if (days < 7) {
-    return `${days} days`
+    return `${days} d`
   } else if (weeks < 4) {
-    return `${weeks} weeks`
+    return `${weeks} w`
   } else if (months < 12) {
-    return `${months} months`
+    return `${months} m`
   } else {
-    return `${years} years`
+    return `${years} y`
   }
 }

@@ -3,6 +3,7 @@ import { DotsThreeVertical, Download, Image } from 'phosphor-react'
 import { ReactElement } from 'react'
 import { PopoverUI, align } from '../ui/Popover'
 import { Message_options } from '@/data'
+import { diffBetweenDateAndNow } from '@/utils/diffBetweenDates'
 
 type PropTypes = {
   text?: string
@@ -11,9 +12,10 @@ type PropTypes = {
   img?: string
   preview?: string
   incoming?: boolean
+  createdAt?: string
 }
 
-function TextMsg({ message, incoming }: PropTypes): ReactElement {
+function TextMsg({ message, incoming, createdAt }: PropTypes): ReactElement {
   return (
     <div
       className={clsx(
@@ -28,6 +30,9 @@ function TextMsg({ message, incoming }: PropTypes): ReactElement {
         )}
       >
         <p>{message}</p>
+        <span className='text-xs text-grey-500 italic'>
+          {createdAt && diffBetweenDateAndNow(createdAt)}
+        </span>
       </div>
       <PopoverUI
         align={align.start}

@@ -7,7 +7,7 @@ import {
   Socket
 } from 'socket.io'
 import handleFriendEvent from './friend.events'
-import handleMessageEvent from './message.events'
+import handleChatEvent from './chat.events/handleChatEvent'
 
 class SocketIO {
   private io: SocketIOServer
@@ -37,7 +37,7 @@ class SocketIO {
          */
 
         handleFriendEvent(socket, this.io)
-        handleMessageEvent(socket, this.io)
+        handleChatEvent(socket, this.io)
 
         socket.on('end', async (data) => {
           const userId = data.userId

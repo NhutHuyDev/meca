@@ -102,7 +102,6 @@ function ProfileOptions(): ReactElement {
       <button
         className='w-full p-2 hover:bg-grey-300 outline-none rounded-lg flex items-center space-x-2'
         onClick={() => {
-          console.log('hello')
           dispatch(thunkSignOut())
         }}
       >

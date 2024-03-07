@@ -99,7 +99,7 @@ function ChatIndividual(): ReactElement {
                     firstName={chat.from.firstName}
                     lastName={chat.from.lastName}
                     online={chat.from.online}
-                    time={chat.lastMessage.createdAt}
+                    time={chat.lastMessage?.createdAt}
                     unread={chat.unread}
                   />
                 ))}

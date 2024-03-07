@@ -1,12 +1,16 @@
-import { faker } from '@faker-js/faker'
 import { CaretDown, MagnifyingGlass, Phone, VideoCamera } from 'phosphor-react'
 import { ReactElement } from 'react'
-// import { useDispatch } from 'react-redux'
 import { useAppDispatch } from '@/hooks/redux'
 import { toggleSidebar } from '@/redux/slice/app'
+import { ContactUser } from '@/redux/slice/individualContact'
+import defaultAvatar from '@/assets/default-avatar.svg'
 
-function Header(): ReactElement {
+function Header({ currentFrom }: { currentFrom?: ContactUser }): ReactElement {
   const dispatch = useAppDispatch()
+
+  const avatarUrl = currentFrom?.avatar
+    ? `url(${currentFrom?.avatar})`
+    : `url(${defaultAvatar})`
 
   return (
     <div className='bg-grey-200 h-fit w-full px-6 py-4 flex justify-between items-center z-[99] shadow-inner'>
@@ -20,15 +24,22 @@ function Header(): ReactElement {
         <div
           className={`flex-shrink-0 h-9 w-9 rounded-full 
           bg-cover bg-no-repeat bg-center
-          relative after:content-[""] after:block after:h-[10px] after:w-[10px] 
-          after:rounded-full after:bg-success-main after:absolute after:right-0 after:bottom-0 after:shadow'
+          relative ${
+            currentFrom?.online &&
+            'after:content-[""] after:block after:h-[10px] after:w-[10px] after:rounded-full after:bg-success-main after:absolute after:right-0 after:bottom-0 after:shadow'
           }`}
-          style={{ backgroundImage: `url(${faker.image.avatar()}` }}
+          style={{ backgroundImage: avatarUrl }}
         ></div>
 
         <div className='text-sm'>
-          <h3 className='font-semibold'>Nguyen Nhut Huy</h3>
-          <span className='text-grey-700'>Online</span>
+          <h3 className='font-semibold'>
+            {currentFrom?.firstName + ' ' + currentFrom?.lastName}
+          </h3>
+          {currentFrom?.online === true ? (
+            <span className='text-grey-700'>Online</span>
+          ) : (
+            ''
+          )}
         </div>
       </div>
 
