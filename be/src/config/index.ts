@@ -1,4 +1,7 @@
 import DEFAULT_CONFIG from './default'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const dev = {
   app: {

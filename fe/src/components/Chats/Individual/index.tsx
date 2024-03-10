@@ -18,6 +18,8 @@ import {
 function ChatIndividual(): ReactElement {
   const dispatch = useAppDispatch()
 
+  console.log('parent rerendering...')
+
   const [openFriends, setOpenFriends] = useState(false)
 
   useEffect(() => {

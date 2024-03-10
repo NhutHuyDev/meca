@@ -37,6 +37,8 @@ function Footer({
         type: 'Text'
       })
     )
+
+    setText('')
   }
 
   return (

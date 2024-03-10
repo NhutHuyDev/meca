@@ -1,4 +1,4 @@
-import { ReactElement } from 'react'
+import { ReactElement, useEffect, useRef } from 'react'
 import {
   FileMsg,
   ImgMsg,
@@ -21,11 +21,21 @@ export enum MessageType {
 function Messages({ messages }: { messages: OneToOneMessage[] }): ReactElement {
   const { clientId } = useAppSelector((state) => state.auth)
 
+  const messagesRef = useRef<HTMLDivElement>(null)
+
+  const scrollToBottom = () => {
+    messagesRef.current?.scrollIntoView({ behavior: 'instant' })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
+
   return (
     <div className='flex-grow'>
-      <ScrollArea maxHeight={'calc(100vh - 136px)'}>
-        <div className='p-4 flex flex-col gap-3 items-center'>
-          {messages.length > 1 ? (
+      <ScrollArea maxHeight={'calc(100vh - 136px)'} autoScrollBottom>
+        <div className='p-4 flex flex-col gap-3 items-center' ref={messagesRef}>
+          {messages.length > 0 ? (
             messages.map((chat: OneToOneMessage) => {
               switch (chat.type) {
                 case MessageType.Media:

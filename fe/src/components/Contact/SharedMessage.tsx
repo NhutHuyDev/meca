@@ -105,7 +105,7 @@ function LinksContent(): ReactElement {
 function DocsContent(): ReactElement {
   return (
     <div className='space-y-3 m-4'>
-      {Shared_Links.map((docs, index) => (
+      {Shared_Links.map((_, index) => (
         <div
           key={index}
           className='w-full h-fit flex items-start relative justify-start'

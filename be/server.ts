@@ -16,9 +16,7 @@ const socketIO = new SocketIO(server, {
   }
 })
 
-socketIO.connect(() => {
-  log.info('...')
-})
+socketIO.connect()
 
 process.on('SIGINT', () => {
   server.close(() => log.info('Exit Server Express'))

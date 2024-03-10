@@ -3,8 +3,8 @@ import helmet from 'helmet'
 import cors from 'cors'
 import compression from 'compression'
 import rateLimit from 'express-rate-limit'
-import connectToDatabases from './dbs'
-import router from './routes'
+import connectToDatabases from '@/dbs'
+import router from '@/routes'
 
 const app = express()
 
