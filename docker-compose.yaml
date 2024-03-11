@@ -1,0 +1,33 @@
+services:
+  meca-mongo: 
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - meca-mongo-db:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: nnh
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+  meca-be:
+    image: huynguyendev/meca-be
+    ports:
+      - 8080:8080
+    environment:
+      DEV_MONGO_HOST: meca-mongo
+      DEV_MONGO_PORT: 27017
+      DEV_MONGO_NAME: mecaDev
+      DEV_MONGO_USERNAME: nnh
+      DEV_MONGO_PASSWORD: 123456
+    depends_on:
+      - meca-mongo
+  nginx:
+    image: huynguyendev/meca-fe
+    ports:
+      - 80:80
+    depends_on:
+      - meca-be
+volumes:
+  meca-mongo-db:
+
+

@@ -72,6 +72,7 @@ class UserService {
         message: `access your email - ${email} to get reset password code`
       }
     } catch (error) {
+      console.log(error)
       throw new InternalServerError()
     }
   }

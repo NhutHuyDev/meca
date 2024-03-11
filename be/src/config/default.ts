@@ -7,7 +7,9 @@ const DEFAULT_CONFIG = {
       MONGO: {
         HOST: '127.0.0.1',
         PORT: 27017,
-        NAME: 'mecaDev'
+        NAME: 'mecaDev',
+        USERNAME: '',
+        PASSWORD: ''
       }
     },
     SMTP: {
@@ -27,7 +29,9 @@ const DEFAULT_CONFIG = {
       MONGO: {
         HOST: '127.0.0.1',
         PORT: 27017,
-        NAME: 'mecaPro'
+        NAME: 'mecaPro',
+        USERNAME: '',
+        PASSWORD: ''
       }
     },
     SMTP: {

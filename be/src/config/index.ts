@@ -15,7 +15,9 @@ const dev = {
     mongo: {
       host: process.env.DEV_MONGO_HOST || DEFAULT_CONFIG.DEV.DB.MONGO.HOST,
       port: Number(process.env.DEV_MONGO_PORT) || DEFAULT_CONFIG.DEV.DB.MONGO.PORT,
-      name: process.env.DEV_MONGO_NAME || DEFAULT_CONFIG.DEV.DB.MONGO.NAME
+      name: process.env.DEV_MONGO_NAME || DEFAULT_CONFIG.DEV.DB.MONGO.NAME,
+      username: process.env.DEV_MONGO_USERNAME || DEFAULT_CONFIG.DEV.DB.MONGO.USERNAME,
+      password: process.env.DEV_MONGO_PASSWORD || DEFAULT_CONFIG.DEV.DB.MONGO.PASSWORD
     }
   },
   smtp: {
@@ -40,7 +42,9 @@ const pro = {
     mongo: {
       host: process.env.PRO_MONGO_HOST || DEFAULT_CONFIG.PRO.DB.MONGO.HOST,
       port: Number(process.env.PRO_MONGO_PORT) || DEFAULT_CONFIG.PRO.DB.MONGO.PORT,
-      name: process.env.PRO_MONGO_NAME || DEFAULT_CONFIG.PRO.DB.MONGO.NAME
+      name: process.env.PRO_MONGO_NAME || DEFAULT_CONFIG.PRO.DB.MONGO.NAME,
+      username: process.env.PRO_MONGO_USERNAME || DEFAULT_CONFIG.PRO.DB.MONGO.USERNAME,
+      password: process.env.PRO_MONGO_PASSWORD || DEFAULT_CONFIG.PRO.DB.MONGO.PASSWORD
     }
   },
   smtp: {
