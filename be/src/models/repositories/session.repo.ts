@@ -1,9 +1,9 @@
 import { DocumentType } from '@typegoose/typegoose'
 import { omit } from 'lodash'
-import { decodeJwt, signJwt } from '../../helpers/jwt'
-import SessionModel from '../session.model'
-import { User } from '../user.model'
-import config from '../../config'
+import { decodeJwt, signJwt } from '@/helpers/jwt'
+import SessionModel from '@/models/session.model'
+import { User } from '@/models/user.model'
+import config from '@/config'
 
 class SessionRepo {
   static findSessionById = async function (id: string) {

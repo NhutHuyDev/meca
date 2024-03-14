@@ -1,7 +1,4 @@
-import {
-  STATUS_CODE,
-  DEFAULT_STATUS_MESSAGE
-} from '../utils/httpStatusRespones'
+import { STATUS_CODE, DEFAULT_STATUS_MESSAGE } from '@/utils/httpStatusRespones'
 
 class ErrorResponse extends Error {
   code: number

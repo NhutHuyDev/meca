@@ -1,30 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
-import {
-  clearRequestHistory,
-  returnErrorResponse,
-  returnSuccessResponse,
-  setRequestHistory
-} from './request'
 import { AppDispatch, RootState } from '../store'
 import axiosInstance from '@/utils/axios'
 import customHttpHeaders from '@/utils/customHttpHeaders'
-
-export type ContactUser = {
-  _id: string
-  email?: string
-  firstName: string
-  lastName: string
-  verified?: boolean
-  deleted?: boolean
-  avatar?: string
-  about?: string
-  socketId?: string
-  online?: boolean
-  isFriend?: boolean
-  isSentFriendRequest?: boolean
-  wantToMakeFriend?: boolean
-  friendshipRequestId?: string
-}
+import { getError, getRespone, sendRequest } from './request'
+import { ContactUser } from '@/types/user.types'
 
 export type FriendRequest = {
   sender: string
@@ -63,21 +42,23 @@ const slice = createSlice({
  * ---- THUNK ACTIONS ----
  */
 
-type TIndividualContactRequest =
-  | 'fetchFriends'
-  | 'fetchOthers'
-  | 'fetchFriendRequests'
+enum individualContactReq {
+  fetchFriends = 'fetchFriends',
+  fetchOthers = 'fetchOthers',
+  fetchFriendRequests = 'fetchFriendRequests'
+}
 
-/**
- * @description fetch-friends
- */
 export function thunkFetchFriends() {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch(clearRequestHistory())
+    const requestName = individualContactReq.fetchFriends
 
     const apiUrl = '/friends/'
 
     const { auth } = getState()
+
+    sendRequest({
+      requestName
+    })
 
     await axiosInstance
       .get(apiUrl, {
@@ -88,11 +69,9 @@ export function thunkFetchFriends() {
       })
       .then((response) => {
         dispatch(
-          setRequestHistory({
-            request: returnSuccessResponse<TIndividualContactRequest>(
-              'fetchFriends',
-              response.data
-            )
+          getRespone({
+            requestName,
+            responseData: response.data
           })
         )
 
@@ -104,27 +83,26 @@ export function thunkFetchFriends() {
       })
       .catch((error) => {
         dispatch(
-          setRequestHistory({
-            request: returnErrorResponse<TIndividualContactRequest>(
-              'fetchFriends',
-              error.data.message
-            )
+          getError({
+            requestName,
+            errorMessage: error.message
           })
         )
       })
   }
 }
 
-/**
- * @description fetch-others
- */
 export function thunkFetchOthers() {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch(clearRequestHistory())
+    const requestName = individualContactReq.fetchOthers
 
     const apiUrl = '/users/get-others'
 
     const { auth } = getState()
+
+    sendRequest({
+      requestName
+    })
 
     await axiosInstance
       .get(apiUrl, {
@@ -135,11 +113,9 @@ export function thunkFetchOthers() {
       })
       .then((response) => {
         dispatch(
-          setRequestHistory({
-            request: returnSuccessResponse<TIndividualContactRequest>(
-              'fetchOthers',
-              response.data
-            )
+          getRespone({
+            requestName,
+            responseData: response.data
           })
         )
 
@@ -151,25 +127,26 @@ export function thunkFetchOthers() {
       })
       .catch((error) => {
         dispatch(
-          setRequestHistory({
-            request: returnErrorResponse<TIndividualContactRequest>(
-              'fetchOthers',
-              error.data.message
-            )
+          getError({
+            requestName,
+            errorMessage: error.message
           })
         )
       })
   }
 }
 
-// const thunkFetchFriendRequests
 export function thunkFetchFriendRequests() {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch(clearRequestHistory())
+    const requestName = individualContactReq.fetchFriendRequests
 
-    const apiUrl = '/friends/request/'
+    const apiUrl = '/friends/requests/'
 
     const { auth } = getState()
+
+    sendRequest({
+      requestName
+    })
 
     await axiosInstance
       .get(apiUrl, {
@@ -180,11 +157,9 @@ export function thunkFetchFriendRequests() {
       })
       .then((response) => {
         dispatch(
-          setRequestHistory({
-            request: returnSuccessResponse<TIndividualContactRequest>(
-              'fetchFriendRequests',
-              response.data
-            )
+          getRespone({
+            requestName,
+            responseData: response.data
           })
         )
 
@@ -196,17 +171,13 @@ export function thunkFetchFriendRequests() {
       })
       .catch((error) => {
         dispatch(
-          setRequestHistory({
-            request: returnErrorResponse<TIndividualContactRequest>(
-              'fetchFriendRequests',
-              error.data.message
-            )
+          getError({
+            requestName,
+            errorMessage: error.message
           })
         )
       })
   }
 }
-
-export const { setOthers } = slice.actions
 
 export default slice.reducer

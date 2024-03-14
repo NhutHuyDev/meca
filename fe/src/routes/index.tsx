@@ -3,9 +3,10 @@ import {
   FunctionComponent,
   ReactElement,
   Suspense,
-  lazy
+  lazy,
+  useEffect
 } from 'react'
-import { Navigate, useRoutes } from 'react-router-dom'
+import { Navigate, useLocation, useRoutes } from 'react-router-dom'
 
 // layouts
 import DashboardLayout from '../layouts/dashboard'
@@ -15,6 +16,8 @@ import SecondaryLayout from '../layouts/secondary'
 // config
 import { DEFAULT_PATH } from '../config'
 import LoadingScreen from '../components/LoadingScreen'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { clearRequest } from '@/redux/slice/request'
 
 const Loadable = <P extends object>(
   Component: ComponentType<P>
@@ -27,6 +30,17 @@ const Loadable = <P extends object>(
 }
 
 export default function Router() {
+  const dispatch = useAppDispatch()
+
+  const location = useLocation()
+
+  const lastRequest = useAppSelector((state) => state.lastRequest)
+
+  useEffect(() => {
+    lastRequest.request && dispatch(clearRequest())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location, dispatch])
+
   return useRoutes([
     {
       path: '/auth',

@@ -10,7 +10,6 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 
 import { useEffect, useState } from 'react'
 import OtpInput from 'react-otp-input'
-import { clearRequestHistory } from '@/redux/slice/request'
 
 function VerifyEmail() {
   const location = useLocation()
@@ -19,9 +18,10 @@ function VerifyEmail() {
 
   const dispatch = useAppDispatch()
 
-  const previousRequest = location.state?.request as TRequestVerifyOtpResquest
+  const previousRequest = location.state
+    ?.previousRequest as TRequestVerifyOtpResquest
 
-  const { request, isLoading } = useRequest<TVerifyEmailResquest>()
+  const request = useRequest<TVerifyEmailResquest>()
 
   const searchParams = new URLSearchParams(location.search)
 
@@ -38,22 +38,16 @@ function VerifyEmail() {
     dispatch(thunkVerifyEmail(data))
   }
 
-  /**
-   * @description navigation
-   */
-
   useEffect(() => {
     if (request?.verifyEmail?.success) {
       const email = request?.verifyEmail?.responseData?.email
 
       navigator(`/auth/sign-up?email=${email}`, {
         state: {
-          request: request
+          previousRequest: request
         },
         replace: true
       })
-
-      dispatch(clearRequestHistory())
     }
   }, [request, navigator, dispatch])
 
@@ -87,7 +81,7 @@ function VerifyEmail() {
 
           <button
             onClick={onSubmit}
-            disabled={isLoading}
+            disabled={request?.verifyEmail?.isLoading}
             type='submit'
             className='bg-common-black text-common-white p-4 rounded-lg w-full disabled:opacity-75'
           >

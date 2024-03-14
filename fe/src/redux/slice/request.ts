@@ -1,65 +1,109 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-export type TRequestState = {
-  isLoading: boolean
-  request?: object | null
+type TLastRequest = {
+  request?: object
 }
 
-const initialState: TRequestState = {
-  isLoading: false
-}
+const initialState: TLastRequest = {}
 
 const slice = createSlice({
-  name: 'request',
+  name: 'lastRequest',
   initialState,
   reducers: {
-    startRequest(state) {
-      state.isLoading = true
+    sendRequest(state, action: PayloadAction<{ requestName: string }>) {
+      const requestName = action.payload.requestName
+      const isLoading = true
+
+      const request = state.request as {
+        [key: string]: object
+      }
+
+      if (!request) {
+        state.request = {
+          [requestName]: {
+            requestName,
+            isLoading
+          }
+        }
+
+        return
+      }
+
+      const previousReq = Object.keys(request)
+      if (previousReq.length === 1 || previousReq[0] === requestName) {
+        const previousReq = state.request
+          ? (request[requestName] as object)
+          : {}
+        state.request = {
+          [requestName]: {
+            ...previousReq,
+            isLoading
+          }
+        }
+      } else {
+        state.request = {
+          [requestName]: {
+            requestName,
+            isLoading
+          }
+        }
+      }
     },
-    setRequestHistory(state, action) {
-      state.isLoading = false
-      state.request = action.payload.request
+
+    getRespone(
+      state,
+      action: PayloadAction<{ requestName: string; responseData: object }>
+    ) {
+      const requestName = action.payload.requestName
+      const responseData = action.payload.responseData
+      state.request = returnSuccessResponse(requestName, responseData)
     },
-    clearRequestHistory(state) {
-      state.isLoading = false
-      state.request = null
+    getError(
+      state,
+      action: PayloadAction<{ requestName: string; errorMessage: string }>
+    ) {
+      const requestName = action.payload.requestName
+      const errorMessage = action.payload.errorMessage
+      state.request = returnErrorResponse(requestName, errorMessage)
+    },
+    clearRequest(state) {
+      state.request = undefined
     }
   }
 })
 
-export const { startRequest, setRequestHistory, clearRequestHistory } =
-  slice.actions
+export const { sendRequest, getError, getRespone, clearRequest } = slice.actions
 
 export default slice.reducer
 
 export type TRequest<TResponseData> = {
-  success?: boolean | null
-  responseData?: TResponseData | null
+  isLoading: boolean
 
-  error?: boolean | null
-  errorMessage?: string | null
+  success?: boolean
+  responseData?: TResponseData
+
+  error?: boolean
+  errorMessage?: string
 }
 
-export function returnSuccessResponse<T>(requestType: T, responseData: object) {
-  const request = requestType as string
-
+function returnSuccessResponse(requestName: string, responseData: object) {
   return {
-    [request]: {
+    [requestName]: {
+      isLoading: false,
       success: true,
       responseData: responseData,
-      error: false,
-      errorMessage: null
+      error: undefined,
+      errorMessage: undefined
     }
   }
 }
 
-export function returnErrorResponse<T>(requestType: T, errorMessage: string) {
-  const request = requestType as string
-
+function returnErrorResponse(requestName: string, errorMessage: string) {
   return {
-    [request]: {
-      success: false,
-      successResponse: null,
+    [requestName]: {
+      isLoading: false,
+      success: undefined,
+      successResponse: undefined,
       error: true,
       errorMessage: errorMessage
     }

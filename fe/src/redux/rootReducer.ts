@@ -13,7 +13,7 @@ const rootPersistConfig = {
   storage: storage,
   keyPrefix: 'redux-',
   blacklist: [
-    'request',
+    'lastRequest',
     'chatOneToOne',
     'individualContact',
     'loadingOverlay',
@@ -24,7 +24,7 @@ const rootPersistConfig = {
 const rootReducer = combineReducers({
   app: appReducer,
   auth: authReducer,
-  request: requestReducer,
+  lastRequest: requestReducer,
   chatOneToOne: chatOneToOneReducer,
   individualContact: individualContactReducer,
   loadingOverlay: loadingOverlayReducer,

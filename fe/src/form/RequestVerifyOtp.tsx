@@ -12,14 +12,13 @@ import {
 import { useNavigate } from 'react-router-dom'
 import useRequest from '@/hooks/useRequest'
 import { useEffect } from 'react'
-import { clearRequestHistory } from '@/redux/slice/request'
 
 function RequestVerifyOtp() {
   const navigator = useNavigate()
 
   const dispatch = useAppDispatch()
 
-  const { request, isLoading } = useRequest<TRequestVerifyOtpResquest>()
+  const request = useRequest<TRequestVerifyOtpResquest>()
 
   const {
     register,
@@ -33,20 +32,14 @@ function RequestVerifyOtp() {
     dispatch(thunkRequestVerifyOtp(data))
   }
 
-  /**
-   * @description navigation
-   */
-
   useEffect(() => {
     if (request?.requestVerifyOtp?.success) {
       const sentEmail = request?.requestVerifyOtp?.responseData?.email
 
       navigator(`/auth/verify-email/?email=${sentEmail}`, {
-        state: { request: request },
+        state: { previousRequest: request },
         replace: true
       })
-
-      dispatch(clearRequestHistory())
     }
   }, [request, navigator, dispatch])
 
@@ -67,7 +60,7 @@ function RequestVerifyOtp() {
         )}
 
         <button
-          disabled={isLoading}
+          disabled={request?.requestVerifyOtp?.isLoading}
           type='submit'
           className='bg-common-black text-common-white p-4 rounded-lg w-full disabled:opacity-75'
         >

@@ -1,5 +1,5 @@
-import FriendShipRequestRepo from '../models/repositories/friendshipRequest'
-import FriendShipRepo from '../models/repositories/friendship.repo'
+import FriendShipRequestRepo from '@/models/repositories/friendshipRequest'
+import FriendShipRepo from '@/models/repositories/friendship.repo'
 
 class FriendshipService {
   static getFriends = async function (userId: string) {

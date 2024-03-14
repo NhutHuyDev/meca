@@ -12,30 +12,13 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import useRequest from '@/hooks/useRequest'
-import { clearRequestHistory } from '@/redux/slice/request'
 
 function ResetPassword() {
   const dispatch = useAppDispatch()
 
   const navigator = useNavigate()
 
-  const { request, isLoading } = useRequest<TForgotPasswordResquest>()
-
-  useEffect(() => {
-    if (request?.forgotPassword?.success) {
-      const sentEmail = request?.forgotPassword?.responseData?.email
-
-      navigator(
-        `/confirmation/auth/sent-mail?email=${sentEmail}&status=sucess`,
-        {
-          state: { request: request },
-          replace: true
-        }
-      )
-
-      dispatch(clearRequestHistory())
-    }
-  }, [navigator, request, dispatch])
+  const request = useRequest<TForgotPasswordResquest>()
 
   const {
     register,
@@ -49,9 +32,18 @@ function ResetPassword() {
     dispatch(thunkForgotPassword(data))
   }
 
-  /**
-   * @description navigation
-   */
+  useEffect(() => {
+    if (request?.forgotPassword?.success) {
+      const sentEmail = request?.forgotPassword?.responseData?.email
+
+      navigator(
+        `/confirmation/auth/sent-mail?email=${sentEmail}&status=sucess`,
+        {
+          replace: true
+        }
+      )
+    }
+  }, [navigator, request, dispatch])
 
   return (
     <>
@@ -70,7 +62,7 @@ function ResetPassword() {
         )}
 
         <button
-          disabled={isLoading}
+          disabled={request?.forgotPassword?.isLoading}
           type='submit'
           className='bg-common-black text-common-white p-4 rounded-lg w-full disabled:opacity-75'
         >

@@ -1,7 +1,7 @@
 import nodemailer, { SendMailOptions } from 'nodemailer'
 import log from './logger'
-import config from '../config'
-import { InternalServerError } from '../core/error.responses'
+import config from '@/config'
+import { InternalServerError } from '@/core/error.responses'
 
 /**
  * @description create a test smtp account

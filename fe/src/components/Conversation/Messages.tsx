@@ -8,8 +8,8 @@ import {
   // Timeline
 } from './MsgTypes'
 import ScrollArea from '../ScrollArea'
-import { OneToOneMessage } from '@/redux/slice/chatOneToOne'
 import { useAppSelector } from '@/hooks/redux'
+import { OneToOneMessage } from '@/types/message.types'
 
 export enum MessageType {
   Text = 'Text',

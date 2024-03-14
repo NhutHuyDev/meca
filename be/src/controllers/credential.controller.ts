@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
-import { TForgotPasswordSchema, TResetPasswordSchema } from '../schema/credential.schema'
-import CredentialService from '../services/credential.services'
-import { OkResponse } from '../core/success.responses'
+import { TForgotPasswordSchema, TResetPasswordSchema } from '@/schema/credential.schema'
+import CredentialService from '@/services/credential.services'
+import { OkResponse } from '@/core/success.responses'
 
 class CredentialController {
   static forgotPasswordHandler = async function (

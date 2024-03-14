@@ -8,11 +8,10 @@ import axios from '@/utils/axios'
 import { AppDispatch, RootState } from '../store'
 import customHttpHeaders from '@/utils/customHttpHeaders'
 import {
-  startRequest,
-  clearRequestHistory,
-  returnErrorResponse,
-  returnSuccessResponse,
-  setRequestHistory,
+  sendRequest,
+  getRespone,
+  getError,
+  clearRequest,
   TRequest
 } from './request'
 import { TSignUpSchema } from '@/lib/formSchema/signUp'
@@ -57,20 +56,21 @@ export default slice.reducer
  * ---- THUNK ACTIONS ----
  */
 
-type TAuthRequest =
-  | 'signIn'
-  | 'signOut'
-  | 'forgotPassword'
-  | 'resetPassword'
-  | 'requestVerifyOtp'
-  | 'verifyEmail'
-  | 'signUp'
+enum authReq {
+  signIn = 'signIn',
+  signOut = 'signOut',
+  forgotPassword = 'forgotPassword',
+  resetPassword = 'resetPassword',
+  requestVerifyOtp = 'requestVerifyOtp',
+  verifyEmail = 'verifyEmail',
+  signUp = 'signUp'
+}
 
 /**
  * @description sign-in
  */
 export type TSignInResquest = {
-  signIn: TRequest<{
+  [authReq.signIn]: TRequest<{
     clientId: string
     accessToken: string
     refreshToken: string
@@ -78,21 +78,25 @@ export type TSignInResquest = {
 }
 export function thunkSignIn(formValue: TSignInSchema) {
   return async (dispatch: AppDispatch) => {
+    const requestName = authReq.signIn
     const apiUrl = '/auth/sign-in'
 
-    dispatch(startRequest())
+    dispatch(
+      sendRequest({
+        requestName
+      })
+    )
 
     await axios
       .post(apiUrl, { ...formValue })
       .then((response) => {
         dispatch(
-          setRequestHistory({
-            request: returnSuccessResponse<TAuthRequest>(
-              'signIn',
-              response.data
-            )
+          getRespone({
+            requestName,
+            responseData: response.data
           })
         )
+
         dispatch(
           slice.actions.signIn({
             isLoggedIn: true,
@@ -104,11 +108,9 @@ export function thunkSignIn(formValue: TSignInSchema) {
       })
       .catch((error) => {
         dispatch(
-          setRequestHistory({
-            request: returnErrorResponse<TAuthRequest>(
-              'signIn',
-              error.data.message
-            )
+          getError({
+            requestName,
+            errorMessage: error.message
           })
         )
       })
@@ -120,7 +122,7 @@ export function thunkSignIn(formValue: TSignInSchema) {
  */
 export function thunkSignOut() {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch(clearRequestHistory())
+    dispatch(clearRequest())
 
     const { auth } = getState()
 
@@ -151,36 +153,37 @@ export function thunkSignOut() {
  * @description forgot-password
  */
 export type TForgotPasswordResquest = {
-  forgotPassword: TRequest<{
+  [authReq.forgotPassword]: TRequest<{
     email: string
     message: string
   }>
 }
 export function thunkForgotPassword(formValue: TResetPasswordSchema) {
   return async (dispatch: AppDispatch) => {
+    const requestName = authReq.forgotPassword
     const apiUrl = '/auth/forgot-password'
 
-    dispatch(startRequest())
+    dispatch(
+      sendRequest({
+        requestName
+      })
+    )
 
     await axios
       .post(apiUrl, { ...formValue })
       .then((response) => {
         dispatch(
-          setRequestHistory({
-            request: returnSuccessResponse<TAuthRequest>(
-              'forgotPassword',
-              response.data
-            )
+          getRespone({
+            requestName,
+            responseData: response.data
           })
         )
       })
       .catch((error) => {
         dispatch(
-          setRequestHistory({
-            request: returnErrorResponse<TAuthRequest>(
-              'forgotPassword',
-              error.data.message
-            )
+          getError({
+            requestName,
+            errorMessage: error.message
           })
         )
       })
@@ -192,7 +195,7 @@ export function thunkForgotPassword(formValue: TResetPasswordSchema) {
  */
 
 export type TResetPasswordResquest = {
-  resetPassword: TRequest<{
+  [authReq.resetPassword]: TRequest<{
     email: string
     message: string
   }>
@@ -201,12 +204,15 @@ export function thunkResetPassword(formValue: TNewPasswordSchema) {
   const userId = formValue.params?.userId
   const passwordResetCode = formValue.params?.passwordResetCode
 
+  const requestName = authReq.resetPassword
   const apiUrl = '/auth/reset-password'
 
   return async (dispatch: AppDispatch) => {
-    dispatch(clearRequestHistory())
-
-    dispatch(startRequest())
+    dispatch(
+      sendRequest({
+        requestName: requestName
+      })
+    )
 
     await axios
       .post(`${apiUrl}/${userId}/${passwordResetCode}`, {
@@ -214,21 +220,17 @@ export function thunkResetPassword(formValue: TNewPasswordSchema) {
       })
       .then((response) => {
         dispatch(
-          setRequestHistory({
-            request: returnSuccessResponse<TAuthRequest>(
-              'resetPassword',
-              response.data
-            )
+          getRespone({
+            requestName: requestName,
+            responseData: response.data
           })
         )
       })
       .catch((error) => {
         dispatch(
-          setRequestHistory({
-            request: returnErrorResponse<TAuthRequest>(
-              'resetPassword',
-              error.data.message
-            )
+          getError({
+            requestName: requestName,
+            errorMessage: error.message
           })
         )
       })
@@ -240,16 +242,22 @@ export function thunkResetPassword(formValue: TNewPasswordSchema) {
  */
 
 export type TRequestVerifyOtpResquest = {
-  requestVerifyOtp: TRequest<{
+  [authReq.requestVerifyOtp]: TRequest<{
     email: string
     message: string
   }>
 }
 export function thunkRequestVerifyOtp(formValue: TRequestVerifyOtpSchema) {
+  const requestName = authReq.requestVerifyOtp
+
   const apiUrl = '/users/request-verify-otp'
 
   return async (dispatch: AppDispatch) => {
-    dispatch(startRequest())
+    dispatch(
+      sendRequest({
+        requestName
+      })
+    )
 
     await axios
       .post(apiUrl, {
@@ -257,22 +265,20 @@ export function thunkRequestVerifyOtp(formValue: TRequestVerifyOtpSchema) {
       })
       .then((response) => {
         dispatch(
-          setRequestHistory({
-            request: returnSuccessResponse<TAuthRequest>(
-              'requestVerifyOtp',
-              response.data
-            )
+          getRespone({
+            requestName,
+            responseData: response.data
           })
         )
       })
       .catch((error) => {
         dispatch(
-          setRequestHistory({
-            request: returnErrorResponse<TAuthRequest>(
-              'requestVerifyOtp',
-              error.data.message
-            )
-          })
+          dispatch(
+            getError({
+              requestName,
+              errorMessage: error.message
+            })
+          )
         )
       })
   }
@@ -283,16 +289,21 @@ export function thunkRequestVerifyOtp(formValue: TRequestVerifyOtpSchema) {
  */
 
 export type TVerifyEmailResquest = {
-  verifyEmail: TRequest<{
+  [authReq.verifyEmail]: TRequest<{
     email: string
     message: string
   }>
 }
 export function thunkVerifyEmail(formValue: TVerifyEmailSchema) {
+  const requestName = authReq.requestVerifyOtp
   const apiUrl = '/users/verify'
 
   return async (dispatch: AppDispatch) => {
-    dispatch(startRequest())
+    dispatch(
+      sendRequest({
+        requestName
+      })
+    )
 
     await axios
       .post(apiUrl, {
@@ -300,21 +311,19 @@ export function thunkVerifyEmail(formValue: TVerifyEmailSchema) {
       })
       .then((response) => {
         dispatch(
-          setRequestHistory({
-            request: returnSuccessResponse<TAuthRequest>(
-              'verifyEmail',
-              response.data
-            )
-          })
+          dispatch(
+            getRespone({
+              requestName,
+              responseData: response.data
+            })
+          )
         )
       })
       .catch((error) => {
         dispatch(
-          setRequestHistory({
-            request: returnErrorResponse<TAuthRequest>(
-              'verifyEmail',
-              error.data.message
-            )
+          getError({
+            requestName,
+            errorMessage: error.message
           })
         )
       })
@@ -326,16 +335,21 @@ export function thunkVerifyEmail(formValue: TVerifyEmailSchema) {
  */
 
 export type TSignUpRequest = {
-  signUp: TRequest<{
+  [authReq.signUp]: TRequest<{
     email: string
     message: string
   }>
 }
 export function thunkSignUp(formValue: TSignUpSchema) {
+  const requestName = authReq.signUp
   const apiUrl = '/users/'
 
   return async (dispatch: AppDispatch) => {
-    dispatch(startRequest())
+    dispatch(
+      sendRequest({
+        requestName
+      })
+    )
 
     await axios
       .post(apiUrl, {
@@ -343,21 +357,19 @@ export function thunkSignUp(formValue: TSignUpSchema) {
       })
       .then((response) => {
         dispatch(
-          setRequestHistory({
-            request: returnSuccessResponse<TAuthRequest>(
-              'signUp',
-              response.data
-            )
-          })
+          dispatch(
+            getRespone({
+              requestName,
+              responseData: response.data
+            })
+          )
         )
       })
       .catch((error) => {
         dispatch(
-          setRequestHistory({
-            request: returnErrorResponse<TAuthRequest>(
-              'signUp',
-              error.data.message
-            )
+          getError({
+            requestName,
+            errorMessage: error.message
           })
         )
       })

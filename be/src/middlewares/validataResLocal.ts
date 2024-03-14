@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
-import checkValidObjectId from '../utils/checkValidObjectId'
-import { BadRequestError } from '../core/error.responses'
+import checkValidObjectId from '@/utils/checkValidObjectId'
+import { BadRequestError } from '@/core/error.responses'
 
 const validateResLocal = (_: Request, res: Response, next: NextFunction) => {
   /**

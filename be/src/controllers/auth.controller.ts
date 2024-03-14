@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
-import { TCreateSessionSchema } from '../schema/session.schema'
-import { OkResponse } from '../core/success.responses'
-import AccessService from '../services/access.services'
-import customHttpHeaders from '../utils/customHttpHeaders'
+import { TCreateSessionSchema } from '@/schema/session.schema'
+import { OkResponse } from '@/core/success.responses'
+import AccessService from '@/services/access.services'
+import customHttpHeaders from '@/utils/customHttpHeaders'
 
 class AuthController {
   static signInHandler = async function (

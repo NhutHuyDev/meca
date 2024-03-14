@@ -4,9 +4,9 @@ import {
   TCreateUserSchema,
   TVerifyUserSchema,
   TUpdateUserSchema
-} from '../schema/user.schema'
-import UserService from '../services/user.services'
-import { CreatedResponse, OkResponse } from '../core/success.responses'
+} from '@/schema/user.schema'
+import UserService from '@/services/user.services'
+import { CreatedResponse, OkResponse } from '@/core/success.responses'
 
 class UserController {
   static requestVerifyOtpHandler = async function (
@@ -36,7 +36,9 @@ class UserController {
     req: Request<object, object, TUpdateUserSchema>,
     res: Response
   ) {
-    new OkResponse(await UserService.updateInformation(req.body)).send(res)
+    const email = res.locals.user.email
+    // console.log('::email', email)
+    new OkResponse(await UserService.updateInformation(email, req.body)).send(res)
   }
 
   static getCurrentUserHandler = async function (_: Request, res: Response) {

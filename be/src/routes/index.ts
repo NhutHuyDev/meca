@@ -3,13 +3,19 @@ import userRoutes from './user.routes'
 import authRoutes from './auth.routes'
 import friendshipRoutes from './friendship.routes'
 import chatOneToOneRoutes from './chatOneToOne.routes'
-import { NotFoundError } from '../core/error.responses'
-import log from '../utils/logger'
-import deserializeUser from '../middlewares/deserializeUser'
+import { NotFoundError } from '@/core/error.responses'
+import log from '@/utils/logger'
+import deserializeUser from '@/middlewares/deserializeUser'
+import validateHeader from '@/middlewares/validateHeader'
 
 const router = express.Router()
 
 router.get('/v1/api/health-check', (_, res) => res.sendStatus(200))
+
+/**
+ * @description validateHeader
+ */
+router.use(validateHeader)
 
 /**
  * @description deserializeUser

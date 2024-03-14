@@ -2,55 +2,50 @@ import LoadingOverlay from '@/components/LoadingOverlay'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { connectSocket, socket } from '@/socket'
 import { ReactElement, useEffect } from 'react'
-import {
-  listenAcceptedFriendRequestResponse,
-  listenFrientRequestSent,
-  listenNewFriendRequest,
-  listenRecipientCancelFriendRequestResponse,
-  listenSenderCancelFriendRequestResponse,
-  listenUnFriendRequestResponse
-} from './friend.event'
-import { listenNewMessage } from './chat.event/on.event'
+import { Navigate } from 'react-router-dom'
+import friendEventHandler from './friend.event/on'
+import chatEventHandler from './chat.event/on'
+import serviceErrorHandler from './serviceErrorEvent'
 
 function RealTimeWapper({ children }: { children: ReactElement }) {
   const dispatch = useAppDispatch()
-  const { isLoggedIn, clientId } = useAppSelector((state) => state.auth)
+  const { clientId, accessToken, isLoggedIn } = useAppSelector(
+    (state) => state.auth
+  )
   const { open } = useAppSelector((state) => state.loadingOverlay)
 
   useEffect(() => {
-    console.log('::socket: ', socket)
+    if (!socket || !socket.connected) {
+      connectSocket(accessToken, clientId)
 
-    if ((!socket || (socket && !socket.connected)) && clientId && isLoggedIn) {
-      connectSocket(clientId)
+      dispatch(friendEventHandler())
 
-      dispatch(listenFrientRequestSent())
-      dispatch(listenNewFriendRequest())
+      dispatch(chatEventHandler())
 
-      dispatch(listenAcceptedFriendRequestResponse())
-
-      dispatch(listenSenderCancelFriendRequestResponse())
-      dispatch(listenRecipientCancelFriendRequestResponse())
-
-      dispatch(listenUnFriendRequestResponse())
-
-      dispatch(listenNewMessage())
+      dispatch(serviceErrorHandler())
     }
 
     window.addEventListener('beforeunload', () => {
-      socket.emit('end', { userId: clientId })
+      socket.emit('end')
     })
 
     return () => {
       window.removeEventListener('beforeunload', () => {
-        socket.emit('end', { userId: clientId })
+        socket.emit('end')
       })
     }
-  }, [clientId, isLoggedIn, dispatch])
+  }, [accessToken, clientId, dispatch])
 
   return (
     <>
-      <LoadingOverlay open={open} />
-      {children}
+      {isLoggedIn ? (
+        <>
+          <LoadingOverlay open={open} />
+          {children}
+        </>
+      ) : (
+        <Navigate to='/auth/sign-in' replace />
+      )}
     </>
   )
 }

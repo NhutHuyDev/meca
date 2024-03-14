@@ -1,4 +1,4 @@
-import CredentialModel from '../credential.model'
+import CredentialModel from '@/models/credential.model'
 import { Types } from 'mongoose'
 
 class CredentialRepo {

@@ -1,11 +1,8 @@
 {
-  "name": "mern-chat-app-server-side",
+  "name": "meca-be",
   "version": "1.0.0",
-  "description": "mern-chat-app server side with express & typescript",
-  "main": "app.js",
-  "engines": {
-    "node": "v20.11.1"
-  },
+  "description": "Server for HTTP request with Express & Typescript",
+  "main": "server.ts",
   "scripts": {
     "dev": "npx nodemon",
     "build": "rimraf ./dist && tsc && tsc-alias",
@@ -33,11 +30,9 @@
     "nodemailer": "^6.9.9",
     "otp-generator": "^4.0.1",
     "pino": "^8.18.0",
-    "socket.io": "^4.7.4",
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@tsconfig/node20": "^20.1.2",
     "@typegoose/typegoose": "^12.1.0",
     "@types/compression": "^1.7.5",
     "@types/cors": "^2.8.17",
@@ -57,7 +52,6 @@
     "prettier": "^3.2.5",
     "rimraf": "^5.0.5",
     "ts-node": "^10.9.2",
-    "ts-node-dev": "^2.0.0",
     "tsc-alias": "^1.8.8",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.3.3"

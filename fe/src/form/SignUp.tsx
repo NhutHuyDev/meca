@@ -11,7 +11,6 @@ import {
 } from '@/redux/slice/auth'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '@/hooks/redux'
-import { clearRequestHistory } from '@/redux/slice/request'
 
 function SignUp() {
   const navigator = useNavigate()
@@ -20,9 +19,10 @@ function SignUp() {
 
   const dispatch = useAppDispatch()
 
-  const previousRequest = location.state?.request as TVerifyEmailResquest
+  const previousRequest = location.state
+    ?.previousRequest as TVerifyEmailResquest
 
-  const { request, isLoading } = useRequest<TSignUpRequest>()
+  const request = useRequest<TSignUpRequest>()
 
   const searchParams = new URLSearchParams(location.search)
 
@@ -48,14 +48,9 @@ function SignUp() {
     dispatch(thunkSignUp(data))
   }
 
-  /**
-   * @description navigation
-   */
   useEffect(() => {
     if (request?.signUp?.success) {
       navigator('/auth/sign-in', { replace: true })
-
-      dispatch(clearRequestHistory())
     }
   }, [request, navigator, dispatch])
 
@@ -146,7 +141,7 @@ function SignUp() {
           )}
 
           <button
-            disabled={isLoading}
+            disabled={request?.signUp?.success}
             type='submit'
             className='bg-common-black text-common-white p-4 rounded-lg w-full disabled:opacity-75'
           >

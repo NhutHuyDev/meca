@@ -1,47 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { ContactUser } from './individualContact'
-import {
-  clearRequestHistory,
-  returnErrorResponse,
-  returnSuccessResponse,
-  setRequestHistory
-} from './request'
 import axiosInstance from '@/utils/axios'
 import customHttpHeaders from '@/utils/customHttpHeaders'
 import { AppDispatch, RootState } from '../store'
 import { TNewMessageData } from '@/realtime/chat.event/chat.event.list'
-
-export type OneToOneMessage = {
-  _id: string
-
-  sender?: string
-
-  recipient?: string
-
-  type?: string
-
-  chatOneToOne?: string
-
-  text?: string
-
-  imgUri?: string
-
-  fileUri?: string
-
-  link?: string
-
-  replyMsg?: string
-
-  createdAt?: string
-}
-
-export type ChatOneToOne = {
-  _id: string
-  from: ContactUser
-  unread: number
-  lastMessage: OneToOneMessage
-  pinned?: boolean
-}
+import { getError, getRespone, sendRequest } from './request'
+import { OneToOneMessage } from '@/types/message.types'
+import { ChatOneToOne } from '@/types/chat.types'
+import { ContactUser } from '@/types/user.types'
 
 export type TChatOneToOneState = {
   chatOneToOneId: string
@@ -131,18 +96,27 @@ export const {
 
 export default slice.reducer
 
-type TChatOneToOneRequest = 'fetchChatOneToOnes' | 'getChatDetail'
+enum chatOneToOneReq {
+  fetchChats = 'fetchChats',
+  fetchChat = 'fetchChat'
+}
 
 /**
- * @description fetch-ChatOneToOne
+ * @description fetchChats
  */
 export function thunkFetchChatOneToOnes() {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch(clearRequestHistory())
+    const requestName = chatOneToOneReq.fetchChats
 
     const apiUrl = '/chat/individual/'
 
     const { auth } = getState()
+
+    dispatch(
+      sendRequest({
+        requestName
+      })
+    )
 
     await axiosInstance
       .get(apiUrl, {
@@ -153,11 +127,9 @@ export function thunkFetchChatOneToOnes() {
       })
       .then((response) => {
         dispatch(
-          setRequestHistory({
-            request: returnSuccessResponse<TChatOneToOneRequest>(
-              'fetchChatOneToOnes',
-              response.data
-            )
+          getRespone({
+            requestName,
+            responseData: response.data
           })
         )
 
@@ -169,11 +141,9 @@ export function thunkFetchChatOneToOnes() {
       })
       .catch((error) => {
         dispatch(
-          setRequestHistory({
-            request: returnErrorResponse<TChatOneToOneRequest>(
-              'fetchChatOneToOnes',
-              error.data.message
-            )
+          getError({
+            requestName,
+            errorMessage: error.message
           })
         )
       })
@@ -185,11 +155,17 @@ export function thunkFetchChatOneToOnes() {
  */
 export function thunkGetChatDetail(chatOneToOneId: string) {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch(clearRequestHistory())
+    const requestName = chatOneToOneReq.fetchChat
 
     const apiUrl = `/chat/individual/${chatOneToOneId}`
 
     const { auth } = getState()
+
+    dispatch(
+      sendRequest({
+        requestName
+      })
+    )
 
     await axiosInstance
       .get(apiUrl, {
@@ -200,11 +176,9 @@ export function thunkGetChatDetail(chatOneToOneId: string) {
       })
       .then((response) => {
         dispatch(
-          setRequestHistory({
-            request: returnSuccessResponse<TChatOneToOneRequest>(
-              'getChatDetail',
-              response.data[0]
-            )
+          getRespone({
+            requestName,
+            responseData: response.data[0]
           })
         )
 
@@ -217,11 +191,9 @@ export function thunkGetChatDetail(chatOneToOneId: string) {
       })
       .catch((error) => {
         dispatch(
-          setRequestHistory({
-            request: returnErrorResponse<TChatOneToOneRequest>(
-              'getChatDetail',
-              error.data.message
-            )
+          getError({
+            requestName,
+            errorMessage: error.message
           })
         )
       })

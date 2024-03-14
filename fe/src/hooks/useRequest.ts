@@ -1,19 +1,14 @@
+import { TRequest } from '@/redux/slice/request'
 import { useAppSelector } from './redux'
 
-type TRequest<TResponseData> = {
-  isLoading: boolean
-  request: {
-    [key in keyof TResponseData]?: TResponseData[key] | null
-  }
+type TLastRequest<TResponseData> = {
+  request: TRequest<TResponseData>
 }
 
 export default function <TResponseData>() {
-  const { request, isLoading } = useAppSelector(
-    (state) => state.request
-  ) as TRequest<TResponseData>
+  const { request } = useAppSelector(
+    (state) => state.lastRequest
+  ) as TLastRequest<TResponseData>
 
-  return {
-    request,
-    isLoading
-  }
+  return request
 }

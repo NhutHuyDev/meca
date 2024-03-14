@@ -1,20 +1,16 @@
 import { ReactElement, useEffect, useState } from 'react'
 import defaultAvatar from '@/assets/default-avatar.svg'
-import {
-  ContactUser,
-  thunkFetchFriendRequests
-} from '@/redux/slice/individualContact'
+import { thunkFetchFriendRequests } from '@/redux/slice/individualContact'
 import ScrollArea from '../ScrollArea'
 import { diffBetweenDateAndNow } from '@/utils/diffBetweenDates'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import {
-  emitAcceptFriendRequestEvent,
-  emitRecipientCancelFriendRequest,
-  emitSenderCancelFriendRequest
-} from '@/realtime/friend.event'
+import FriendEventEmit from '@/realtime/friend.event/emit'
+import { ContactUser } from '@/types/user.types'
 
 function FriendRequests(): ReactElement {
   const dispatch = useAppDispatch()
+
+  const { clientId } = useAppSelector((state) => state.auth)
 
   const { friendRequests } = useAppSelector((state) => state.individualContact)
 
@@ -70,25 +66,33 @@ function FriendRequests(): ReactElement {
       </div>
       <div>
         <ScrollArea maxHeight='150px'>
-          <div className='space-y-2'>
-            {isSender
-              ? requests.map((request) => (
-                  <SentFriendRequest
-                    key={request._id}
-                    _id={request._id}
-                    recipient={request.recipient}
-                    createdAt={request.createdAt}
-                  />
-                ))
-              : requests.map((request) => (
-                  <RequestFriend
-                    key={request._id}
-                    _id={request._id}
-                    sender={request.sender}
-                    createdAt={request.createdAt}
-                  />
-                ))}
-          </div>
+          {requests.length > 0 ? (
+            <div className='space-y-2'>
+              {isSender
+                ? requests.map((request) => (
+                    <SentFriendRequest
+                      key={request._id}
+                      _id={request._id}
+                      clientId={clientId}
+                      recipient={request.recipient}
+                      createdAt={request.createdAt}
+                    />
+                  ))
+                : requests.map((request) => (
+                    <RequestFriend
+                      key={request._id}
+                      _id={request._id}
+                      clientId={clientId}
+                      sender={request.sender}
+                      createdAt={request.createdAt}
+                    />
+                  ))}
+            </div>
+          ) : (
+            <div className='mt-5'>
+              <p className='text-grey-500 italic text-center text-sm'>Empty</p>
+            </div>
+          )}
         </ScrollArea>
       </div>
     </div>
@@ -97,6 +101,7 @@ function FriendRequests(): ReactElement {
 
 type FriendRequestPropsType = {
   _id: string
+  clientId: string
   recipient?: ContactUser
   sender?: ContactUser
   isSender?: boolean
@@ -105,6 +110,7 @@ type FriendRequestPropsType = {
 
 function SentFriendRequest({
   _id,
+  clientId,
   recipient,
   createdAt
 }: FriendRequestPropsType) {
@@ -136,14 +142,15 @@ function SentFriendRequest({
           <button
             onClick={() => {
               dispatch(
-                emitSenderCancelFriendRequest({
-                  friendRequestId: _id
+                FriendEventEmit.cancel_request({
+                  requestId: _id,
+                  senderId: clientId
                 })
               )
             }}
             className='rounded-full p-2 text-sm italic text-error-dark hover:bg-error-lighter'
           >
-            Cancel
+            cancel
           </button>
         </div>
       </div>
@@ -151,7 +158,12 @@ function SentFriendRequest({
   )
 }
 
-function RequestFriend({ _id, sender, createdAt }: FriendRequestPropsType) {
+function RequestFriend({
+  _id,
+  clientId,
+  sender,
+  createdAt
+}: FriendRequestPropsType) {
   const senderAvatar = sender?.avatar
     ? `url(${sender.avatar})`
     : `url(${defaultAvatar})`
@@ -184,8 +196,9 @@ function RequestFriend({ _id, sender, createdAt }: FriendRequestPropsType) {
             <button
               onClick={() => {
                 dispatch(
-                  emitAcceptFriendRequestEvent({
-                    friendRequestId: _id
+                  FriendEventEmit.accept_request({
+                    requestId: _id,
+                    recipientId: clientId
                   })
                 )
               }}
@@ -197,8 +210,9 @@ function RequestFriend({ _id, sender, createdAt }: FriendRequestPropsType) {
             <button
               onClick={() => {
                 dispatch(
-                  emitRecipientCancelFriendRequest({
-                    friendRequestId: _id
+                  FriendEventEmit.reject_request({
+                    requestId: _id,
+                    recipientId: clientId
                   })
                 )
               }}

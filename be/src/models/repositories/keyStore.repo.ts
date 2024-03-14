@@ -1,6 +1,6 @@
 import { Types } from 'mongoose'
-import { generateRSAKeyPair } from '../../helpers/rsa'
-import KeyStoreModel from '../keyStore.model'
+import { generateRSAKeyPair } from '@/helpers/rsa'
+import KeyStoreModel from '@/models/keyStore.model'
 
 class KeyStoreRepo {
   static createKeyPair = async function (userId: string) {

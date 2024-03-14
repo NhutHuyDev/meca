@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import { OkResponse } from '../core/success.responses'
-import FriendshipService from '../services/friendship.services'
+import { OkResponse } from '@/core/success.responses'
+import FriendshipService from '@/services/friendship.services'
 
 class FriendshipController {
   static getFriendsHandler = async function (_: Request, res: Response) {

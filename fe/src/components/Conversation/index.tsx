@@ -22,7 +22,7 @@ function Converstation(): ReactElement {
   return (
     <div className='h-[100vh] flex-grow shadow-inner'>
       <div className='flex flex-col w-full h-full'>
-        {chatOneToOneId != '' ? (
+        {chatOneToOneId !== '' ? (
           <>
             <Header currentFrom={currentFrom} />
             <Messages messages={messages} />

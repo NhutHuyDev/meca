@@ -1,5 +1,5 @@
 import { Types } from 'mongoose'
-import FriendshipRequestModel from '../friendshipRequest.model'
+import FriendshipRequestModel from '@/models/friendshipRequest.model'
 
 class FriendshipRequestRepo {
   static deleteBySender = async function (id: string) {

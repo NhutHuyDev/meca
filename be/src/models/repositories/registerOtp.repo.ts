@@ -1,4 +1,4 @@
-import RegisterOtpModel from '../registerOtp.model'
+import RegisterOtpModel from '@/models/registerOtp.model'
 
 class RegisterOtpRepo {
   static createRegisterOtp = async function (email: string) {

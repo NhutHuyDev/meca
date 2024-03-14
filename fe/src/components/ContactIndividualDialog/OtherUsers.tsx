@@ -1,14 +1,11 @@
 import { ReactElement, useEffect } from 'react'
 import defaultAvatar from '@/assets/default-avatar.svg'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { ContactUser, thunkFetchOthers } from '@/redux/slice/individualContact'
+import { thunkFetchOthers } from '@/redux/slice/individualContact'
 import ScrollArea from '../ScrollArea'
-import {
-  emitAcceptFriendRequestEvent,
-  emitAddNewFriendEvent,
-  emitRecipientCancelFriendRequest
-} from '@/realtime/friend.event'
+import FriendEventEmit from '@/realtime/friend.event/emit'
 import { PopoverUI, side } from '../ui/Popover'
+import { ContactUser } from '@/types/user.types'
 
 function OtherUsers() {
   const dispatch = useAppDispatch()
@@ -21,11 +18,17 @@ function OtherUsers() {
 
   return (
     <ScrollArea maxHeight={'150px'}>
-      <div className='p-4 space-y-2'>
-        {others.map((other: ContactUser) => (
-          <OtherUser key={other._id} {...other} />
-        ))}
-      </div>
+      {others.length > 0 ? (
+        <div className='p-4 space-y-2'>
+          {others.map((other: ContactUser) => (
+            <OtherUser key={other._id} {...other} />
+          ))}
+        </div>
+      ) : (
+        <div className='mt-5'>
+          <p className='text-grey-500 italic text-center text-sm'>Empty</p>
+        </div>
+      )}
     </ScrollArea>
   )
 }
@@ -59,15 +62,6 @@ function OtherUser({
   const { clientId } = useAppSelector((state) => state.auth)
   const dispatch = useAppDispatch()
 
-  const handleAddNewFriendClick = () => {
-    dispatch(
-      emitAddNewFriendEvent({
-        from: clientId,
-        to: _id
-      })
-    )
-  }
-
   return (
     <div
       className='h-fit p-3 rounded-2xl bg-common-white 
@@ -91,7 +85,14 @@ function OtherUser({
           {!isFriend && !isSentFriendRequest && !wantToMakeFriend && (
             <button
               className='text-sm italic p-2 rounded-full outline-none text-primary-main hover:bg-secondary-lighter'
-              onClick={handleAddNewFriendClick}
+              onClick={() => {
+                dispatch(
+                  FriendEventEmit.send_request({
+                    fromId: clientId,
+                    toId: _id
+                  })
+                )
+              }}
             >
               add friend
             </button>
@@ -129,34 +130,38 @@ function FriendRequestOption({
 }): ReactElement {
   const dispatch = useAppDispatch()
 
+  const { clientId } = useAppSelector((state) => state.auth)
+
   return (
     <div className='m-2 p-2 shadow-xl bg-grey-100 rounded-xl w-fix'>
       <button
         onClick={() => {
           dispatch(
-            emitAcceptFriendRequestEvent({
-              friendRequestId: friendRequestId
+            FriendEventEmit.accept_request({
+              recipientId: clientId,
+              requestId: friendRequestId
             })
           )
         }}
         className='w-full p-1 hover:bg-secondary-lighter outline-none rounded-lg flex items-center space-x-2'
       >
         <p className='text-start text-sm text-primary-main whitespace-nowrap'>
-          Accept
+          accept
         </p>
       </button>
       <button
         onClick={() => {
           dispatch(
-            emitRecipientCancelFriendRequest({
-              friendRequestId: friendRequestId
+            FriendEventEmit.reject_request({
+              recipientId: clientId,
+              requestId: friendRequestId
             })
           )
         }}
         className='w-full p-1 hover:bg-error-lighter outline-none rounded-lg flex items-center space-x-2'
       >
         <p className='text-start text-sm text-error-main whitespace-nowrap'>
-          Delete
+          delete
         </p>
       </button>
     </div>

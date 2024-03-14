@@ -18,7 +18,6 @@ const GeneralApp = (): ReactElement => {
           switch (sidebar.type) {
             case 'CONTACT':
               return <Contact />
-              break
 
             case 'STARRED_MESSAGE':
               return <StarredMessage />

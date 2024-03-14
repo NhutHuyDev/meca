@@ -1,13 +1,13 @@
-import CredentialRepo from '../models/repositories/credential.repo'
+import CredentialRepo from '@/models/repositories/credential.repo'
 import {
   BadRequestError,
   InternalServerError,
   UnauthorizedError
-} from '../core/error.responses'
-import { verifyJwt } from '../helpers/jwt'
-import KeyStoreRepo from '../models/repositories/keyStore.repo'
-import SessionRepo from '../models/repositories/session.repo'
-import UserRepo from '../models/repositories/user.repo'
+} from '@/core/error.responses'
+import { verifyJwt } from '@/helpers/jwt'
+import KeyStoreRepo from '@/models/repositories/keyStore.repo'
+import SessionRepo from '@/models/repositories/session.repo'
+import UserRepo from '@/models/repositories/user.repo'
 
 class AccessService {
   static signIn = async function (credLogin: string, credPassword: string) {

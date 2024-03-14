@@ -1,16 +1,16 @@
-import { BadRequestError, ConflictError, InternalServerError } from '../core/error.responses'
+import { BadRequestError, ConflictError, InternalServerError } from '@/core/error.responses'
 import { omit } from 'lodash'
-import UserRepo from '../models/repositories/user.repo'
-import RegisterOtpRepo from '../models/repositories/registerOtp.repo'
-import UserModel, { User } from '../models/user.model'
-import CredentialModel, { Credential } from '../models/credential.model'
-import sendEmail from '../utils/mailer'
-import KeyStoreRepo from '../models/repositories/keyStore.repo'
-import flattenCleanObj from '../utils/flattenCleanObj'
-import log from '../utils/logger'
+import UserRepo from '@/models/repositories/user.repo'
+import RegisterOtpRepo from '@/models/repositories/registerOtp.repo'
+import UserModel, { User } from '@/models/user.model'
+import CredentialModel, { Credential } from '@/models/credential.model'
+import sendEmail from '@/utils/mailer'
+import KeyStoreRepo from '@/models/repositories/keyStore.repo'
+import flattenCleanObj from '@/utils/flattenCleanObj'
+import log from '@/utils/logger'
 import path from 'path'
 import fs from 'fs'
-import FriendShipRepo from '../models/repositories/friendship.repo'
+import FriendShipRepo from '@/models/repositories/friendship.repo'
 
 class UserService {
   static requestVerifyOtp = async function (email: string) {
@@ -150,15 +150,15 @@ class UserService {
     }
   }
 
-  static updateInformation = async function (input: Partial<User>) {
-    const preventUpdate = ['_id', '__v', 'deleted', 'verified']
+  static updateInformation = async function (email: string, input: Partial<User>) {
+    const preventUpdate = ['_id', '__v', 'deleted', 'verified', 'email']
     const updateInformation = omit(input, preventUpdate)
 
     const cleanUpdateInformation = flattenCleanObj(updateInformation)
 
     const updatedUser = await UserModel.findOneAndUpdate(
       {
-        email: updateInformation.email || '',
+        email: email,
         deleted: false
       },
       cleanUpdateInformation,

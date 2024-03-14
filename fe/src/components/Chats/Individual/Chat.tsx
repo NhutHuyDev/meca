@@ -1,14 +1,16 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { OneToOneMessage, setChatOneToOneId } from '@/redux/slice/chatOneToOne'
+import { setChatOneToOneId } from '@/redux/slice/chatOneToOne'
 import { ReactElement } from 'react'
 import defaultAvatar from '@/assets/default-avatar.svg'
 import { diffBetweenDateAndNow } from '@/utils/diffBetweenDates'
+import { OneToOneMessage } from '@/types/message.types'
 
 type PropsType = {
   id: string
   avatar?: string
   firstName: string
   lastName: string
+  isFriend: boolean
   lastMessage: OneToOneMessage
   unread: number
   time?: string
@@ -20,6 +22,7 @@ function Chat({
   avatar,
   firstName,
   lastName,
+  isFriend,
   lastMessage,
   time,
   unread,
@@ -52,6 +55,7 @@ function Chat({
         bg-cover bg-no-repeat bg-center
         relative  
         ${
+          isFriend &&
           online &&
           ' after:content-[""] after:block after:h-[10px] after:w-[10px]' +
             ' after:rounded-full after:bg-success-main' +

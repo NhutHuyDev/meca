@@ -1,0 +1,23 @@
+export type OneToOneMessage = {
+  _id: string
+
+  sender: string
+
+  recipient: string
+
+  type: string
+
+  chatOneToOne: string
+
+  text?: string
+
+  imgUri?: string
+
+  fileUri?: string
+
+  link?: string
+
+  replyMsg?: string
+
+  createdAt?: string
+}

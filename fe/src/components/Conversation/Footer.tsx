@@ -5,8 +5,6 @@ import { LinkSimple, PaperPlaneTilt, Smiley } from 'phosphor-react'
 import { ChangeEvent, ReactElement, useState } from 'react'
 import { PopoverUI } from '@/components/ui/Popover'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { emitSendMessage } from '@/realtime/chat.event/emit.event'
-import { ContactUser } from '@/redux/slice/individualContact'
 
 function Footer({
   currentFrom,
@@ -28,15 +26,15 @@ function Footer({
   }
 
   const handleSendMessageClick = () => {
-    dispatch(
-      emitSendMessage({
-        chatOneToOne: chatOneToOneId,
-        sender: clientId,
-        recipient: currentFrom?._id,
-        text: text,
-        type: 'Text'
-      })
-    )
+    // dispatch(
+    //   emitSendMessage({
+    //     chatOneToOne: chatOneToOneId,
+    //     sender: clientId,
+    //     recipient: currentFrom?._id,
+    //     text: text,
+    //     type: 'Text'
+    //   })
+    // )
 
     setText('')
   }

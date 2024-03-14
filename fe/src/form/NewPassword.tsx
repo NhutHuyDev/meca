@@ -10,14 +10,13 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch } from '@/hooks/redux'
 import { TResetPasswordResquest, thunkResetPassword } from '@/redux/slice/auth'
 import useRequest from '@/hooks/useRequest'
-import { clearRequestHistory } from '@/redux/slice/request'
 
 function NewPassword() {
   const dispatch = useAppDispatch()
 
   const navigator = useNavigate()
 
-  const { request, isLoading } = useRequest<TResetPasswordResquest>()
+  const request = useRequest<TResetPasswordResquest>()
 
   const { userId, passwordResetCode } = useParams()
 
@@ -51,8 +50,6 @@ function NewPassword() {
   useEffect(() => {
     if (request?.resetPassword?.success) {
       navigator('/auth/sign-in', { replace: true })
-
-      dispatch(clearRequestHistory())
     }
   }, [dispatch, navigator, request])
 
@@ -108,7 +105,7 @@ function NewPassword() {
         )}
 
         <button
-          disabled={isLoading}
+          disabled={request?.resetPassword?.isLoading}
           type='submit'
           className='bg-common-black text-common-white p-4 rounded-lg w-full disabled:opacity-75'
         >

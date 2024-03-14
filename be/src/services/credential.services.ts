@@ -1,8 +1,8 @@
-import { BadRequestError, InternalServerError } from '../core/error.responses'
-import UserRepo from '../models/repositories/user.repo'
-import sendEmail from '../utils/mailer'
-import log from '../utils/logger'
-import CredentialRepo from '../models/repositories/credential.repo'
+import { BadRequestError, InternalServerError } from '@/core/error.responses'
+import UserRepo from '@/models/repositories/user.repo'
+import sendEmail from '@/utils/mailer'
+import log from '@/utils/logger'
+import CredentialRepo from '@/models/repositories/credential.repo'
 import fs from 'fs'
 import path from 'path'
 
@@ -78,13 +78,13 @@ class CredentialService {
      */
     const userCredential = await CredentialRepo.findValidRequestResetPassword(userId)
 
-    if (!userCredential) throw new BadRequestError('could not reset user password 1')
+    if (!userCredential) throw new BadRequestError('could not reset user password')
 
     /**
      * @description 2. kiểm tra password reset code có tồn tại trong database hay không
      */
     if (!userCredential.passwordResetCode) {
-      throw new BadRequestError('could not reset user password 2')
+      throw new BadRequestError('could not reset user password')
     }
 
     /**
@@ -98,7 +98,7 @@ class CredentialService {
       return 'successfully updated user password'
     }
 
-    throw new BadRequestError('could not reset user password 3')
+    throw new BadRequestError('could not reset user password')
   }
 }
 

@@ -1,4 +1,4 @@
-import MessageModel, { Message } from '../message.model'
+import MessageModel, { Message } from '@/models/message.model'
 
 class MessageRepo {
   static create = async function (data: Partial<Message>) {

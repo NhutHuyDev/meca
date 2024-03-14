@@ -1,14 +1,14 @@
 import express from 'express'
-import validateResource from '../middlewares/validateResourse'
+import validateResource from '@/middlewares/validateResourse'
 import {
   requestVerifyOtpSchema,
   createUserSchema,
   verifyUserSchema,
   updateUserSchema
-} from '../schema/user.schema'
-import UserController from '../controllers/user.controller'
-import asyncHandler from '../helpers/asyncHandler'
-import requireUser from '../middlewares/requireUser'
+} from '@/schema/user.schema'
+import UserController from '@/controllers/user.controller'
+import asyncHandler from '@/helpers/asyncHandler'
+import requireUser from '@/middlewares/requireUser'
 
 const router = express.Router()
 

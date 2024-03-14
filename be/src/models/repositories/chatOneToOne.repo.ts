@@ -1,4 +1,4 @@
-import ChatOneToOneModel from '../chatOneToOne.model'
+import ChatOneToOneModel from '@/models/chatOneToOne.model'
 import { Types } from 'mongoose'
 
 class ChatOneToOneRepo {
@@ -55,6 +55,25 @@ class ChatOneToOneRepo {
       },
       {
         $lookup: {
+          from: 'Friendships',
+          let: { currentUser: new Types.ObjectId(userId), otherUser: '$otherUser' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ['$user', '$$currentUser'] },
+                    { $in: ['$$otherUser', '$friends'] }
+                  ]
+                }
+              }
+            }
+          ],
+          as: 'isFriend'
+        }
+      },
+      {
+        $lookup: {
           from: 'Messages',
           let: { chatId: '$_id' },
           pipeline: [
@@ -84,6 +103,9 @@ class ChatOneToOneRepo {
         $project: {
           from: {
             $arrayElemAt: ['$otherUserData', 0]
+          },
+          isFriend: {
+            $cond: { if: { $gt: [{ $size: '$isFriend' }, 0] }, then: true, else: false }
           },
           unread: '$unRead',
           lastMessage: {

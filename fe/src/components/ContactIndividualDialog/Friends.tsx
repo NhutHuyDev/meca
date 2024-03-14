@@ -1,11 +1,12 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { ContactUser, thunkFetchFriends } from '@/redux/slice/individualContact'
+import { thunkFetchFriends } from '@/redux/slice/individualContact'
 import { useEffect } from 'react'
 import ScrollArea from '../ScrollArea'
 import { ReactElement } from 'react'
 import defaultAvatar from '@/assets/default-avatar.svg'
-import { emitUnFriendRequest } from '@/realtime/friend.event'
+import FriendEventEmit from '@/realtime/friend.event/emit'
 import { PopoverUI, side } from '../ui/Popover'
+import { ContactUser } from '@/types/user.types'
 
 function Friends() {
   const dispatch = useAppDispatch()
@@ -18,11 +19,17 @@ function Friends() {
 
   return (
     <ScrollArea maxHeight={'150px'}>
-      <div className='p-4 space-y-2'>
-        {friends.map((friend: ContactUser) => (
-          <Friend key={friend._id} {...friend} />
-        ))}
-      </div>
+      {friends.length > 0 ? (
+        <div className='p-4 space-y-2'>
+          {friends.map((friend: ContactUser) => (
+            <Friend key={friend._id} {...friend} />
+          ))}
+        </div>
+      ) : (
+        <div className='p-4 mt-5'>
+          <p className='text-grey-500 italic text-center text-sm'>Empty</p>
+        </div>
+      )}
     </ScrollArea>
   )
 }
@@ -96,9 +103,9 @@ function FriendOption({ friendId }: { friendId: string }): ReactElement {
       <button
         onClick={() => {
           dispatch(
-            emitUnFriendRequest({
+            FriendEventEmit.un_friend({
               friendId: friendId,
-              userId: clientId
+              fromId: clientId
             })
           )
         }}

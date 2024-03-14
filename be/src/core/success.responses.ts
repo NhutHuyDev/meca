@@ -1,5 +1,5 @@
 import { Response } from 'express'
-import { STATUS_CODE } from '../utils/httpStatusRespones'
+import { STATUS_CODE } from '@/utils/httpStatusRespones'
 
 class SuccessResponse {
   code: number

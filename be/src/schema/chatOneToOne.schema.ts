@@ -1,4 +1,4 @@
-import checkValidObjectId from '../utils/checkValidObjectId'
+import checkValidObjectId from '@/utils/checkValidObjectId'
 import { object, string, TypeOf } from 'zod'
 
 export const getDetailChatSchema = object({

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
-import { verifyJwt } from '../helpers/jwt'
-import customHttpHeaders from '../utils/customHttpHeaders'
-import KeyStoreRepo from '../models/repositories/keyStore.repo'
+import { verifyJwt } from '@/helpers/jwt'
+import customHttpHeaders from '@/utils/customHttpHeaders'
+import KeyStoreRepo from '@/models/repositories/keyStore.repo'
 
 const deserializeUser = async (req: Request, res: Response, next: NextFunction) => {
   const accessToken = (req.headers.authorization || '').replace(/^Bearer\s/, '')

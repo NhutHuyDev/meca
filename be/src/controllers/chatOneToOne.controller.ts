@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import { OkResponse } from '../core/success.responses'
-import ChatOneToOneService from '../services/chatOneToOne.services'
+import { OkResponse } from '@/core/success.responses'
+import ChatOneToOneService from '@/services/chatOneToOne.services'
 import { TGetDetailChatSchema } from '@/schema/chatOneToOne.schema'
 
 class ChatOneToOneController {

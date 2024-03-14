@@ -11,7 +11,7 @@ import useRequest from '@/hooks/useRequest'
 function SignIn() {
   const dispatch = useAppDispatch()
 
-  const { request, isLoading } = useRequest<TSignInResquest>()
+  const request = useRequest<TSignInResquest>()
 
   const [showPassword, setShowPassword] = useState<boolean>(false)
 
@@ -73,7 +73,7 @@ function SignIn() {
         )}
 
         <button
-          disabled={isLoading}
+          disabled={request?.signIn?.isLoading}
           type='submit'
           className='bg-common-black text-common-white p-4 rounded-lg w-full disabled:opacity-75'
         >

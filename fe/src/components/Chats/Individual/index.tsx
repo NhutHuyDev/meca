@@ -10,10 +10,8 @@ import ScrollArea from '@/components/ScrollArea'
 import Divider from '@/components/ui/Divider'
 import ContactIndividualDialog from '@/components/ContactIndividualDialog'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import {
-  ChatOneToOne,
-  thunkFetchChatOneToOnes
-} from '@/redux/slice/chatOneToOne'
+import { thunkFetchChatOneToOnes } from '@/redux/slice/chatOneToOne'
+import { ChatOneToOne } from '@/types/chat.types'
 
 function ChatIndividual(): ReactElement {
   const dispatch = useAppDispatch()
@@ -99,6 +97,7 @@ function ChatIndividual(): ReactElement {
                     avatar={chat.from.avatar}
                     lastMessage={chat.lastMessage}
                     firstName={chat.from.firstName}
+                    isFriend={chat.isFriend}
                     lastName={chat.from.lastName}
                     online={chat.from.online}
                     time={chat.lastMessage?.createdAt}

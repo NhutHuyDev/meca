@@ -1,5 +1,5 @@
-import ChatOneToOneRepo from '../models/repositories/chatOneToOne.repo'
-import MessageRepo from '../models/repositories/message.repo'
+import ChatOneToOneRepo from '@/models/repositories/chatOneToOne.repo'
+import MessageRepo from '@/models/repositories/message.repo'
 import { Types } from 'mongoose'
 import { pick } from 'lodash'
 
