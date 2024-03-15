@@ -51,14 +51,19 @@ class ChatOneToOneService {
 
       default:
         throw new Error('unsupport message type')
-        break
     }
+
+    await ChatOneToOneRepo.increaseUnread(message.chatOneToOne, message.sender)
 
     return {
       sender,
       recipient,
       newMessage: omit(newMessage, ['__v', 'chatGroup'])
     }
+  }
+
+  static clearUnread = async function (id: string, currentId: string) {
+    await ChatOneToOneRepo.clearUnread(id, currentId)
   }
 }
 

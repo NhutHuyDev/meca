@@ -2,7 +2,7 @@ import { TCustomSocket } from '@/types/socket.types'
 import { Server } from 'socket.io'
 import { ChatDataType, chatEvent } from './register'
 import validateResource from '@/utils/validateResourse'
-import { send_message_schema } from '@/schema/chat.event'
+import { clear_unread_schema, send_message_schema } from '@/schema/chat.event'
 import ChatOneToOneService from '@/services/chatOneToOne.services'
 import emitServiceError from '../emitServiceError'
 
@@ -19,7 +19,20 @@ export default function (socket: TCustomSocket, io: Server) {
       io.to(recipient.socketId).emit(chatEvent.new_message, {
         newMessage: newMessage
       })
-    } catch {
+    } catch (error) {
+      const message = 'something went wrong! please try again later.'
+      emitServiceError(socket, io, message)
+    }
+  })
+
+  socket.on(chatEvent.clear_unread, async (data: ChatDataType[chatEvent.clear_unread]) => {
+    try {
+      validateResource(clear_unread_schema, data)
+      
+      console.log('-- hello --')
+
+      await ChatOneToOneService.clearUnread(data.chatOneToOneId, data.currentId)
+    } catch (error) {
       const message = 'something went wrong! please try again later.'
       emitServiceError(socket, io, message)
     }

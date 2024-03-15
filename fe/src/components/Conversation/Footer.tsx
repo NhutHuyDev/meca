@@ -2,16 +2,18 @@ import { Chat_Actions } from '@/data'
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import { LinkSimple, PaperPlaneTilt, Smiley } from 'phosphor-react'
-import { ChangeEvent, ReactElement, useState } from 'react'
+import { ChangeEvent, KeyboardEvent, ReactElement, useState } from 'react'
 import { PopoverUI } from '@/components/ui/Popover'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { ContactUser } from '@/types/user.types'
+import ChatEventEmit from '@/realtime/chat.event/emit'
 
 function Footer({
   currentFrom,
   chatOneToOneId
 }: {
-  currentFrom?: ContactUser
-  chatOneToOneId?: string
+  currentFrom: ContactUser
+  chatOneToOneId: string
 }): ReactElement {
   const dispatch = useAppDispatch()
 
@@ -20,21 +22,21 @@ function Footer({
   const [text, setText] = useState('')
 
   const handleEmojiPickerSelect = (emoji: TEmoji) => {
-    console.log(emoji)
-
     setText((prev: string) => prev + emoji.native)
   }
 
   const handleSendMessageClick = () => {
-    // dispatch(
-    //   emitSendMessage({
-    //     chatOneToOne: chatOneToOneId,
-    //     sender: clientId,
-    //     recipient: currentFrom?._id,
-    //     text: text,
-    //     type: 'Text'
-    //   })
-    // )
+    dispatch(
+      ChatEventEmit.send_message({
+        message: {
+          sender: clientId,
+          recipient: currentFrom._id,
+          chatOneToOne: chatOneToOneId,
+          type: 'Text',
+          text: text
+        }
+      })
+    )
 
     setText('')
   }
@@ -73,6 +75,11 @@ function Footer({
           value={text}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             setText(e.target.value)
+          }}
+          onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === 'Enter') {
+              handleSendMessageClick()
+            }
           }}
         />
 

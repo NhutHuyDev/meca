@@ -42,6 +42,8 @@ function VerifyEmail() {
     if (request?.verifyEmail?.success) {
       const email = request?.verifyEmail?.responseData?.email
 
+      console.log('--- in ----')
+
       navigator(`/auth/sign-up?email=${email}`, {
         state: {
           previousRequest: request

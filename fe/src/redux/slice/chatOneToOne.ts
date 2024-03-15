@@ -1,8 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axiosInstance from '@/utils/axios'
 import customHttpHeaders from '@/utils/customHttpHeaders'
 import { AppDispatch, RootState } from '../store'
-import { TNewMessageData } from '@/realtime/chat.event/chat.event.list'
 import { getError, getRespone, sendRequest } from './request'
 import { OneToOneMessage } from '@/types/message.types'
 import { ChatOneToOne } from '@/types/chat.types'
@@ -37,7 +36,7 @@ const slice = createSlice({
     },
     updateSingleChatOneToOne(state, action) {
       const { chatOneToOne, text, type, sender, recipient, createdAt, _id } =
-        action.payload.newMessage as TNewMessageData
+        action.payload.newMessage as OneToOneMessage
 
       const newMessage = {
         _id,
@@ -65,12 +64,13 @@ const slice = createSlice({
       if (state.chatOneToOneId === chatOneToOne) {
         state.chatOneToOnes.splice(currentChatIndex, 0, currentChat)
       } else {
+        currentChat.unread = currentChat.unread + 1
         state.chatOneToOnes.unshift(currentChat)
       }
     },
     updateCurrentMessage(state, action) {
       const { chatOneToOne, text, type, sender, recipient, createdAt, _id } =
-        action.payload.newMessage as TNewMessageData
+        action.payload.newMessage as OneToOneMessage
 
       const newMessage = {
         _id,
@@ -84,6 +84,18 @@ const slice = createSlice({
       if (state.chatOneToOneId === chatOneToOne) {
         state.messages.push(newMessage)
       }
+    },
+    clearUnread(state, action: PayloadAction<{ chatOneToOneId: string }>) {
+      const chatOneToOneId = action.payload.chatOneToOneId
+
+      /**
+       * @description tìm đoạn chat cần cập nhật
+       */
+      const currentChatIndex = state.chatOneToOnes.findIndex(
+        (chat) => chat._id === chatOneToOneId
+      )
+
+      state.chatOneToOnes[currentChatIndex].unread = 0
     }
   }
 })
@@ -91,7 +103,8 @@ const slice = createSlice({
 export const {
   setChatOneToOneId,
   updateSingleChatOneToOne,
-  updateCurrentMessage
+  updateCurrentMessage,
+  clearUnread
 } = slice.actions
 
 export default slice.reducer

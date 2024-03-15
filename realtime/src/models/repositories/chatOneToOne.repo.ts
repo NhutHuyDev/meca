@@ -9,6 +9,62 @@ class ChatOneToOneRepo {
     })
   }
 
+  static clearUnread = async function (id: string, currentId: string) {
+    const currentChat = await ChatOneToOneModel.findById(id)
+
+    if (!currentChat) throw new Error('current chat is not found')
+
+    const firstUser = currentChat.firstUser as Types.ObjectId
+    const secondUser = currentChat.secondUser as Types.ObjectId
+
+    let unread
+
+    if (new Types.ObjectId(currentId).equals(firstUser)) {
+      unread = {
+        unReadFirstUser: 0
+      }
+    }
+
+    if (new Types.ObjectId(currentId).equals(secondUser)) {
+      unread = {
+        unReadSecondUser: 0
+      }
+    }
+
+    console.log('unread: ', unread)
+
+    return await currentChat.updateOne(unread, { new: true })
+  }
+
+  static increaseUnread = async function (id: string, currentId: string) {
+    const currentChat = await ChatOneToOneModel.findById(id)
+
+    const firstUser = currentChat?.firstUser as Types.ObjectId
+    const secondUser = currentChat?.secondUser as Types.ObjectId
+
+    let unread
+
+    if (new Types.ObjectId(currentId).equals(firstUser)) {
+      unread = {
+        unReadSecondUser: 1
+      }
+    }
+
+    if (new Types.ObjectId(currentId).equals(secondUser)) {
+      unread = {
+        unReadFirstUser: 1
+      }
+    }
+
+    return await ChatOneToOneModel.findOneAndUpdate(
+      { _id: id },
+      {
+        $inc: unread
+      },
+      { new: true }
+    )
+  }
+
   static findByBothUser(sender: string, recipient: string) {
     return ChatOneToOneModel.findOne({
       $or: [

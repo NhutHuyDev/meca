@@ -44,7 +44,7 @@ function Chat({
 
   return (
     <div
-      className={`h-fit p-3 rounded-2xl ${
+      className={`h-fit p-3 rounded-2xl relative ${
         chatOneToOneId === id ? 'bg-secondary-light' : 'bg-common-white'
       } 
     flex justify-center items-center gap-3 cursor-pointer`}
@@ -72,7 +72,7 @@ function Chat({
             </span>
           )}
         </div>
-        <div className='text-xs flex justify-between items-center'>
+        <div className='text-xs flex justify-between items-center mt-1'>
           {lastMessage ? (
             <p className='max-w-[180px] truncate text-ellipsis'>
               {lastMessage.text}
@@ -86,7 +86,7 @@ function Chat({
           {unread > 0 && (
             <span
               className='flex-shrink-0 text-[8px] text-center
-              p-1 h-6 w-6 rounded-full 
+              p-1 h-6 w-6 rounded-full absolute right-3 bottom-2
           bg-secondary-main text-info-contrastText'
             >
               {unread}

@@ -1,14 +1,13 @@
-import { TRequest } from '@/redux/slice/request'
 import { useAppSelector } from './redux'
 
-type TLastRequest<TResponseData> = {
-  request: TRequest<TResponseData>
+type TLastRequest<TRequest> = {
+  request: TRequest
 }
 
-export default function <TResponseData>() {
+export default function <TRequest>() {
   const { request } = useAppSelector(
     (state) => state.lastRequest
-  ) as TLastRequest<TResponseData>
+  ) as TLastRequest<TRequest>
 
   return request
 }

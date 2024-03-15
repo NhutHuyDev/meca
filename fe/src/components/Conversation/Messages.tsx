@@ -11,7 +11,7 @@ import ScrollArea from '../ScrollArea'
 import { useAppSelector } from '@/hooks/redux'
 import { OneToOneMessage } from '@/types/message.types'
 
-export enum MessageType {
+export enum messageType {
   Text = 'Text',
   Media = 'Media',
   Document = 'Document',
@@ -38,7 +38,7 @@ function Messages({ messages }: { messages: OneToOneMessage[] }): ReactElement {
           {messages.length > 0 ? (
             messages.map((chat: OneToOneMessage) => {
               switch (chat.type) {
-                case MessageType.Media:
+                case messageType.Media:
                   return (
                     <ImgMsg
                       key={chat._id}
@@ -58,7 +58,7 @@ function Messages({ messages }: { messages: OneToOneMessage[] }): ReactElement {
                 //     />
                 //   )
 
-                case MessageType.Link:
+                case messageType.Link:
                   return (
                     <LinkMsg
                       key={chat._id}
@@ -68,7 +68,7 @@ function Messages({ messages }: { messages: OneToOneMessage[] }): ReactElement {
                     />
                   )
 
-                case MessageType.Document:
+                case messageType.Document:
                   return (
                     <FileMsg
                       key={chat._id}

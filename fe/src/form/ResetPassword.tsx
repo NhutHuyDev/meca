@@ -39,6 +39,9 @@ function ResetPassword() {
       navigator(
         `/confirmation/auth/sent-mail?email=${sentEmail}&status=sucess`,
         {
+          state: {
+            previousRequest: request
+          },
           replace: true
         }
       )

@@ -295,7 +295,7 @@ export type TVerifyEmailResquest = {
   }>
 }
 export function thunkVerifyEmail(formValue: TVerifyEmailSchema) {
-  const requestName = authReq.requestVerifyOtp
+  const requestName = authReq.verifyEmail
   const apiUrl = '/users/verify'
 
   return async (dispatch: AppDispatch) => {

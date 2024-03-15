@@ -3,7 +3,6 @@ import { object, string, TypeOf, enum as enum_ } from 'zod'
 
 export const send_message_schema = object({
   message: object({
-    _id: string().refine(checkValidObjectId),
     sender: string().refine(checkValidObjectId),
     recipient: string().refine(checkValidObjectId),
     type: enum_(['Text', 'Media', 'Document', 'Link']),
@@ -17,3 +16,10 @@ export const send_message_schema = object({
 })
 
 export type T_Send_Message = TypeOf<typeof send_message_schema>
+
+export const clear_unread_schema = object({
+  chatOneToOneId: string().refine(checkValidObjectId),
+  currentId: string().refine(checkValidObjectId)
+})
+
+export type T_Clear_Unread = TypeOf<typeof clear_unread_schema>

@@ -5,7 +5,8 @@ import { Link, Navigate, useLocation } from 'react-router-dom'
 function ConfirmSentMail() {
   const location = useLocation()
 
-  const previousRequest = location.state?.request as TForgotPasswordResquest
+  const previousRequest = location.state
+    ?.previousRequest as TForgotPasswordResquest
 
   const searchParams = new URLSearchParams(location.search)
 

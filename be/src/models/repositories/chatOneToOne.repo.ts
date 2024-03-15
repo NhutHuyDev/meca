@@ -31,6 +31,17 @@ class ChatOneToOneRepo {
         }
       },
       {
+        $addFields: {
+          unread: {
+            $cond: [
+              { $eq: ['$firstUser', new Types.ObjectId(userId)] },
+              '$unReadFirstUser',
+              '$unReadSecondUser'
+            ]
+          }
+        }
+      },
+      {
         $lookup: {
           from: 'Users',
           let: { otherUserId: '$otherUser' },
@@ -107,7 +118,7 @@ class ChatOneToOneRepo {
           isFriend: {
             $cond: { if: { $gt: [{ $size: '$isFriend' }, 0] }, then: true, else: false }
           },
-          unread: '$unRead',
+          unread: 1,
           lastMessage: {
             $ifNull: [{ $arrayElemAt: ['$lastMessage', 0] }, null]
           }

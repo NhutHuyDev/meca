@@ -80,6 +80,7 @@ export default function () {
         dispatch(notifyMessage(data.message))
         dispatch(thunkFetchFriends())
         dispatch(thunkFetchOthers())
+        dispatch(thunkFetchChatOneToOnes())
       }
     )
   }

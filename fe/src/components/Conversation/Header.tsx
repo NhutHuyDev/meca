@@ -2,8 +2,8 @@ import { CaretDown, MagnifyingGlass, Phone, VideoCamera } from 'phosphor-react'
 import { ReactElement } from 'react'
 import { useAppDispatch } from '@/hooks/redux'
 import { toggleSidebar } from '@/redux/slice/app'
-import { ContactUser } from '@/redux/slice/individualContact'
 import defaultAvatar from '@/assets/default-avatar.svg'
+import { ContactUser } from '@/types/user.types'
 
 function Header({ currentFrom }: { currentFrom?: ContactUser }): ReactElement {
   const dispatch = useAppDispatch()
@@ -38,7 +38,7 @@ function Header({ currentFrom }: { currentFrom?: ContactUser }): ReactElement {
           {currentFrom?.online === true ? (
             <span className='text-grey-700'>Online</span>
           ) : (
-            ''
+            <span className='text-grey-700'>Offline</span>
           )}
         </div>
       </div>

@@ -22,6 +22,8 @@ function SignUp() {
   const previousRequest = location.state
     ?.previousRequest as TVerifyEmailResquest
 
+  console.log('---previousRequest---:: ', previousRequest)
+
   const request = useRequest<TSignUpRequest>()
 
   const searchParams = new URLSearchParams(location.search)

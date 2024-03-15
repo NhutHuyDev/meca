@@ -4,7 +4,8 @@ import Footer from './Footer'
 import Messages from './Messages'
 import logoUri from '@/assets/logo.png'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { thunkGetChatDetail } from '@/redux/slice/chatOneToOne'
+import { clearUnread, thunkGetChatDetail } from '@/redux/slice/chatOneToOne'
+import ChatEventEmit from '@/realtime/chat.event/emit'
 
 function Converstation(): ReactElement {
   const dispatch = useAppDispatch()
@@ -13,16 +14,29 @@ function Converstation(): ReactElement {
     (state) => state.chatOneToOne
   )
 
+  const { clientId } = useAppSelector((state) => state.auth)
+
   useEffect(() => {
     if (chatOneToOneId !== '') {
+      dispatch(
+        clearUnread({
+          chatOneToOneId: chatOneToOneId
+        })
+      )
+      dispatch(
+        ChatEventEmit.clear_unread({
+          chatOneToOneId,
+          currentId: clientId
+        })
+      )
       dispatch(thunkGetChatDetail(chatOneToOneId))
     }
-  }, [dispatch, chatOneToOneId])
+  }, [dispatch, chatOneToOneId, clientId])
 
   return (
     <div className='h-[100vh] flex-grow shadow-inner'>
       <div className='flex flex-col w-full h-full'>
-        {chatOneToOneId !== '' ? (
+        {currentFrom && chatOneToOneId !== '' ? (
           <>
             <Header currentFrom={currentFrom} />
             <Messages messages={messages} />

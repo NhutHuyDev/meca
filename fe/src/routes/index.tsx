@@ -38,7 +38,7 @@ export default function Router() {
 
   useEffect(() => {
     lastRequest.request && dispatch(clearRequest())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location, dispatch])
 
   return useRoutes([
