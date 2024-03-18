@@ -28,10 +28,15 @@ export default function (socket: TCustomSocket, io: Server) {
   socket.on(chatEvent.clear_unread, async (data: ChatDataType[chatEvent.clear_unread]) => {
     try {
       validateResource(clear_unread_schema, data)
-      
-      console.log('-- hello --')
 
-      await ChatOneToOneService.clearUnread(data.chatOneToOneId, data.currentId)
+      const { otherUser } = await ChatOneToOneService.clearUnread(
+        data.chatOneToOneId,
+        data.currentId
+      )
+
+      io.to(otherUser.socketId).emit(chatEvent.user_seen, {
+        chatOneToOneId: data.chatOneToOneId
+      } as ChatDataType[chatEvent.user_seen])
     } catch (error) {
       const message = 'something went wrong! please try again later.'
       emitServiceError(socket, io, message)

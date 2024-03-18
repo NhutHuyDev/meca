@@ -12,6 +12,7 @@ export type TChatOneToOneState = {
   messages: OneToOneMessage[]
   chatOneToOnes: ChatOneToOne[]
   currentFrom?: ContactUser
+  statusLastMessage?: string
 }
 
 const initialState: TChatOneToOneState = {
@@ -32,7 +33,18 @@ const slice = createSlice({
     },
     setCurrentChat(state, action) {
       state.currentFrom = action.payload.from
+      state.statusLastMessage = action.payload.statusLastMessage
       state.messages = action.payload.messages
+
+      const currentChatIndex = state.chatOneToOnes.findIndex(
+        (chat) => chat._id === state.chatOneToOneId
+      )
+
+      state.chatOneToOnes[currentChatIndex].from.online =
+        action.payload.from.online
+    },
+    setStatusLastMessage(state, action) {
+      state.statusLastMessage = action.payload.statusLastMessage
     },
     updateSingleChatOneToOne(state, action) {
       const { chatOneToOne, text, type, sender, recipient, createdAt, _id } =
@@ -67,6 +79,8 @@ const slice = createSlice({
         currentChat.unread = currentChat.unread + 1
         state.chatOneToOnes.unshift(currentChat)
       }
+
+      state.statusLastMessage = 'sent'
     },
     updateCurrentMessage(state, action) {
       const { chatOneToOne, text, type, sender, recipient, createdAt, _id } =
@@ -78,8 +92,13 @@ const slice = createSlice({
         type,
         sender,
         recipient,
-        createdAt
-      }
+        createdAt,
+        isLastMessage: true
+      } as OneToOneMessage
+
+      const msgLen = state.messages.length
+
+      state.messages[msgLen - 1].isLastMessage = undefined
 
       if (state.chatOneToOneId === chatOneToOne) {
         state.messages.push(newMessage)
@@ -104,7 +123,8 @@ export const {
   setChatOneToOneId,
   updateSingleChatOneToOne,
   updateCurrentMessage,
-  clearUnread
+  clearUnread,
+  setStatusLastMessage
 } = slice.actions
 
 export default slice.reducer
@@ -198,7 +218,8 @@ export function thunkGetChatDetail(chatOneToOneId: string) {
         dispatch(
           slice.actions.setCurrentChat({
             messages: response.data[0].messages,
-            from: response.data[0].from
+            from: response.data[0].from,
+            statusLastMessage: response.data[0].statusLastMessage
           })
         )
       })

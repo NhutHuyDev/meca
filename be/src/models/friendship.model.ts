@@ -1,11 +1,6 @@
 import { prop, getModelForClass, Ref } from '@typegoose/typegoose'
 import { User } from './user.model'
 
-// class Friend {
-//   @prop({ ref: () => User })
-//   user: Ref<User>
-// }
-
 export class FriendShip {
   @prop({ ref: () => User })
   user: Ref<User>

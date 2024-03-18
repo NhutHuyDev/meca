@@ -1,15 +1,15 @@
 import checkValidObjectId from '@/utils/checkValidObjectId'
 import { object, string, TypeOf } from 'zod'
 
-export const getDetailChatSchema = object({
+export const getChatGroupSchema = object({
   params: object({
-    chatOneToOneId: string({
+    chatGroupId: string({
       required_error: 'chatOneToOne id is required'
     })
-  }).refine((data) => checkValidObjectId(data.chatOneToOneId), {
+  }).refine((data) => checkValidObjectId(data.chatGroupId), {
     message: 'chatOneToOneId is not valid',
     path: ['chatOneToOneId']
   })
 })
 
-export type TGetDetailChatSchema = TypeOf<typeof getDetailChatSchema>['params']
+export type TGetChatGroupSchema = TypeOf<typeof getChatGroupSchema>['params']

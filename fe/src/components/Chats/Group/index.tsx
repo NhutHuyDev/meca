@@ -1,15 +1,25 @@
-import { ReactElement, useState } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 import { CircleDashed, MagnifyingGlass, Plus, X } from 'phosphor-react'
-import Chat from './Chat'
-import { Chat_List } from '@/data'
 import ScrollArea from '@/components/ScrollArea'
 import Divider from '@/components/ui/Divider'
 import * as Dialog from '@radix-ui/react-dialog'
 import CreateNewGroupForm from '@/form/CreateNewGroup'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { thunkFetchGroups } from '@/redux/slice/chatGroup'
+import { ChatGroup } from '@/types/chat.types'
+import ChatGroupComponent from './ChatGroupComponent'
 
-function index(): ReactElement {
+function ChatGroup(): ReactElement {
+  const dispatch = useAppDispatch()
+
+  const { chatGroups } = useAppSelector((state) => state.chatGroup)
+
+  useEffect(() => {
+    dispatch(thunkFetchGroups())
+  }, [dispatch])
+
   return (
-    <div className='p-2 h-[100vh] w-80 bg-grey-200 shadow-inner flex flex-col'>
+    <div className='p-2 h-[100vh] bg-grey-200 w-80 flex-shrink-0 shadow-inner flex flex-col'>
       <div className='p-2 flex flex-col space-y-6'>
         <div className='flex justify-between items-center'>
           <h2 className='font-semibold text-3xl'>Groups</h2>
@@ -38,32 +48,19 @@ function index(): ReactElement {
       <ScrollArea maxHeight='calc(100vh - 200px)'>
         <div className='p-2 h-full space-y-5'>
           <div className='space-y-3'>
-            <h3 className='text-grey-600 text-sm'>Pinned</h3>
-            {Chat_List.filter((chat) => chat.pinned === true).map((chat) => (
-              <Chat
-                key={chat.id}
-                img={chat.img}
-                msg={chat.msg}
-                name={chat.name}
-                online={chat.online}
-                time={chat.time}
-                unread={chat.unread}
-              />
-            ))}
-          </div>
-          <div className='space-y-3'>
             <h3 className='text-grey-600 text-sm'>All Groups</h3>
-            {Chat_List.filter((chat) => chat.pinned === false).map((chat) => (
-              <Chat
-                key={chat.id}
-                img={chat.img}
-                msg={chat.msg}
-                name={chat.name}
-                online={chat.online}
-                time={chat.time}
-                unread={chat.unread}
-              />
-            ))}
+            {chatGroups
+              .filter((group: ChatGroup) => group.pinned !== true)
+              .map((group: ChatGroup) => (
+                <ChatGroupComponent
+                  key={group._id}
+                  creator={group.creator}
+                  _id={group._id}
+                  lastMessage={group.lastMessage}
+                  members={group.members}
+                  currentUnread={group.currentUnread}
+                />
+              ))}
           </div>
         </div>
       </ScrollArea>
@@ -71,7 +68,7 @@ function index(): ReactElement {
   )
 }
 
-export default index
+export default ChatGroup
 
 function CreateNewGroup(): ReactElement {
   const [open, setOpen] = useState(false)

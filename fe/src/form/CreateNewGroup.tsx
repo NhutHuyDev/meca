@@ -6,16 +6,29 @@ import { useForm, Controller, UseFormSetValue } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ScrollArea from '@/components/ScrollArea'
 import Divider from '@/components/ui/Divider'
-import { Chat_List } from '@/data/index'
 import { ChangeEvent, useEffect, useState } from 'react'
-import { TUser, filterSelectedUsers, filterUserContacts } from '@/utils'
+import { filterSelectedUsers, filterUserContacts } from '@/utils'
 import { X } from 'phosphor-react'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { thunkFetchFriends } from '@/redux/slice/individualContact'
+import { ContactUser } from '@/types/user.types'
+import defaultAvatar from '@/assets/default-avatar.svg'
+import GroupEventEmit from '@/realtime/group.event/emit'
 
 function CreateNewGroup({
   setOpenDialog
 }: {
   setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>
 }) {
+  const dispatch = useAppDispatch()
+
+  const { friends } = useAppSelector((state) => state.individualContact)
+  const { clientId } = useAppSelector((state) => state.auth)
+
+  useEffect(() => {
+    dispatch(thunkFetchFriends())
+  }, [dispatch])
+
   const {
     register,
     setValue,
@@ -32,23 +45,28 @@ function CreateNewGroup({
   })
 
   const onSubmit = async (data: TCreateNewGroupSchema) => {
-    // TODO: submit to server
-    // ...
-    await new Promise((resolve) => setTimeout(resolve, 4000))
-
-    console.log(data)
+    dispatch(
+      GroupEventEmit.create_group({
+        creatorId: clientId,
+        participantIds: data.members
+      })
+    )
 
     reset()
 
     setOpenDialog(false)
   }
 
-  const [contactList, setContactList] = useState<TUser[]>(Chat_List)
+  const [contactList, setContactList] = useState<ContactUser[]>(friends)
   const [contactSearch, setContactSearch] = useState('')
   const [hiddenMemberList, setHiddenMemberList] = useState(true)
 
+  useEffect(() => {
+    setContactList(friends)
+  }, [friends])
+
   const handleSearchContactInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const searchContactList = filterUserContacts(e.target.value, Chat_List)
+    const searchContactList = filterUserContacts(e.target.value, friends)
     setContactList(searchContactList)
     setContactSearch(e.target.value)
   }
@@ -99,12 +117,12 @@ function CreateNewGroup({
                     control={control}
                     render={({ field }) => (
                       <>
-                        {contactList.map((user) => (
+                        {contactList.map((friend) => (
                           <MemberSelection
-                            key={user.id}
-                            id={user.id}
-                            name={user.name}
-                            avatarUrl={user.img}
+                            key={friend._id}
+                            id={friend._id}
+                            name={friend.firstName + ' ' + friend.lastName}
+                            avatarUrl={friend.avatar}
                             setValue={setValue}
                             members={field.value}
                             isSubmitted={isSubmitted}
@@ -129,13 +147,13 @@ function CreateNewGroup({
                         control={control}
                         render={({ field }) => (
                           <>
-                            {filterSelectedUsers(field.value, Chat_List).map(
+                            {filterSelectedUsers(field.value, friends).map(
                               (user) => (
                                 <MemberSelected
-                                  key={user.id}
-                                  id={user.id}
-                                  name={user.name}
-                                  avatarUrl={user.img}
+                                  key={user._id}
+                                  id={user._id}
+                                  name={user.firstName + ' ' + user.lastName}
+                                  avatarUrl={user.avatar}
                                   setValue={setValue}
                                   members={field.value}
                                   isSubmitted={isSubmitted}
@@ -186,7 +204,7 @@ function MemberSelection({
   isSubmitted,
   setHiddenMemberList
 }: {
-  id: number
+  id: string
   name: string
   avatarUrl?: string
   members: string[]
@@ -194,7 +212,7 @@ function MemberSelection({
   isSubmitted: boolean
   setHiddenMemberList: React.Dispatch<React.SetStateAction<boolean>>
 }) {
-  const bgUrl = `url(${avatarUrl})`
+  const bgUrl = avatarUrl ? `url(${avatarUrl})` : `url(${defaultAvatar})`
 
   const [checked, setchecked] = useState(members.includes(id.toString()))
 
@@ -262,7 +280,7 @@ function MemberSelected({
   isSubmitted,
   setHiddenMemberList
 }: {
-  id: number
+  id: string
   name: string
   avatarUrl?: string
   members: string[]
@@ -270,7 +288,7 @@ function MemberSelected({
   isSubmitted: boolean
   setHiddenMemberList: React.Dispatch<React.SetStateAction<boolean>>
 }) {
-  const bgUrl = `url(${avatarUrl})`
+  const bgUrl = avatarUrl ? `url(${avatarUrl})` : `url(${defaultAvatar})`
 
   const handleBtnClick = () => {
     const isMemeber = members.includes(id.toString())

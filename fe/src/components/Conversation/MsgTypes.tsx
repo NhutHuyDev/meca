@@ -4,6 +4,7 @@ import { ReactElement } from 'react'
 import { PopoverUI, align } from '../ui/Popover'
 import { Message_options } from '@/data'
 import { diffBetweenDateAndNow } from '@/utils/diffBetweenDates'
+import { useAppSelector } from '@/hooks/redux'
 
 type PropTypes = {
   text?: string
@@ -13,37 +14,58 @@ type PropTypes = {
   preview?: string
   incoming?: boolean
   createdAt?: string
+  isLastMessage?: boolean
 }
 
-function TextMsg({ message, incoming, createdAt }: PropTypes): ReactElement {
+function TextMsg({
+  message,
+  incoming,
+  createdAt,
+  isLastMessage
+}: PropTypes): ReactElement {
+  const { statusLastMessage } = useAppSelector((state) => state.chatOneToOne)
+
   return (
-    <div
-      className={clsx(
-        'w-full h-fit flex items-start relative justify-start',
-        `${incoming ? '' : 'justify-start flex-row-reverse'}`
-      )}
-    >
+    <>
       <div
         className={clsx(
-          'rounded-xl p-2 text-grey-700',
-          `${incoming ? 'bg-grey-300' : 'bg-secondary-lighter'}`
+          'w-3/4 h-fit flex items-start relative justify-start',
+          `${incoming ? '' : 'justify-start flex-row-reverse ml-auto'}`
         )}
       >
-        <p>{message}</p>
-        <span className='text-xs text-grey-500 italic'>
-          {createdAt && diffBetweenDateAndNow(createdAt)}
-        </span>
-      </div>
-      <PopoverUI
-        align={align.start}
-        Trigger={
-          <div className='cursor-pointer'>
-            <DotsThreeVertical />
+        <div className='flex flex-col items-end space-y-2'>
+          <div
+            className={clsx(
+              'rounded-xl p-2 text-grey-700',
+              `${incoming ? 'bg-grey-300' : 'bg-secondary-lighter'}`
+            )}
+          >
+            <p>{message}</p>
+            <span className='text-xs text-grey-500 italic'>
+              {createdAt && diffBetweenDateAndNow(createdAt)}
+            </span>
           </div>
-        }
-        Content={<MessageOptions />}
-      />
-    </div>
+          {isLastMessage && !incoming && (
+            <p
+              className='w-fit text-grey-600 text-right text-sm italic p-1 
+            px-2 rounded-lg bg-grey-300'
+            >
+              {statusLastMessage}
+            </p>
+          )}
+        </div>
+
+        <PopoverUI
+          align={align.start}
+          Trigger={
+            <div className='cursor-pointer'>
+              <DotsThreeVertical />
+            </div>
+          }
+          Content={<MessageOptions />}
+        />
+      </div>
+    </>
   )
 }
 

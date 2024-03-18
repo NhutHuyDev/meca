@@ -3,6 +3,7 @@ import userRoutes from './user.routes'
 import authRoutes from './auth.routes'
 import friendshipRoutes from './friendship.routes'
 import chatOneToOneRoutes from './chatOneToOne.routes'
+import chatGroupRoutes from './chatGroup.routes'
 import { NotFoundError } from '@/core/error.responses'
 import log from '@/utils/logger'
 import deserializeUser from '@/middlewares/deserializeUser'
@@ -29,6 +30,7 @@ router.use('/v1/api/users', userRoutes)
 router.use('/v1/api/auth', authRoutes)
 router.use('/v1/api/friends', friendshipRoutes)
 router.use('/v1/api/chat/individual', chatOneToOneRoutes)
+router.use('/v1/api/chat/group', chatGroupRoutes)
 
 /**
  * @description 404 handling

@@ -1,14 +1,23 @@
 import { prop, getModelForClass, Ref } from '@typegoose/typegoose'
 import { User } from './user.model'
 
-class Participant {
+export class ParticipantUnread {
   @prop({ ref: () => User })
-  userId: Ref<User>
+  participantId: Ref<User>
+
+  @prop({ default: 0 })
+  unread: number
 }
 
 export class ChatGroup {
-  @prop({ type: () => [Participant], default: [] })
-  participants: Participant[]
+  @prop({ ref: () => User, default: [], _id: false })
+  participants: Ref<User>[]
+
+  @prop({ ref: () => User })
+  creator: Ref<User>
+
+  @prop({ type: () => [ParticipantUnread], _id: false })
+  participantUnreads: ParticipantUnread[]
 }
 
 const ChatGroupModel = getModelForClass(ChatGroup, {

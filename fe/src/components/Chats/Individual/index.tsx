@@ -26,7 +26,7 @@ function ChatIndividual(): ReactElement {
 
   return (
     <>
-      <div className='p-2 h-[100vh] w-80 bg-grey-200 shadow-inner flex flex-col'>
+      <div className='p-2 h-[100vh] bg-grey-200 w-80 flex-shrink-0 shadow-inner flex flex-col'>
         <div className='p-2 flex flex-col space-y-6'>
           <div className='flex justify-between items-center'>
             <h2 className='font-semibold text-3xl'>Chats</h2>
@@ -69,21 +69,6 @@ function ChatIndividual(): ReactElement {
 
         <ScrollArea maxHeight='calc(100vh - 200px)'>
           <div className='p-2 h-full space-y-5'>
-            {/* <div className='space-y-3'>
-              <h3 className='text-grey-600 text-sm'>Pinned</h3>
-              {Chat_List.filter((chat) => chat.pinned === true).map((chat) => (
-                <Chat
-                  key={chat.id}
-                  id={String(chat.id)}
-                  img={chat.img}
-                  msg={chat.msg}
-                  name={chat.name}
-                  online={chat.online}
-                  time={chat.time}
-                  unread={chat.unread}
-                />
-              ))}
-            </div> */}
             <div className='space-y-3'>
               <h3 className='text-grey-600 text-sm'>All Chats</h3>
               {chatOneToOnes

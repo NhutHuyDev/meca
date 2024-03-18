@@ -5,6 +5,7 @@ import { ReactElement, useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
 import friendEventHandler from './friend.event/on'
 import chatEventHandler from './chat.event/on'
+import groupEventHandler from './group.event/on'
 import serviceErrorHandler from './serviceErrorEvent'
 
 function RealTimeWapper({ children }: { children: ReactElement }) {
@@ -21,6 +22,8 @@ function RealTimeWapper({ children }: { children: ReactElement }) {
       dispatch(friendEventHandler())
 
       dispatch(chatEventHandler())
+
+      dispatch(groupEventHandler())
 
       dispatch(serviceErrorHandler())
     }

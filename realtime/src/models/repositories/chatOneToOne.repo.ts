@@ -1,5 +1,6 @@
 import ChatOneToOneModel from '@/models/chatOneToOne.model'
 import { Types } from 'mongoose'
+import UserRepo from './user.repo'
 
 class ChatOneToOneRepo {
   static create = async function (firstUserId: string, secondUserId: string) {
@@ -18,22 +19,27 @@ class ChatOneToOneRepo {
     const secondUser = currentChat.secondUser as Types.ObjectId
 
     let unread
+    let otherUser
 
     if (new Types.ObjectId(currentId).equals(firstUser)) {
+      otherUser = await UserRepo.findUserById(String(secondUser))
       unread = {
         unReadFirstUser: 0
       }
     }
 
     if (new Types.ObjectId(currentId).equals(secondUser)) {
+      otherUser = await UserRepo.findUserById(String(firstUser))
       unread = {
         unReadSecondUser: 0
       }
     }
 
-    console.log('unread: ', unread)
+    if (!otherUser) throw new Error('otherUser is not found')
 
-    return await currentChat.updateOne(unread, { new: true })
+    await currentChat.updateOne(unread, { new: true })
+
+    return { otherUser }
   }
 
   static increaseUnread = async function (id: string, currentId: string) {

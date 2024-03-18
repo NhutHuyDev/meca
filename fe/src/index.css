@@ -21,6 +21,7 @@ em-emoji-picker  {
 
 .scroll-box::-webkit-scrollbar {
   width: .4em;
+  -webkit-scrollbar-direction: reversed
 }
 
 .scroll-box::-webkit-scrollbar,
@@ -32,6 +33,7 @@ em-emoji-picker  {
 /* thumb sẽ hiện lên  */
 .scroll-box::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, .2);
+  min-height: 200px;
 }
 
 /* thumb sẽ ẩn đi  */

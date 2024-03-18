@@ -31,17 +31,6 @@ class ChatOneToOneRepo {
         }
       },
       {
-        $addFields: {
-          unread: {
-            $cond: [
-              { $eq: ['$firstUser', new Types.ObjectId(userId)] },
-              '$unReadFirstUser',
-              '$unReadSecondUser'
-            ]
-          }
-        }
-      },
-      {
         $lookup: {
           from: 'Users',
           let: { otherUserId: '$otherUser' },
@@ -151,6 +140,17 @@ class ChatOneToOneRepo {
           }
         },
         {
+          $addFields: {
+            otherUserUnread: {
+              $cond: [
+                { $eq: ['$firstUser', new Types.ObjectId(currentId)] },
+                '$unReadSecondUser',
+                '$unReadFirstUser'
+              ]
+            }
+          }
+        },
+        {
           $lookup: {
             from: 'Users',
             let: { otherUserId: '$otherUser' },
@@ -200,7 +200,10 @@ class ChatOneToOneRepo {
             from: {
               $arrayElemAt: ['$otherUserData', 0]
             },
-            messages: 1
+            messages: 1,
+            statusLastMessage: {
+              $cond: { if: { $gt: ['$otherUserUnread', 0] }, then: 'sent', else: 'seen' }
+            }
           }
         }
       ],

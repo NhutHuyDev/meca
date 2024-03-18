@@ -4,6 +4,7 @@ import { onEndHandler } from './onEndHandler'
 import { io } from 'server'
 import friendEventHandler from './friend.event/on'
 import chatEventHandler from './chat.event/on'
+import groupEventHandler from './group.event/on'
 
 export default function registerEvent(socket: Socket) {
   onConnectionHandler(socket)
@@ -15,6 +16,8 @@ export default function registerEvent(socket: Socket) {
   friendEventHandler(socket, io)
 
   chatEventHandler(socket, io)
+
+  groupEventHandler(socket, io)
 
   onEndHandler(socket)
 }

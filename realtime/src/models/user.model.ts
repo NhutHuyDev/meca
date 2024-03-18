@@ -16,7 +16,7 @@ export class User {
   @prop({ default: '' })
   about: string
 
-  @prop()
+  @prop({ default: '' })
   socketId: string
 
   @prop({ default: true })

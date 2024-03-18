@@ -23,3 +23,9 @@ export const clear_unread_schema = object({
 })
 
 export type T_Clear_Unread = TypeOf<typeof clear_unread_schema>
+
+export const user_seen_schema = object({
+  chatOneToOneId: string()
+})
+
+export type T_User_Seen = TypeOf<typeof user_seen_schema>

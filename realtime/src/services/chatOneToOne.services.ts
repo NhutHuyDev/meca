@@ -63,7 +63,7 @@ class ChatOneToOneService {
   }
 
   static clearUnread = async function (id: string, currentId: string) {
-    await ChatOneToOneRepo.clearUnread(id, currentId)
+    return await ChatOneToOneRepo.clearUnread(id, currentId)
   }
 }
 
