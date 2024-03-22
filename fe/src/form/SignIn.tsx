@@ -27,6 +27,10 @@ function SignIn() {
     dispatch(thunkSignIn(data))
   }
 
+  const onSubmitTest = async (data: TSignInSchema) => {
+    dispatch(thunkSignIn(data))
+  }
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} className='space-y-4 text-end'>
@@ -78,6 +82,34 @@ function SignIn() {
           className='bg-common-black text-common-white p-4 rounded-lg w-full disabled:opacity-75'
         >
           Sign In
+        </button>
+
+        <button
+          onClick={() => {
+            onSubmitTest({
+              credLogin: 'nguyennhuthuy.dev@gmail.com',
+              credPassword: '123456'
+            })
+          }}
+          disabled={request?.signIn?.isLoading}
+          type='submit'
+          className='bg-grey-600 text-common-white p-4 rounded-lg w-full disabled:opacity-75'
+        >
+          Sign In with nguyennhuthuy.dev@gmail.com
+        </button>
+
+        <button
+          onClick={() => {
+            onSubmitTest({
+              credLogin: 'nguyenhuy7402@gmail.com',
+              credPassword: '123456'
+            })
+          }}
+          disabled={request?.signIn?.isLoading}
+          type='submit'
+          className='bg-grey-600 text-common-white p-4 rounded-lg w-full disabled:opacity-75'
+        >
+          Sign In with nguyenhuy7402@gmail.com
         </button>
       </form>
     </>

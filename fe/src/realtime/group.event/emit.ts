@@ -34,7 +34,7 @@ export default class GroupEventEmit {
         (chat: ChatGroup) => chat._id === data.groupId
       )
 
-      if (currChat.length > 1) {
+      if (currChat.length >= 1) {
         data.currLastMsgId = currChat[0].lastMessage._id
 
         console.log('clear_unread::lastMessage - ', currChat[0].lastMessage._id)

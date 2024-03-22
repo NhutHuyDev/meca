@@ -1,6 +1,6 @@
-import AuthSocial from '@/components/Auth/AuthSocial'
+// import AuthSocial from '@/components/Auth/AuthSocial'
 import SignInForm from '@/form/SignIn'
-import Divider from '@/components/ui/Divider'
+// import Divider from '@/components/ui/Divider'
 import { Link } from 'react-router-dom'
 
 function SignIn() {
@@ -25,12 +25,12 @@ function SignIn() {
       {/* Sign Up Form  */}
       <SignInForm />
 
-      <Divider rootStyle='my-3'>
+      {/* <Divider rootStyle='my-3'>
         <span className='text-grey-500'>OR</span>
-      </Divider>
+      </Divider> */}
 
       {/* Auth Social  */}
-      <AuthSocial />
+      {/* <AuthSocial /> */}
     </div>
   )
 }

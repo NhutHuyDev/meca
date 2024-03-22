@@ -13,6 +13,9 @@ export class ChatGroup {
   @prop({ ref: () => User, default: [], _id: false })
   participants: Ref<User>[]
 
+  @prop()
+  groupName: string
+
   @prop({ ref: () => User })
   creator: Ref<User>
 
