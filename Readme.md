@@ -47,6 +47,7 @@ There are 3 main folders in **/be**:
 - **/routes**: defines resource urls, apply middleware (error, not found and validation handler)
 - **/controllers**: get payload fields and call necessary services
 - **/services**: contains the main logic processing 
+![alt text](./docs/meca-be-workflow.drawio.svg)
 
 ##### Realtime services ('/realtime')
 There are 3 main folders in **/be**: 
@@ -57,7 +58,6 @@ There are 3 main folders in **/be**:
 ### Database diagram
 ![alt text](./docs/meca-database-diagram.drawio.svg)
 
-### Reference
 ### Appendix
 ##### List of REST APIs
 
