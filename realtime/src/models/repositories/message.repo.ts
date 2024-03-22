@@ -15,6 +15,19 @@ class MessageRepo {
       text
     })
   }
+
+  static createGroupTextMessage = async function (
+    sender: string,
+    chatGroup: string,
+    text: string
+  ) {
+    return MessageModel.create({
+      type: messageType.Text,
+      sender,
+      chatGroup,
+      text
+    })
+  }
 }
 
 export default MessageRepo

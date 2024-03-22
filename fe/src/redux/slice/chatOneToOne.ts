@@ -12,6 +12,7 @@ export type TChatOneToOneState = {
   messages: OneToOneMessage[]
   chatOneToOnes: ChatOneToOne[]
   currentFrom?: ContactUser
+  currentIsFriend?: boolean
   statusLastMessage?: string
 }
 
@@ -28,6 +29,9 @@ const slice = createSlice({
     setChatOneToOneId(state, action) {
       state.chatOneToOneId = action.payload.chatOneToOneId
     },
+    clearChatOneToOneId(state) {
+      state.chatOneToOneId = ''
+    },
     setChatOneToOnes(state, action) {
       state.chatOneToOnes = action.payload.chatOneToOnes
     },
@@ -42,6 +46,8 @@ const slice = createSlice({
 
       state.chatOneToOnes[currentChatIndex].from.online =
         action.payload.from.online
+
+      state.currentIsFriend = state.chatOneToOnes[currentChatIndex].isFriend
     },
     setStatusLastMessage(state, action) {
       state.statusLastMessage = action.payload.statusLastMessage
@@ -76,7 +82,7 @@ const slice = createSlice({
       if (state.chatOneToOneId === chatOneToOne) {
         state.chatOneToOnes.splice(currentChatIndex, 0, currentChat)
       } else {
-        currentChat.unread = currentChat.unread + 1
+        currentChat.unread = !currentChat.unread ? 1 : currentChat.unread + 1
         state.chatOneToOnes.unshift(currentChat)
       }
 
@@ -98,7 +104,9 @@ const slice = createSlice({
 
       const msgLen = state.messages.length
 
-      state.messages[msgLen - 1].isLastMessage = undefined
+      if (msgLen > 0) {
+        state.messages[msgLen - 1].isLastMessage = undefined
+      }
 
       if (state.chatOneToOneId === chatOneToOne) {
         state.messages.push(newMessage)
@@ -124,7 +132,8 @@ export const {
   updateSingleChatOneToOne,
   updateCurrentMessage,
   clearUnread,
-  setStatusLastMessage
+  setStatusLastMessage,
+  clearChatOneToOneId
 } = slice.actions
 
 export default slice.reducer

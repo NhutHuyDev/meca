@@ -29,8 +29,6 @@ export type GroupMessage = {
 
   sender?: string
 
-  recipient?: string
-
   type?: string
 
   chatGroup?: string

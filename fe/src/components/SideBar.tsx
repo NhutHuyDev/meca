@@ -1,19 +1,48 @@
-import { ReactElement, useState } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 import logo2 from '@/assets/icon-2.png'
-import { Nav_Buttons, Profile_Menu } from '@/data'
-import { Gear, SignOut } from 'phosphor-react'
+import { Profile_Menu } from '@/data'
+import { ChatCircleDots, Gear, Phone, SignOut, Users } from 'phosphor-react'
 import defaultAvatar from '@/assets/default-avatar.svg'
 import SwitchUI from '@/components/ui/Switch'
 import { PopoverUI, side } from './ui/Popover'
 import { useNavigate } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
-import { useAppDispatch } from '@/hooks/redux'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { thunkSignOut } from '@/redux/slice/auth'
+import { ChatGroup, ChatOneToOne } from '@/types/chat.types'
 
 function SideBar(): ReactElement {
   const [switchOn, setSwitchOn] = useState(true)
+  const [individualNewMsg, setIndividualNewMsg] = useState(false)
+  const [groupNewMsg, setGroupNewMsg] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
+
+  const { chatOneToOnes } = useAppSelector((state) => state.chatOneToOne)
+  const { chatGroups } = useAppSelector((state) => state.chatGroup)
+
+  useEffect(() => {
+    let individualNewMsg = false
+    let groupNewMsg = false
+
+    for (let index = 0; index < chatOneToOnes.length; index++) {
+      const chatOneToOne = chatOneToOnes[index] as ChatOneToOne
+      if (chatOneToOne.unread > 0) {
+        individualNewMsg = true
+        break
+      }
+    }
+
+    for (let index = 0; index < chatGroups.length; index++) {
+      const chatGroup = chatGroups[index] as ChatGroup
+      if (chatGroup.currentUnread > 0) {
+        groupNewMsg = true
+        break
+      }
+    }
+    setIndividualNewMsg(individualNewMsg)
+    setGroupNewMsg(groupNewMsg)
+  }, [chatOneToOnes, chatGroups])
 
   return (
     <nav className='flex flex-col justify-between w-28 h-[100vh] p-6 bg-background-paper shadow'>
@@ -22,24 +51,68 @@ function SideBar(): ReactElement {
           <img src={logo2} alt='logo meca' className='h-full w-full' />
         </div>
 
-        {Nav_Buttons.map((nav_Button) => {
-          return (
-            <button
-              className={`
+        <button
+          className={`
+              relative 
             ${
-              location.pathname === nav_Button.path &&
-              'bg-primary-main text-common-white'
+              location.pathname === '/app' &&
+              'bg-primary-main text-common-white '
+            }
+
+            ${
+              individualNewMsg &&
+              location.pathname !== '/app' &&
+              `after:content-[""] after:block after:h-[10px] after:w-[10px]
+              after:rounded-full after:bg-error-main after:absolute
+              after:top-0 after:right-0 after:shadow`
+            }
+
+            text-2xl w-fit p-3 rounded-lg`}
+          onClick={() => {
+            navigate('/app')
+          }}
+        >
+          <ChatCircleDots />
+        </button>
+
+        <button
+          className={`
+              relative 
+            ${
+              location.pathname === '/group' &&
+              'bg-primary-main text-common-white '
+            }
+
+            ${
+              groupNewMsg &&
+              location.pathname !== '/group' &&
+              `after:content-[""] after:block after:h-[10px] after:w-[10px]
+              after:rounded-full after:bg-error-main after:absolute
+              after:top-0 after:right-0 after:shadow`
+            }
+
+            text-2xl w-fit p-3 rounded-lg`}
+          onClick={() => {
+            navigate('/group')
+          }}
+        >
+          <Users />
+        </button>
+
+        <button
+          className={`
+              relative 
+            ${
+              location.pathname === '/call' &&
+              'bg-primary-main text-common-white '
             }
             text-2xl w-fit p-3 rounded-lg`}
-              key={nav_Button.index}
-              onClick={() => {
-                navigate(nav_Button.path)
-              }}
-            >
-              {nav_Button.icon}
-            </button>
-          )
-        })}
+          onClick={() => {
+            navigate('/call')
+          }}
+        >
+          <Phone />
+        </button>
 
         <span style={{ height: '1px' }} className='w-full bg-divider '></span>
 

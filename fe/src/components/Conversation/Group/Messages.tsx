@@ -7,8 +7,7 @@ import {
   TextMsg
   // Timeline
 } from './MsgTypes'
-import ScrollArea from '../ScrollArea'
-import { useAppSelector } from '@/hooks/redux'
+import ScrollArea from '@/components/ScrollArea'
 import { OneToOneMessage } from '@/types/message.types'
 
 export enum messageType {
@@ -19,16 +18,17 @@ export enum messageType {
 }
 
 function Messages({ messages }: { messages: OneToOneMessage[] }): ReactElement {
-  const { clientId } = useAppSelector((state) => state.auth)
 
   if (messages.length === 0) {
     return (
-      <p className='text-grey-500 italic mt-auto'>Enjoy your converstation</p>
+      <p className='text-grey-500 italic mt-auto text-center p-3'>
+        Enjoy your converstation
+      </p>
     )
   } else {
     return (
       <div className='flex-grow'>
-        <ScrollArea maxHeight={'calc(100vh - 136px)'} autoScrollBottom>
+        <ScrollArea maxHeight={'calc(100vh - 140px)'} autoScrollBottom>
           <div className='p-4 flex flex-col gap-3'>
             {messages.map((chat: OneToOneMessage, index) => {
               switch (chat.type) {
@@ -66,7 +66,7 @@ function Messages({ messages }: { messages: OneToOneMessage[] }): ReactElement {
                     <TextMsg
                       key={chat._id}
                       message={chat.text}
-                      incoming={chat.sender !== clientId}
+                      senderId={chat.sender}
                       createdAt={chat.createdAt}
                       isLastMessage={messages.length - 1 === index}
                     />

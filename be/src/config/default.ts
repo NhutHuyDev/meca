@@ -14,7 +14,7 @@ const DEFAULT_CONFIG = {
     },
     SMTP: {
       USER: 'nguyennhuthuy.dev@gmail.com',
-      PASS: 'vxga pxbe bpqh moai',
+      PASS: 'uxib picj ufdm skxw',
       HOST: 'smtp.gmail.com',
       PORT: 587,
       SECURE: false
@@ -35,9 +35,9 @@ const DEFAULT_CONFIG = {
       }
     },
     SMTP: {
-      USER: 'aebdaumtczexbb3j@ethereal.email',
-      PASS: 'u9eJkvfSwUMKwgbqGK',
-      HOST: 'smtp.ethereal.email',
+      USER: 'nguyennhuthuy.dev@gmail.com',
+      PASS: 'uxib picj ufdm skxw',
+      HOST: 'smtp.gmail.com',
       PORT: 587,
       SECURE: false
     }

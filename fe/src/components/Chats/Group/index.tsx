@@ -14,9 +14,9 @@ function ChatGroup(): ReactElement {
 
   const { chatGroups } = useAppSelector((state) => state.chatGroup)
 
-  useEffect(() => {
-    dispatch(thunkFetchGroups())
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(thunkFetchGroups())
+  // }, [dispatch])
 
   return (
     <div className='p-2 h-[100vh] bg-grey-200 w-80 flex-shrink-0 shadow-inner flex flex-col'>

@@ -10,9 +10,8 @@ import ChatEventEmit from '@/realtime/chat.event/emit'
 function Converstation(): ReactElement {
   const dispatch = useAppDispatch()
 
-  const { chatOneToOneId, currentFrom, messages } = useAppSelector(
-    (state) => state.chatOneToOne
-  )
+  const { chatOneToOneId, currentFrom, messages, currentIsFriend } =
+    useAppSelector((state) => state.chatOneToOne)
 
   const { clientId } = useAppSelector((state) => state.auth)
 
@@ -40,7 +39,18 @@ function Converstation(): ReactElement {
           <>
             <Header currentFrom={currentFrom} />
             <Messages messages={messages} />
-            <Footer currentFrom={currentFrom} chatOneToOneId={chatOneToOneId} />
+            {currentIsFriend ? (
+              <Footer
+                currentFrom={currentFrom}
+                chatOneToOneId={chatOneToOneId}
+              />
+            ) : (
+              <div className='bg-grey-200 h-fit w-full px-3 py-4 flex justify-center gap-3 relative z-[99] shadow-inner'>
+                <p className='text-center text-grey-500'> 
+                  Unable to send messages to unfriended users
+                </p>
+              </div>
+            )}
           </>
         ) : (
           <EmptyMessages />

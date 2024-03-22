@@ -21,7 +21,10 @@ const smtp = config.smtp
 
 const transporter = nodemailer.createTransport({
   ...smtp,
-  auth: { user: smtp.user, pass: smtp.pass }
+  auth: { user: smtp.user, pass: smtp.pass },
+  tls: {
+    rejectUnauthorized: false
+  }
 })
 
 async function sendEmail(payload: SendMailOptions) {

@@ -18,10 +18,6 @@ function ChatIndividual(): ReactElement {
 
   const [openFriends, setOpenFriends] = useState(false)
 
-  useEffect(() => {
-    dispatch(thunkFetchChatOneToOnes())
-  }, [dispatch])
-
   const { chatOneToOnes } = useAppSelector((state) => state.chatOneToOne)
 
   return (

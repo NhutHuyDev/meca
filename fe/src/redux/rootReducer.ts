@@ -16,6 +16,7 @@ const rootPersistConfig = {
   blacklist: [
     'lastRequest',
     'chatOneToOne',
+    'chatGroup',
     'individualContact',
     'loadingOverlay',
     'messageToast'

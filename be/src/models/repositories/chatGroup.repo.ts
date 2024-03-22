@@ -85,7 +85,7 @@ class ChatGroupRepo {
           },
           members: 1,
           messages: 1,
-          totalRead: { $size: '$participantZeroUnreads' }
+          totalRead: { $subtract: [{ $size: '$participantZeroUnreads' }, 1] }
         }
       }
     ])

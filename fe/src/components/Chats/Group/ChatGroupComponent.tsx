@@ -56,7 +56,7 @@ function ChatGroupComponent({
 
   return (
     <div
-      className={`min-h-[60px] p-2 px-3 rounded-2xl ${
+      className={`min-h-[64px] p-2 px-3 rounded-2xl ${
         chatGroupId === _id ? 'bg-secondary-light' : 'bg-common-white'
       }
     flex space-x-2 items-center gap-3 cursor-pointer`}

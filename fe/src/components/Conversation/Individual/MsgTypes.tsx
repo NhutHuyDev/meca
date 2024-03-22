@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { DotsThreeVertical, Download, Image } from 'phosphor-react'
 import { ReactElement } from 'react'
-import { PopoverUI, align } from '../ui/Popover'
+import { PopoverUI, align } from '@/components/ui/Popover'
 import { Message_options } from '@/data'
 import { diffBetweenDateAndNow } from '@/utils/diffBetweenDates'
 import { useAppSelector } from '@/hooks/redux'
