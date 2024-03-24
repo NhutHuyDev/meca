@@ -2,7 +2,7 @@ import { T_Send_Message, T_Clear_Unread, T_User_Seen } from '@/schema/chat.event
 import { OneToOneMessage } from '@/types/message.types'
 
 export enum chatEvent {
-  send_message = 'chat:send_request',
+  send_message = 'chat:send_message',
   new_message = 'chat:new_message',
   clear_unread = 'chat:clear_unread',
   user_seen = 'chat:user_seen'

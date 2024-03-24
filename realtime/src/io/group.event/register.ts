@@ -4,7 +4,7 @@ import { GroupMessage } from '@/types/message.types'
 export enum groupEvent {
   create_group = 'group:create',
   create_success = 'group:create_success',
-  send_message = 'group:send_request',
+  send_message = 'group:send_message',
   new_message = 'group:new_message',
   clear_unread = 'group:clear_unread',
   user_seen = 'group:user_seen'
