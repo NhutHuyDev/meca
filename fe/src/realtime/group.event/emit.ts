@@ -25,7 +25,7 @@ export default class GroupEventEmit {
   static clear_unread = function (
     data: GroupDataType[groupEvent.clear_unread]
   ) {
-    return (dispatch: AppDispatch, getState: () => RootState) => {
+    return (_: AppDispatch, getState: () => RootState) => {
       const { chatGroup } = getState()
 
       const chatGroups = chatGroup.chatGroups as ChatGroup[]
@@ -34,7 +34,7 @@ export default class GroupEventEmit {
         (chat: ChatGroup) => chat._id === data.groupId
       )
 
-      if (currChat.length >= 1) {
+      if (currChat.length >= 1 && currChat[0].lastMessage) {
         data.currLastMsgId = currChat[0].lastMessage._id
 
         console.log('clear_unread::lastMessage - ', currChat[0].lastMessage._id)

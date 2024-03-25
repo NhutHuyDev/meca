@@ -8,6 +8,10 @@ export default class FriendEventEmit {
     data: FriendDataType[friendEvent.send_request]
   ) {
     return (dispatch: AppDispatch) => {
+      console.log('friend_send_request click')
+
+      console.log(socket)
+
       socket?.connected &&
         socket.emit(friendEvent.send_request, data, () => {
           dispatch(openLoadingOverlay())

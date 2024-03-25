@@ -1,7 +1,7 @@
 import { ChatGroup } from '@/types/chat.types'
 import { diffBetweenDateAndNow } from '@/utils/diffBetweenDates'
 import { ReactElement } from 'react'
-import defaultAvatar from '@/assets/default-avatar.svg'
+import defaultAvatar from '@/assets/default-avatar.png'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { setChatGroupId } from '@/redux/slice/chatGroup'
 

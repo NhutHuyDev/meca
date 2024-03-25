@@ -12,7 +12,7 @@ import { X } from 'phosphor-react'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { thunkFetchFriends } from '@/redux/slice/individualContact'
 import { ContactUser } from '@/types/user.types'
-import defaultAvatar from '@/assets/default-avatar.svg'
+import defaultAvatar from '@/assets/default-avatar.png'
 import GroupEventEmit from '@/realtime/group.event/emit'
 
 function CreateNewGroup({
@@ -30,7 +30,7 @@ function CreateNewGroup({
   }, [dispatch])
 
   const {
-    register,
+    // register,
     setValue,
     handleSubmit,
     formState: { isSubmitting, errors, isSubmitted },
@@ -73,14 +73,15 @@ function CreateNewGroup({
 
   return (
     <form className='w-[550px]' onSubmit={handleSubmit(onSubmit)}>
-      <input
+      {/* <input
+        disabled
         {...register('groupName')}
         placeholder='enter your group name'
         className='p-3 rounded-2xl border-2 border-grey-500 w-full outline-none my-3'
       />
       {errors.groupName && (
         <p className='text-left text-error-main'>{`${errors.groupName.message}`}</p>
-      )}
+      )} */}
 
       <Divider rootStyle='my-3 w-full' />
 

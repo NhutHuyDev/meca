@@ -2,7 +2,7 @@ import { CaretDown, MagnifyingGlass, Phone, VideoCamera } from 'phosphor-react'
 import { ReactElement } from 'react'
 import { useAppDispatch } from '@/hooks/redux'
 import { toggleSidebar } from '@/redux/slice/app'
-import defaultAvatar from '@/assets/default-avatar.svg'
+import defaultAvatar from '@/assets/default-avatar.png'
 import { ContactUser } from '@/types/user.types'
 
 function Header({ currentFrom }: { currentFrom?: ContactUser }): ReactElement {

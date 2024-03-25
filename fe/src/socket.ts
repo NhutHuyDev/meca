@@ -5,7 +5,8 @@ import customHttpHeaders from './utils/customHttpHeaders'
 let socket: Socket
 
 const connectSocket = (accessToken: string, clientId: string) => {
-  socket = io(REALTIME_HOST, {
+  socket = io({
+    path: REALTIME_HOST,
     extraHeaders: {
       [customHttpHeaders.AUTHORIZATION]: 'Bearer ' + accessToken,
       [customHttpHeaders.CLIENT_ID]: clientId

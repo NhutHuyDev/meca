@@ -1,5 +1,5 @@
 import { ReactElement, useEffect } from 'react'
-import defaultAvatar from '@/assets/default-avatar.svg'
+import defaultAvatar from '@/assets/default-avatar.png'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { thunkFetchOthers } from '@/redux/slice/individualContact'
 import ScrollArea from '../ScrollArea'

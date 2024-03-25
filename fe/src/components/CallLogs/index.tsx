@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactElement, useState } from 'react'
+import { ChangeEvent, ReactElement, useEffect, useState } from 'react'
 import { CircleDashed, MagnifyingGlass, Plus, X } from 'phosphor-react'
 import CallLog from './CallLog'
 import { Chat_List } from '@/data'
@@ -7,6 +7,8 @@ import Divider from '@/components/ui/Divider'
 import * as Dialog from '@radix-ui/react-dialog'
 import CallSelection from './CallSelection'
 import { filterUserContacts } from '@/utils'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { thunkFetchFriends } from '@/redux/slice/individualContact'
 
 function CallLogs(): ReactElement {
   return (
@@ -63,6 +65,14 @@ export default CallLogs
 function CreateCall(): ReactElement {
   const [open, setOpen] = useState(false)
   const [searchContact, setSearchContact] = useState('')
+  
+  const dispatch = useAppDispatch()
+
+  const { friends } = useAppSelector((state) => state.individualContact)
+
+  useEffect(() => {
+    dispatch(thunkFetchFriends())
+  }, [dispatch])
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
@@ -107,11 +117,11 @@ function CreateCall(): ReactElement {
             />
             <ScrollArea maxHeight='250px'>
               <div className='ps-2 h-full space-y-1'>
-                {filterUserContacts(searchContact, Chat_List).map((user) => (
+                {filterUserContacts(searchContact, friends).map((user) => (
                   <CallSelection
-                    key={user.id}
-                    name={user.name}
-                    img={user.img}
+                    key={user._id}
+                    name={user.firstName + ' ' + user.lastName}
+                    img={user.avatar}
                     online={user.online}
                   />
                 ))}

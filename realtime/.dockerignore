@@ -1,0 +1,12 @@
+node_modules
+dist
+
+.eslintignore
+.eslintrc
+
+.gitignore
+
+.prettierignore
+.prettierrc
+
+nodemon.json

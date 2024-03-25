@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useState } from 'react'
 import {
   ArchiveBox,
   CircleDashed,
@@ -9,12 +9,12 @@ import Chat from './Chat'
 import ScrollArea from '@/components/ScrollArea'
 import Divider from '@/components/ui/Divider'
 import ContactIndividualDialog from '@/components/ContactIndividualDialog'
-import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { thunkFetchChatOneToOnes } from '@/redux/slice/chatOneToOne'
+import { useAppSelector } from '@/hooks/redux'
+// import { thunkFetchChatOneToOnes } from '@/redux/slice/chatOneToOne'
 import { ChatOneToOne } from '@/types/chat.types'
 
 function ChatIndividual(): ReactElement {
-  const dispatch = useAppDispatch()
+  // const dispatch = useAppDispatch()
 
   const [openFriends, setOpenFriends] = useState(false)
 
@@ -44,6 +44,7 @@ function ChatIndividual(): ReactElement {
           >
             <MagnifyingGlass className='text-lg' />
             <input
+              disabled
               type='text'
               placeholder='Search...'
               className='flex-grow focus:outline-none'

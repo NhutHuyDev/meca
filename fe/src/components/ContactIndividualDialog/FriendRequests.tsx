@@ -1,5 +1,5 @@
 import { ReactElement, useEffect, useState } from 'react'
-import defaultAvatar from '@/assets/default-avatar.svg'
+import defaultAvatar from '@/assets/default-avatar.png'
 import { thunkFetchFriendRequests } from '@/redux/slice/individualContact'
 import ScrollArea from '../ScrollArea'
 import { diffBetweenDateAndNow } from '@/utils/diffBetweenDates'

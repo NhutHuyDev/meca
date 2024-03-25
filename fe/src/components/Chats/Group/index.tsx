@@ -1,16 +1,15 @@
-import { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useState } from 'react'
 import { CircleDashed, MagnifyingGlass, Plus, X } from 'phosphor-react'
 import ScrollArea from '@/components/ScrollArea'
 import Divider from '@/components/ui/Divider'
 import * as Dialog from '@radix-ui/react-dialog'
 import CreateNewGroupForm from '@/form/CreateNewGroup'
-import { useAppDispatch, useAppSelector } from '@/hooks/redux'
-import { thunkFetchGroups } from '@/redux/slice/chatGroup'
+import { useAppSelector } from '@/hooks/redux'
 import { ChatGroup } from '@/types/chat.types'
 import ChatGroupComponent from './ChatGroupComponent'
 
 function ChatGroup(): ReactElement {
-  const dispatch = useAppDispatch()
+  // const dispatch = useAppDispatch()
 
   const { chatGroups } = useAppSelector((state) => state.chatGroup)
 
@@ -32,6 +31,7 @@ function ChatGroup(): ReactElement {
         >
           <MagnifyingGlass className='text-lg' />
           <input
+            disabled
             type='text'
             placeholder='Search...'
             className='flex-grow focus:outline-none'

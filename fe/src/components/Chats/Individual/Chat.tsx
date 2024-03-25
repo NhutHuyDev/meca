@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { setChatOneToOneId } from '@/redux/slice/chatOneToOne'
 import { ReactElement } from 'react'
-import defaultAvatar from '@/assets/default-avatar.svg'
+import defaultAvatar from '@/assets/default-avatar.png'
 import { diffBetweenDateAndNow } from '@/utils/diffBetweenDates'
 import { OneToOneMessage } from '@/types/message.types'
 

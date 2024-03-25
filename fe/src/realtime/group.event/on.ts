@@ -15,7 +15,7 @@ export default function () {
     socket.on(
       groupEvent.create_success,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      async (data: GroupDataType[groupEvent.create_success]) => {
+      async (_: GroupDataType[groupEvent.create_success]) => {
         dispatch(closeLoadingOverlay())
         dispatch(thunkFetchGroups())
       }

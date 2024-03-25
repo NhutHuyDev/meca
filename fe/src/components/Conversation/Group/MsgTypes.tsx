@@ -107,18 +107,18 @@ function TextMsg({
   )
 }
 
-function ImgMsg({ message, img, incoming }: PropTypes): ReactElement {
+function ImgMsg({ message, img, senderId }: PropTypes): ReactElement {
   return (
     <div
       className={clsx(
         'w-full h-fit flex items-start justify-start',
-        `${incoming ? '' : 'flex-row-reverse'}`
+        `${senderId === '' ? '' : 'flex-row-reverse'}`
       )}
     >
       <div
         className={clsx(
           'rounded-xl overflow-hidden w-fit h-fit text-grey-700',
-          `${incoming ? 'bg-grey-300' : 'bg-secondary-lighter'}`
+          `${senderId === '' ? 'bg-grey-300' : 'bg-secondary-lighter'}`
         )}
       >
         <img src={img} alt='image message' className='max-w-[410px] h-auto' />
@@ -137,18 +137,18 @@ function ImgMsg({ message, img, incoming }: PropTypes): ReactElement {
   )
 }
 
-function ReplyMsg({ message, reply, incoming }: PropTypes): ReactElement {
+function ReplyMsg({ message, reply, senderId }: PropTypes): ReactElement {
   return (
     <div
       className={clsx(
         'w-full h-fit flex items-start relative justify-start',
-        `${incoming ? '' : 'flex-row-reverse'}`
+        `${senderId === '' ? '' : 'flex-row-reverse'}`
       )}
     >
       <div
         className={clsx(
           'rounded-xl overflow-hidden w-fit h-fit p-2 text-grey-700',
-          `${incoming ? 'bg-grey-300' : 'bg-secondary-lighter'}`
+          `${senderId === '' ? 'bg-grey-300' : 'bg-secondary-lighter'}`
         )}
       >
         <div className='space-y-2'>
@@ -171,18 +171,18 @@ function ReplyMsg({ message, reply, incoming }: PropTypes): ReactElement {
   )
 }
 
-function LinkMsg({ message, preview, incoming }: PropTypes): ReactElement {
+function LinkMsg({ message, preview, senderId }: PropTypes): ReactElement {
   return (
     <div
       className={clsx(
         'w-full h-fit flex items-start relative justify-start',
-        `${incoming ? '' : 'flex-row-reverse'}`
+        `${senderId === '' ? '' : 'flex-row-reverse'}`
       )}
     >
       <div
         className={clsx(
           'rounded-xl overflow-hidden w-fit h-fit p-2 text-grey-700',
-          `${incoming ? 'bg-grey-300' : 'bg-secondary-lighter'}`
+          `${senderId === '' ? 'bg-grey-300' : 'bg-secondary-lighter'}`
         )}
       >
         <div className='space-y-3'>
@@ -215,18 +215,18 @@ function LinkMsg({ message, preview, incoming }: PropTypes): ReactElement {
   )
 }
 
-function FileMsg({ message, incoming }: PropTypes): ReactElement {
+function FileMsg({ message, senderId }: PropTypes): ReactElement {
   return (
     <div
       className={clsx(
         'w-full h-fit flex items-start relative justify-start',
-        `${incoming ? '' : 'flex-row-reverse'}`
+        `${senderId === '' ? '' : 'flex-row-reverse'}`
       )}
     >
       <div
         className={clsx(
           'rounded-xl p-2 text-grey-700',
-          `${incoming ? 'bg-grey-300' : 'bg-secondary-lighter'}`
+          `${senderId === '' ? 'bg-grey-300' : 'bg-secondary-lighter'}`
         )}
       >
         <button className='flex items-center gap-3 bg-common-white p-2 rounded-lg'>
