@@ -1,7 +1,7 @@
 ## Summary
 
 - This is a chat application, with basic features, created for research and learning purposes.
-- Visit **meca.nguyennhuthuy.com** to enjoy MECA version 1.0.0. 
+- Visit **[meca.nguyennhuthuy.com](https://meca.nguyennhuthuy.com)** to enjoy MECA version 1.0.0. 
 
 ## Prerequisites
 To run the code, the machine needs to install **Node** environment, specifically the entire project is developed on **Node 20.11** and deployed on **node:20-alpine** environment.
