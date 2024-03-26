@@ -4,7 +4,7 @@
 - Visit **[meca.nguyennhuthuy.com](https://meca.nguyennhuthuy.com)** to enjoy MECA version 1.0.0. 
 
 ## Prerequisites
-To run the code, the machine needs to install **Node** environment, specifically the entire project is developed on **Node 20.11** and deployed on **node:20-alpine** environment.
+To run the source code, the machine needs to install **Node** environment, specifically the entire project is developed on **Node 20.11** and deployed on **node:20-alpine** environment.
 
 ## Technologies used in the project
 
