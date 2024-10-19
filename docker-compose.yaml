@@ -1,51 +1,58 @@
 services:
-  meca-mongo: 
+  mongo: 
     image: mongo
+    container_name: mongo-container
     restart: always
     ports:
       - 27017:27017
     volumes:
-      - meca-mongo-db:/data/db
+      - database:/data/db
     environment:
-      MONGO_INITDB_ROOT_USERNAME: nnh
-      MONGO_INITDB_ROOT_PASSWORD: 123456
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
       
-  meca-be:
-    image: huynguyendev/meca-be
+  backend:
+    build:
+      context: ./be
+    container_name: backend-container
     ports:
       - 8080:8080
     environment:
       NODE_ENV: 'pro'
-      PRO_MONGO_HOST: meca-mongo
+      PRO_MONGO_HOST: mongo
       PRO_MONGO_PORT: 27017
-      PRO_MONGO_NAME: mecaDev
-      PRO_MONGO_USERNAME: nnh
-      PRO_MONGO_PASSWORD: 123456
+      PRO_MONGO_NAME: meca
+      PRO_MONGO_USERNAME: root
+      PRO_MONGO_PASSWORD: secret
     depends_on:
-      - meca-mongo
+      - mongo
 
-  meca-realtime:
-    image: huynguyendev/meca-realtime
+  realtime:
+    build: 
+      context: ./realtime
+    container_name: realtime-container
     ports:
       - 4000:4000
     environment:
       NODE_ENV: 'pro'
-      PRO_MONGO_HOST: meca-mongo
+      PRO_MONGO_HOST: mongo
       PRO_MONGO_PORT: 27017
-      PRO_MONGO_NAME: mecaDev
-      PRO_MONGO_USERNAME: nnh
-      PRO_MONGO_PASSWORD: 123456
+      PRO_MONGO_NAME: meca
+      PRO_MONGO_USERNAME: root
+      PRO_MONGO_PASSWORD: secret
     depends_on:
-      - meca-mongo
+      - mongo
   
-  nginx:
-    image: huynguyendev/meca-fe
+  frontend:
+    build:
+      context: ./fe
+    container_name: frontend-container
     ports:
       - 80:80
     depends_on:
-      - meca-be
-      - meca-realtime
+      - backend
+      - realtime
 volumes:
-  meca-mongo-db:
-
+  database:
+    name: meca-mongo
 
