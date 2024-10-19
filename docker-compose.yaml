@@ -24,6 +24,10 @@ services:
       PRO_MONGO_NAME: meca
       PRO_MONGO_USERNAME: root
       PRO_MONGO_PASSWORD: secret
+      ADMIN_EMAIL_ADDRESS:
+      GOOGLE_MAILER_CLIENT_ID:
+      GOOGLE_MAILER_CLIENT_SECRET:
+      GOOGLE_MAILER_REFRESH_TOKEN:
     depends_on:
       - mongo
 

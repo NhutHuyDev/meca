@@ -21,11 +21,10 @@ const dev = {
     }
   },
   smtp: {
-    user: process.env.DEV_SMTP_USER || DEFAULT_CONFIG.DEV.SMTP.USER,
-    pass: process.env.DEV_SMTP_PASS || DEFAULT_CONFIG.DEV.SMTP.PASS,
-    host: process.env.DEV_SMTP_HOST || DEFAULT_CONFIG.DEV.SMTP.HOST,
-    port: Number(process.env.DEV_SMTP_PORT) || DEFAULT_CONFIG.DEV.SMTP.PORT,
-    secure: Boolean(process.env.DEV_SMTP_SECURE) || DEFAULT_CONFIG.DEV.SMTP.SECURE
+    user: process.env.ADMIN_EMAIL_ADDRESS,
+    clientId: process.env.GOOGLE_MAILER_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_MAILER_CLIENT_SECRET,
+    refreshToken: process.env.GOOGLE_MAILER_REFRESH_TOKEN
   }
 }
 
@@ -48,11 +47,10 @@ const pro = {
     }
   },
   smtp: {
-    user: process.env.DEV_SMTP_USER || DEFAULT_CONFIG.DEV.SMTP.USER,
-    pass: process.env.DEV_SMTP_PASS || DEFAULT_CONFIG.DEV.SMTP.PASS,
-    host: process.env.DEV_SMTP_HOST || DEFAULT_CONFIG.DEV.SMTP.HOST,
-    port: Number(process.env.DEV_SMTP_PORT) || DEFAULT_CONFIG.DEV.SMTP.PORT,
-    secure: Boolean(process.env.DEV_SMTP_SECURE) || DEFAULT_CONFIG.DEV.SMTP.SECURE
+    user: process.env.ADMIN_EMAIL_ADDRESS,
+    clientId: process.env.GOOGLE_MAILER_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_MAILER_CLIENT_SECRET,
+    refreshToken: process.env.GOOGLE_MAILER_REFRESH_TOKEN
   }
 }
 

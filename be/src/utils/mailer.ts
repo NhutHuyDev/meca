@@ -1,39 +1,44 @@
 import nodemailer, { SendMailOptions } from 'nodemailer'
-import log from './logger'
 import config from '@/config'
 import { InternalServerError } from '@/core/error.responses'
+import { OAuth2Client } from 'google-auth-library'
+
+const GOOGLE_MAILER_CLIENT_ID = config.smtp.clientId
+const GOOGLE_MAILER_CLIENT_SECRET = config.smtp.clientSecret
+const GOOGLE_MAILER_REFRESH_TOKEN = config.smtp.refreshToken
+const ADMIN_EMAIL_ADDRESS = config.smtp.user
 
 /**
- * @description create a test smtp account
+ * @description khởi tạo OAuth2Client với Client ID và Client Secret
  */
-
-async function createTestCreds() {
-  const creds = await nodemailer.createTestAccount()
-
-  log.info({ creds })
-}
-
-/**
- * @description config fake smtp
- */
-
-const smtp = config.smtp
-
-const transporter = nodemailer.createTransport({
-  ...smtp,
-  auth: { user: smtp.user, pass: smtp.pass },
-  tls: {
-    rejectUnauthorized: false
-  }
+const myOAuth2Client = new OAuth2Client(GOOGLE_MAILER_CLIENT_ID, GOOGLE_MAILER_CLIENT_SECRET)
+myOAuth2Client.setCredentials({
+  refresh_token: GOOGLE_MAILER_REFRESH_TOKEN
 })
 
-async function sendEmail(payload: SendMailOptions) {
+async function SendEmail(payload: SendMailOptions) {
+  const myAccessTokenObject = await myOAuth2Client.getAccessToken()
+
+  const accessToken = myAccessTokenObject?.token
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      type: 'OAuth2',
+      user: ADMIN_EMAIL_ADDRESS,
+      clientId: GOOGLE_MAILER_CLIENT_ID,
+      clientSecret: GOOGLE_MAILER_CLIENT_SECRET,
+      refreshToken: GOOGLE_MAILER_REFRESH_TOKEN,
+      accessToken: accessToken || ''
+    }
+  })
+
   transporter.sendMail(payload, (err, info) => {
     if (err) {
-      log.error(err, 'sending email error')
+      console.log('sending email error')
       throw new InternalServerError('sending email error')
     }
   })
 }
 
-export default sendEmail
+export default SendEmail
