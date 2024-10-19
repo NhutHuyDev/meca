@@ -66,10 +66,10 @@ class UserService {
           }
         ]
       })
-      log.info(`Password reset email sent to ${email}`)
+      log.info(`Verify OTP was sent to ${email}`)
       return {
         email,
-        message: `access your email - ${email} to get reset password code`
+        message: `access your email - ${email} to verify your email`
       }
     } catch (error) {
       console.log(error)
