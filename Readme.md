@@ -19,6 +19,12 @@ This is a simple chat application, with basic features, created for research and
 
 - Linux/MacOS, or Windows with WSL2, should have ```make``` installed
 
+### Run whole application
+```
+docker compose up -d
+```
+*Ensure that you provide the OAuth2 credentials of backend service in docker-compose.yml for Nodemailer before proceeding.*
+
 ## Technologies used in the project
 
 ### Backend
@@ -26,7 +32,7 @@ This is a simple chat application, with basic features, created for research and
 
 - Validation with Zod
 
-- Nodemailer through Gmail SMTP
+- Nodemailer through Gmail SMTP via Google OAuth2
 
 - MongoDB database & Mongoose ODM
 
@@ -52,36 +58,45 @@ The entire project is divided into 3 main folders
 
 - **/fe**: taking full responsibility for the frontend
 
-### Backend ('/be')
+### Backend
 There are 3 main folders in **/be/src**: 
 
-- **/routes**: defines URLs to resources, apply middleware (error, not found, and validation handler)
+- **/routes**: Defines URLs to resources, apply middleware (error, not found, and validation handler)
 
-- **/controllers**: get payload fields and call necessary services
-- **/services**: contains the main logic processing 
+- **/controllers**: Get payload fields and call necessary services
+
+- **/services**: Contains the main logic processing 
 
 ![meca-be-workflow.drawio.svg](./docs/be-workflow.drawio.svg)
     
-### Realtime services ('/realtime')
+### Realtime services
 There are 3 main folders in **/realtime/src**: 
 
-- **/io**: list events and subscribe to them
+- **/io**: List events and subscribe to them
 
-- **/ioMiddlewares**: apply middleware (authentication, validation handler)
+- **/ioMiddlewares**: Apply middleware (authentication, validation handler)
 
-- **/services**: contains the main logic processing 
+- **/services**: Contains the main logic processing 
 
 ![meca-realtime-workflow.drawio.svg](./docs/realtime-workflow.drawio.svg)
 
-### Frontend ('/fe')
+### Frontend
 There are 8 main folders in **/fe/src**: 
-- **/components**: contains child components of pages and reusable components
-- **/pages**: contains components that are application pages
-- **/routes**: defines the corresponding paths and components
-- **/realtime**: register to listen to events from the real-time server and contain emit functions of events
-- **/redux**: defines the general store, slices, and reducers
-- **/form** & **/lib/formSchema**: form components will be stored in the '/form' folder. '/lib/formSchema' contains the schemas defined by Zod used for validating forms
-- **/theme**: define color codes and text properties
+- **/components**: Contains child components of pages and reusable components
+
+- **/pages**: Contains components that are application pages
+
+- **/routes**: Defines the corresponding paths and components
+
+- **/realtime**: Register to listen to events from the real-time server and contain emit functions of events
+
+- **/redux**: Defines the general store, slices, and reducers
+
+- **/form**: Form components will be stored in there
+
+- **/lib/formSchema**:  Contains the schemas defined by Zod used for validating forms
+
+- **/theme**: Define color codes and text properties
 
 ## Database diagram
 ![meca-database-diagram.drawio.svg](./docs/db.drawio.svg)
