@@ -17,8 +17,6 @@ This is a simple chat application, with basic features, created for research and
 
 - ```Docker``` installed
 
-- Linux/MacOS, or Windows with WSL2, should have ```make``` installed
-
 ### Run whole application
 ```
 docker compose up -d
