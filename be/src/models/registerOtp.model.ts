@@ -29,7 +29,7 @@ export class RegisterOtp {
   currentOtp: string | null
 
   @prop()
-  expiredAt: Date
+  expiredAt: Date | null
 
   @prop()
   verified: boolean

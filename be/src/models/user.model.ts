@@ -10,13 +10,13 @@ export class User {
   @prop({ required: true })
   lastName: string
 
-  @prop()
+  @prop({ default: null })
   avatar: string
 
-  @prop({ default: '' })
+  @prop({ default: null })
   about: string
 
-  @prop()
+  @prop({ default: null })
   socketId: string
 
   @prop({ default: true })
