@@ -50,11 +50,11 @@ docker compose up -d
 ## Folder structure
 The entire project is divided into 3 main folders
 
-- **/be**: handles HTTP requests according to REST API standards
+- **/be**: Handles HTTP requests according to REST API standards
 
-- **/realtime**: handles real-time events with the socket.IO library
+- **/realtime**: Handles real-time events with the socket.IO library
 
-- **/fe**: taking full responsibility for the frontend
+- **/fe**: Taking full responsibility for the frontend
 
 ### Backend
 There are 3 main folders in **/be/src**: 
